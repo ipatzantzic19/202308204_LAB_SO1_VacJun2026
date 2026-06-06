@@ -1,0 +1,49 @@
+# ============================================================
+#  prometheus.yml — Configuración de Scraping para SOPES1 P1
+#
+#  Prometheus consultará (scrapeará) estas fuentes cada 15s:
+#    1. redis_exporter → métricas de Valkey
+#    2. daemon_go      → métricas del sistema leídas desde /proc
+#
+#  Para verificar que funciona:
+#    http://localhost:9090/targets  → todos deben estar en "UP"
+# ============================================================
+
+global:
+  # Intervalo de recolección de métricas (cada cuánto pregunta a los targets)
+  scrape_interval: 15s
+
+  # Tiempo máximo de espera por respuesta antes de marcar el target como DOWN
+  scrape_timeout: 10s
+
+  # Intervalo para evaluar las reglas de alerta (no usadas en este proyecto)
+  evaluation_interval: 15s
+
+scrape_configs:
+
+  # ── TARGET 1: Valkey vía redis_exporter ──────────────────
+  # redis_exporter traduce las métricas de Valkey a formato Prometheus.
+  # Las métricas aparecen como: redis_up, redis_connected_clients, etc.
+  - job_name: "valkey"
+    static_configs:
+      - targets: ["redis_exporter:9121"]
+    # Etiqueta extra para identificar este origen en Grafana
+    relabel_configs:
+      - target_label: instance
+        replacement: "valkey_sopes1"
+
+  # ── TARGET 2: Daemon de Go (métricas del sistema desde /proc) ──
+  # El Daemon de Go expone métricas de memoria y procesos en :9200/metrics
+  # (El puerto 9200 está en el host, no dentro de Docker, por eso usamos
+  #  host.docker.internal que el extra_hosts del compose resuelve al host)
+  - job_name: "daemon_go"
+    static_configs:
+      - targets: ["host.docker.internal:9200"]
+    relabel_configs:
+      - target_label: instance
+        replacement: "daemon_sopes1"
+
+  # ── TARGET 3: Prometheus sí mismo (auto-monitoreo, opcional) ──
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]

@@ -1,0 +1,122 @@
+# ============================================================
+#  docker-compose.yml — Entorno de Monitoreo SOPES1 P1
+#
+#  Servicios:
+#    1. valkey         → Base de datos en memoria (port 6379)
+#    2. redis_exporter → Expone métricas de Valkey a Prometheus (port 9121)
+#    3. prometheus     → Recolecta métricas del sistema (port 9090)
+#    4. grafana        → Dashboard de visualización (port 3000)
+#
+#  Arquitectura (igual al ejemplo Clase 5 del curso):
+#    Daemon Go → /proc → lee métricas → escribe Valkey
+#                                    → expone :9200/metrics (Prometheus)
+#    Valkey → redis_exporter(:9121) ─┐
+#    Daemon(:9200/metrics)          ──┤─→ Prometheus → Grafana
+#
+#  Uso:
+#    bash setup_entorno.sh   (primera vez — crea red + levanta)
+#    docker compose up -d    (usos posteriores)
+#    docker compose down     (detener)
+#    docker compose logs -f  (ver logs en vivo)
+# ============================================================
+
+services:
+
+  # ── 1. VALKEY ──────────────────────────────────────────────
+  # Base de datos en memoria compatible con Redis.
+  # El Daemon de Go escribe aquí los logs y métricas.
+  valkey:
+    image: valkey/valkey:latest
+    container_name: valkey
+    ports:
+      - "6379:6379"
+    networks:
+      - monitoring
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ── 2. REDIS EXPORTER ──────────────────────────────────────
+  # Traduce las métricas internas de Valkey al formato de
+  # Prometheus (texto plano), exponiéndolas en el puerto 9121.
+  # Es el "puente" entre Valkey y Prometheus.
+  redis_exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: redis_exporter
+    environment:
+      REDIS_ADDR: "valkey:6379"   # Nombre del servicio dentro de la red Docker
+    ports:
+      - "9121:9121"
+    depends_on:
+      valkey:
+        condition: service_healthy
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  # ── 3. PROMETHEUS ──────────────────────────────────────────
+  # Recolecta (scraping) métricas cada 15 segundos desde:
+  #   - redis_exporter:9121  → métricas de Valkey
+  #   - host.docker.internal:9200 → métricas del Daemon Go
+  # Almacena las series de tiempo para que Grafana las consulte.
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      # Monta el archivo de configuración de scraping
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      # Volumen para persistir los datos de Prometheus
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      - redis_exporter
+    networks:
+      - monitoring
+    # Necesario para que Prometheus pueda llegar al host (donde corre el Daemon)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=7d'
+
+  # ── 4. GRAFANA ─────────────────────────────────────────────
+  # Dashboard web para visualizar las métricas de Prometheus.
+  # Acceso: http://localhost:3000 (admin / admin)
+  # NOTA: El Daemon de Go también puede iniciarlo con docker compose up grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      # Deshabilita el cambio de contraseña obligatorio en el primer login
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+# ── VOLÚMENES PERSISTENTES ─────────────────────────────────
+# Evitan perder datos al hacer docker compose down
+volumes:
+  grafana_data:
+  prometheus_data:
+
+# ── RED COMPARTIDA ─────────────────────────────────────────
+# Todos los servicios están en la misma red "monitoring".
+# Pueden comunicarse usando el nombre del servicio como hostname.
+# Ej: desde redis_exporter se llega a valkey con "valkey:6379"
+networks:
+  monitoring:
+    external: true   # Creada manualmente con: docker network create monitoring
