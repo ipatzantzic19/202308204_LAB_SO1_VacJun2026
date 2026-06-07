@@ -15,7 +15,9 @@
 # ============================================================
 
 # ── Configuración ─────────────────────────────────────────────
-LOG_FILE="/tmp/spawn_containers.log"
+# Usar el directorio del script para los logs (más controlable que /tmp)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LOG_FILE="${SCRIPT_DIR}/spawn_containers_internal.log"
 TOTAL_CONTENEDORES=5
 
 # Timestamp legible para los logs
@@ -23,7 +25,7 @@ TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 
 # ── Función de log ────────────────────────────────────────────
 log() {
-    echo "[$TIMESTAMP] $1" | tee -a "$LOG_FILE"
+    echo "[$TIMESTAMP] $1" | tee -a "$LOG_FILE" 2>/dev/null || echo "[$TIMESTAMP] $1"
 }
 
 # ── Inicio ────────────────────────────────────────────────────
