@@ -1,0 +1,106 @@
+#!/bin/bash
+# ============================================================
+#  spawn_containers.sh — Crea 5 contenedores aleatorios
+#
+#  Ejecutado por el cronjob cada 2 minutos.
+#  El Daemon de Go lo registra en cron al iniciar y lo
+#  elimina cuando el daemon se detiene (Fase 4).
+#
+#  Tipos disponibles (según enunciado):
+#    0 → Alto RAM  : roldyoran/go-client
+#    1 → Alto CPU  : alpine + bucle bc
+#    2 → Bajo      : alpine sleep 240
+#
+#  Uso manual para pruebas: bash spawn_containers.sh
+# ============================================================
+
+# ── Configuración ─────────────────────────────────────────────
+LOG_FILE="/tmp/spawn_containers.log"
+TOTAL_CONTENEDORES=5
+
+# Timestamp legible para los logs
+TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+
+# ── Función de log ────────────────────────────────────────────
+log() {
+    echo "[$TIMESTAMP] $1" | tee -a "$LOG_FILE"
+}
+
+# ── Inicio ────────────────────────────────────────────────────
+log "========================================"
+log "Iniciando creación de $TOTAL_CONTENEDORES contenedores..."
+log "========================================"
+
+# ── Crear 5 contenedores aleatorios ──────────────────────────
+CREADOS=0
+FALLIDOS=0
+
+for i in $(seq 1 $TOTAL_CONTENEDORES); do
+
+    # Número aleatorio entre 0 y 2 (inclusive)
+    TIPO=$((RANDOM % 3))
+
+    # Nombre único: timestamp en nanosegundos + índice
+    # Evita colisiones si el script corre varias veces seguidas
+    NOMBRE="sopes1_$(date +%s%N)_${i}"
+
+    case $TIPO in
+
+        # ── TIPO 0: Alto consumo de RAM ───────────────────────
+        0)
+            log "  [${i}/${TOTAL_CONTENEDORES}] Tipo: ALTO_RAM → roldyoran/go-client"
+            docker run -d \
+                --name "$NOMBRE" \
+                roldyoran/go-client \
+                >> "$LOG_FILE" 2>&1
+
+            EXIT_CODE=$?
+            ;;
+
+        # ── TIPO 1: Alto consumo de CPU ───────────────────────
+        1)
+            log "  [${i}/${TOTAL_CONTENEDORES}] Tipo: ALTO_CPU → alpine + bucle bc"
+            docker run -d \
+                --name "$NOMBRE" \
+                alpine \
+                sh -c "while true; do echo '2^20' | bc > /dev/null; sleep 2; done" \
+                >> "$LOG_FILE" 2>&1
+
+            EXIT_CODE=$?
+            ;;
+
+        # ── TIPO 2: Bajo consumo ──────────────────────────────
+        2)
+            log "  [${i}/${TOTAL_CONTENEDORES}] Tipo: BAJO → alpine sleep 240"
+            docker run -d \
+                --name "$NOMBRE" \
+                alpine \
+                sleep 240 \
+                >> "$LOG_FILE" 2>&1
+
+            EXIT_CODE=$?
+            ;;
+    esac
+
+    # Registrar resultado de cada contenedor
+    if [ $EXIT_CODE -eq 0 ]; then
+        log "  └─ ✓ Creado: $NOMBRE"
+        CREADOS=$((CREADOS + 1))
+    else
+        log "  └─ ✗ Error creando: $NOMBRE (código: $EXIT_CODE)"
+        FALLIDOS=$((FALLIDOS + 1))
+    fi
+
+    # Pequeña pausa entre contenedores para no saturar el daemon de Docker
+    sleep 0.3
+done
+
+# ── Resumen ───────────────────────────────────────────────────
+log "----------------------------------------"
+log "Resumen: $CREADOS creados, $FALLIDOS fallidos"
+log "Contenedores sopes1 activos ahora:"
+docker ps --filter "name=sopes1_" --format "  {{.Names}} | {{.Image}} | {{.Status}}" \
+    >> "$LOG_FILE" 2>&1
+log "========================================"
+
+exit 0
