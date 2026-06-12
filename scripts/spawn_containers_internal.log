@@ -118,3 +118,332 @@ sopes1_1781149322302286050_3 | alpine | Up 2 minutes
 sopes1_1781149321739926494_2 | alpine | Up 2 minutes
 sopes1_1781149321158200794_1 | alpine | Up 2 minutes
 [2026-06-10 21:44:01] ========================================
+[2026-06-10 22:02:01] ========================================
+[2026-06-10 22:02:01] Iniciando creación de 5 contenedores...
+[2026-06-10 22:02:01] ========================================
+[2026-06-10 22:02:01]   [1/5] Tipo: ALTO_RAM → roldyoran/go-client
+32133e4c9b78cffb45fd5db482b3cdaf5b6a20ece9ade476bd2e34d1c8c6e2f8
+[2026-06-10 22:02:01]   └─ ✓ Creado: sopes1_1781150522004816572_1
+[2026-06-10 22:02:01]   [2/5] Tipo: ALTO_RAM → roldyoran/go-client
+89b167e924f337faf8bef427576ffc19f01b7f8847f84143534b5d1db58e3019
+[2026-06-10 22:02:01]   └─ ✓ Creado: sopes1_1781150522564020442_2
+[2026-06-10 22:02:01]   [3/5] Tipo: BAJO → alpine sleep 240
+275cb7beaf7a0f0b1750da80156e020019cbc6bab526806b590d5b4e6413b8ad
+[2026-06-10 22:02:01]   └─ ✓ Creado: sopes1_1781150523100247636_3
+[2026-06-10 22:02:01]   [4/5] Tipo: BAJO → alpine sleep 240
+e3aae88a8663ec968a159b7c762fd66ee6bb78c42d8aa14ec1d82c69ff22e385
+[2026-06-10 22:02:01]   └─ ✓ Creado: sopes1_1781150523647012990_4
+[2026-06-10 22:02:01]   [5/5] Tipo: BAJO → alpine sleep 240
+30525c2ba47d1b02ec1a9f6de8ee31588d88e12e3c6dd87e9431d6ee73c9ef4b
+[2026-06-10 22:02:01]   └─ ✓ Creado: sopes1_1781150524208264797_5
+[2026-06-10 22:02:01] ----------------------------------------
+[2026-06-10 22:02:01] Resumen: 5 creados, 0 fallidos
+[2026-06-10 22:02:01] Contenedores sopes1 activos ahora:
+sopes1_1781150524208264797_5 | alpine | Up Less than a second
+sopes1_1781150523647012990_4 | alpine | Up 1 second
+sopes1_1781150523100247636_3 | alpine | Up 1 second
+sopes1_1781150522564020442_2 | roldyoran/go-client | Up 2 seconds
+sopes1_1781150522004816572_1 | roldyoran/go-client | Up 2 seconds
+sopes1_1781149443365283335_5 | alpine | Up 18 minutes
+sopes1_1781149321739926494_2 | alpine | Up 20 minutes
+[2026-06-10 22:02:01] ========================================
+[2026-06-10 22:04:01] ========================================
+[2026-06-10 22:04:01] Iniciando creación de 5 contenedores...
+[2026-06-10 22:04:01] ========================================
+[2026-06-10 22:04:01]   [1/5] Tipo: ALTO_RAM → roldyoran/go-client
+fb7a46aa63d2ad5d75b087d9d870fbbea03cd0ffe5709eece7af7c4d02b23d80
+[2026-06-10 22:04:01]   └─ ✓ Creado: sopes1_1781150641840688292_1
+[2026-06-10 22:04:01]   [2/5] Tipo: ALTO_RAM → roldyoran/go-client
+04ffb75f20e20f4bf87e1fbc69ecddf6f47d34c7e62402da6cc522768b398893
+[2026-06-10 22:04:01]   └─ ✓ Creado: sopes1_1781150642429716196_2
+[2026-06-10 22:04:01]   [3/5] Tipo: ALTO_CPU → alpine + bucle bc
+fbc0d1a4cd9a322470febd82d0e9b798b2739d567d794e68c084ee1610965a28
+[2026-06-10 22:04:01]   └─ ✓ Creado: sopes1_1781150642989713748_3
+[2026-06-10 22:04:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+09622f58f29066743aa322a83ee82857c0d6bfeb9a3e361731b97a33991d9320
+[2026-06-10 22:04:01]   └─ ✓ Creado: sopes1_1781150643588419689_4
+[2026-06-10 22:04:01]   [5/5] Tipo: BAJO → alpine sleep 240
+28c4e14831398767d3a6275e0b229ed07ce78cc4a5a96e05ef1c2ca4fc85f15f
+[2026-06-10 22:04:01]   └─ ✓ Creado: sopes1_1781150644169766864_5
+[2026-06-10 22:04:01] ----------------------------------------
+[2026-06-10 22:04:01] Resumen: 5 creados, 0 fallidos
+[2026-06-10 22:04:01] Contenedores sopes1 activos ahora:
+sopes1_1781150644169766864_5 | alpine | Up Less than a second
+sopes1_1781150643588419689_4 | alpine | Up 1 second
+sopes1_1781150642989713748_3 | alpine | Up 1 second
+sopes1_1781150642429716196_2 | roldyoran/go-client | Up 2 seconds
+sopes1_1781150641840688292_1 | roldyoran/go-client | Up 2 seconds
+sopes1_1781150524208264797_5 | alpine | Up 2 minutes
+sopes1_1781150523647012990_4 | alpine | Up 2 minutes
+sopes1_1781150523100247636_3 | alpine | Up 2 minutes
+sopes1_1781149443365283335_5 | alpine | Up 20 minutes
+sopes1_1781149321739926494_2 | alpine | Up 22 minutes
+[2026-06-10 22:04:01] ========================================
+[2026-06-10 22:06:01] ========================================
+[2026-06-10 22:06:01] Iniciando creación de 5 contenedores...
+[2026-06-10 22:06:01] ========================================
+[2026-06-10 22:06:01]   [1/5] Tipo: BAJO → alpine sleep 240
+e40ec28c4d16437cf2e92b6bf80762ce8421f8b63f8faaf33700caa3fc821fff
+[2026-06-10 22:06:01]   └─ ✓ Creado: sopes1_1781150761827813130_1
+[2026-06-10 22:06:01]   [2/5] Tipo: ALTO_CPU → alpine + bucle bc
+41a3890d469acea134756ca559336654b26da2e68ca2c18d4c0430859abcf0d4
+[2026-06-10 22:06:01]   └─ ✓ Creado: sopes1_1781150762420857720_2
+[2026-06-10 22:06:01]   [3/5] Tipo: ALTO_CPU → alpine + bucle bc
+ad19a58eed4e25987bbcdd1d54e6793a95f9f7cb1a4592c46828fd4c0ffc65ec
+[2026-06-10 22:06:01]   └─ ✓ Creado: sopes1_1781150762975479563_3
+[2026-06-10 22:06:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+a7a92bb3054ed7f64336d5698629cabaca457e8117cb22ea3ef3138c125dd56e
+[2026-06-10 22:06:01]   └─ ✓ Creado: sopes1_1781150763540706934_4
+[2026-06-10 22:06:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+febb3527b835b19fa5bf11dc7de3b1731fbcc774c62ea66f5240586bfe1a7773
+[2026-06-10 22:06:01]   └─ ✓ Creado: sopes1_1781150764104545724_5
+[2026-06-10 22:06:01] ----------------------------------------
+[2026-06-10 22:06:01] Resumen: 5 creados, 0 fallidos
+[2026-06-10 22:06:01] Contenedores sopes1 activos ahora:
+sopes1_1781150764104545724_5 | alpine | Up Less than a second
+sopes1_1781150763540706934_4 | alpine | Up 1 second
+sopes1_1781150762975479563_3 | alpine | Up 1 second
+sopes1_1781150762420857720_2 | alpine | Up 2 seconds
+sopes1_1781150761827813130_1 | alpine | Up 2 seconds
+sopes1_1781150644169766864_5 | alpine | Up 2 minutes
+sopes1_1781149443365283335_5 | alpine | Up 22 minutes
+sopes1_1781149321739926494_2 | alpine | Up 24 minutes
+[2026-06-10 22:06:01] ========================================
+[2026-06-12 10:04:01] ========================================
+[2026-06-12 10:04:01] Iniciando creación de 5 contenedores...
+[2026-06-12 10:04:01] ========================================
+[2026-06-12 10:04:01]   [1/5] Tipo: ALTO_CPU → alpine + bucle bc
+bb4cad267656cc426e7d721c64a771dc34f4b1881c25c09e2f6a6127b1bb2126
+[2026-06-12 10:04:01]   └─ ✓ Creado: sopes1_1781280241111245196_1
+[2026-06-12 10:04:01]   [2/5] Tipo: BAJO → alpine sleep 240
+e05ca3b8fd157ee92743e8144b0311568223f772dbf36c1e365f15a2b69a200b
+[2026-06-12 10:04:01]   └─ ✓ Creado: sopes1_1781280241776177764_2
+[2026-06-12 10:04:01]   [3/5] Tipo: ALTO_CPU → alpine + bucle bc
+425fde5633f8817068281000f97d379ac403615b455470824d2251a1aeb24d31
+[2026-06-12 10:04:01]   └─ ✓ Creado: sopes1_1781280242317868688_3
+[2026-06-12 10:04:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+eb34bc73f57c435265333465fce328bb6c0dde68658fd5f9674ee87046d7f247
+[2026-06-12 10:04:01]   └─ ✓ Creado: sopes1_1781280242873382159_4
+[2026-06-12 10:04:01]   [5/5] Tipo: ALTO_RAM → roldyoran/go-client
+1b8553a1dbde3f97ab80a4876be14d5eb4c410ff66ba1fbad46813e2d7e44501
+[2026-06-12 10:04:01]   └─ ✓ Creado: sopes1_1781280243423207413_5
+[2026-06-12 10:04:01] ----------------------------------------
+[2026-06-12 10:04:01] Resumen: 5 creados, 0 fallidos
+[2026-06-12 10:04:01] Contenedores sopes1 activos ahora:
+sopes1_1781280243423207413_5 | roldyoran/go-client | Up Less than a second
+sopes1_1781280242873382159_4 | roldyoran/go-client | Up 1 second
+sopes1_1781280242317868688_3 | alpine | Up 1 second
+sopes1_1781280241776177764_2 | alpine | Up 2 seconds
+sopes1_1781280241111245196_1 | alpine | Up 2 seconds
+[2026-06-12 10:04:01] ========================================
+[2026-06-12 10:06:01] ========================================
+[2026-06-12 10:06:01] Iniciando creación de 5 contenedores...
+[2026-06-12 10:06:01] ========================================
+[2026-06-12 10:06:01]   [1/5] Tipo: ALTO_CPU → alpine + bucle bc
+53141affcabbdc7a0f53fa936e50c0fc99484ccb29ea9ef70cc1c6709d0dc572
+[2026-06-12 10:06:01]   └─ ✓ Creado: sopes1_1781280361068197068_1
+[2026-06-12 10:06:01]   [2/5] Tipo: ALTO_CPU → alpine + bucle bc
+cf54a5593a2b5f29202534b46eac51e54d2eb82e34b2ca33eeefe4233080157c
+[2026-06-12 10:06:01]   └─ ✓ Creado: sopes1_1781280361624343145_2
+[2026-06-12 10:06:01]   [3/5] Tipo: ALTO_RAM → roldyoran/go-client
+f69c56868c67318552007bdef9e84a164df8a7ab1aa600aa30a1e48b296db553
+[2026-06-12 10:06:01]   └─ ✓ Creado: sopes1_1781280362170218040_3
+[2026-06-12 10:06:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+b912619bfe32a3e3fdd7c6b2a70edb3b0fb8a937933f955dc4663eb92f5a1ab7
+[2026-06-12 10:06:01]   └─ ✓ Creado: sopes1_1781280362735415683_4
+[2026-06-12 10:06:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+83f770a15fb32a56428ae4e8ee5f297abab4ae91ba9d22d438416c2ba56a98b2
+[2026-06-12 10:06:01]   └─ ✓ Creado: sopes1_1781280363287977579_5
+[2026-06-12 10:06:01] ----------------------------------------
+[2026-06-12 10:06:01] Resumen: 5 creados, 0 fallidos
+[2026-06-12 10:06:01] Contenedores sopes1 activos ahora:
+sopes1_1781280363287977579_5 | alpine | Up Less than a second
+sopes1_1781280362735415683_4 | alpine | Up 1 second
+sopes1_1781280362170218040_3 | roldyoran/go-client | Up 1 second
+sopes1_1781280361624343145_2 | alpine | Up 2 seconds
+sopes1_1781280361068197068_1 | alpine | Up 2 seconds
+sopes1_1781280242317868688_3 | alpine | Up 2 minutes
+sopes1_1781280241776177764_2 | alpine | Up 2 minutes
+sopes1_1781280241111245196_1 | alpine | Up 2 minutes
+[2026-06-12 10:06:01] ========================================
+[2026-06-12 10:08:01] ========================================
+[2026-06-12 10:08:01] Iniciando creación de 5 contenedores...
+[2026-06-12 10:08:01] ========================================
+[2026-06-12 10:08:01]   [1/5] Tipo: BAJO → alpine sleep 240
+084d6427e615ab7f5b41754922ecb2bb7bf03cdef0b2a920c6a93d40bc089d58
+[2026-06-12 10:08:01]   └─ ✓ Creado: sopes1_1781280481978718894_1
+[2026-06-12 10:08:01]   [2/5] Tipo: ALTO_RAM → roldyoran/go-client
+445843dacfef363f6eb0f4abe40f07a5018e7892c28cf4eec64a2d68d682c137
+[2026-06-12 10:08:01]   └─ ✓ Creado: sopes1_1781280482590057084_2
+[2026-06-12 10:08:01]   [3/5] Tipo: ALTO_RAM → roldyoran/go-client
+6eaaeb877a40e6fb6231b2ee6441e3ac905da10e66c8c831f5aa3bdcb1249793
+[2026-06-12 10:08:01]   └─ ✓ Creado: sopes1_1781280483137003632_3
+[2026-06-12 10:08:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+5bbfc98448eda41922d5c184e0ffea5d5325393d716e74972beeb259839c3dbd
+[2026-06-12 10:08:01]   └─ ✓ Creado: sopes1_1781280483677235923_4
+[2026-06-12 10:08:01]   [5/5] Tipo: ALTO_RAM → roldyoran/go-client
+472498708cd17c9b7769fd17c4421dd837ca24f7cd6c5336304d17b88fe83330
+[2026-06-12 10:08:01]   └─ ✓ Creado: sopes1_1781280484217831201_5
+[2026-06-12 10:08:01] ----------------------------------------
+[2026-06-12 10:08:01] Resumen: 5 creados, 0 fallidos
+[2026-06-12 10:08:01] Contenedores sopes1 activos ahora:
+sopes1_1781280484217831201_5 | roldyoran/go-client | Up Less than a second
+sopes1_1781280483677235923_4 | roldyoran/go-client | Up 1 second
+sopes1_1781280483137003632_3 | roldyoran/go-client | Up 1 second
+sopes1_1781280482590057084_2 | roldyoran/go-client | Up 2 seconds
+sopes1_1781280481978718894_1 | alpine | Up 2 seconds
+sopes1_1781280361624343145_2 | alpine | Up 2 minutes
+sopes1_1781280242317868688_3 | alpine | Up 4 minutes
+[2026-06-12 10:08:01] ========================================
+[2026-06-12 10:10:01] ========================================
+[2026-06-12 10:10:01] Iniciando creación de 5 contenedores...
+[2026-06-12 10:10:01] ========================================
+[2026-06-12 10:10:01]   [1/5] Tipo: BAJO → alpine sleep 240
+b0f9eef6ba89989a689516ab95076b09f2c88c9ce6b99ad5ea6b096220623b7b
+[2026-06-12 10:10:01]   └─ ✓ Creado: sopes1_1781280601862777478_1
+[2026-06-12 10:10:01]   [2/5] Tipo: BAJO → alpine sleep 240
+4a66baf64ad1101bd42846dc6aa8a7f1ddb5272de4078f0b82ec0bf1a6db0558
+[2026-06-12 10:10:01]   └─ ✓ Creado: sopes1_1781280602412364386_2
+[2026-06-12 10:10:01]   [3/5] Tipo: ALTO_CPU → alpine + bucle bc
+00c83c62094144f527320d6161902d51968240c1236af303876e0362b9979376
+[2026-06-12 10:10:01]   └─ ✓ Creado: sopes1_1781280602958135795_3
+[2026-06-12 10:10:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+9d1bf1e9b3491a640ac7bc76a779321c22ec78a33caacf9a139cca9904b5ce48
+[2026-06-12 10:10:01]   └─ ✓ Creado: sopes1_1781280603503413027_4
+[2026-06-12 10:10:01]   [5/5] Tipo: BAJO → alpine sleep 240
+f3257102534fff541c407caba0d6aac8ddca5298a7bf85ecf71500e3d4ff4a73
+[2026-06-12 10:10:01]   └─ ✓ Creado: sopes1_1781280604046105411_5
+[2026-06-12 10:10:01] ----------------------------------------
+[2026-06-12 10:10:01] Resumen: 5 creados, 0 fallidos
+[2026-06-12 10:10:01] Contenedores sopes1 activos ahora:
+sopes1_1781280604046105411_5 | alpine | Up Less than a second
+sopes1_1781280603503413027_4 | roldyoran/go-client | Up 1 second
+sopes1_1781280602958135795_3 | alpine | Up 1 second
+sopes1_1781280602412364386_2 | alpine | Up 2 seconds
+sopes1_1781280601862777478_1 | alpine | Up 2 seconds
+sopes1_1781280481978718894_1 | alpine | Up 2 minutes
+sopes1_1781280361624343145_2 | alpine | Up 4 minutes
+sopes1_1781280242317868688_3 | alpine | Up 6 minutes
+[2026-06-12 10:10:01] ========================================
+[2026-06-12 10:12:01] ========================================
+[2026-06-12 10:12:01] Iniciando creación de 5 contenedores...
+[2026-06-12 10:12:01] ========================================
+[2026-06-12 10:12:01]   [1/5] Tipo: BAJO → alpine sleep 240
+7943fd486f3161b4649db46aff0a9faea1752eb13b00828749e541678a71cfc8
+[2026-06-12 10:12:01]   └─ ✓ Creado: sopes1_1781280721655253994_1
+[2026-06-12 10:12:01]   [2/5] Tipo: BAJO → alpine sleep 240
+b3f30621f8ff600afe69bd11aa75d3714746fafba125c867deb95c461e9fed51
+[2026-06-12 10:12:01]   └─ ✓ Creado: sopes1_1781280722201361166_2
+[2026-06-12 10:12:01]   [3/5] Tipo: BAJO → alpine sleep 240
+1bfa953dfce44c86666fb3bb04e153a007f10330df8fefa8fc093df89f9766a0
+[2026-06-12 10:12:01]   └─ ✓ Creado: sopes1_1781280722816906527_3
+[2026-06-12 10:12:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+d039e039eab14269503590a3050ce214974201308a0054a396e96e94345e2315
+[2026-06-12 10:12:01]   └─ ✓ Creado: sopes1_1781280723379918104_4
+[2026-06-12 10:12:01]   [5/5] Tipo: ALTO_RAM → roldyoran/go-client
+6b4e612393bb031236b4a01f3c4d4e3e70970199db34c977999012f5f2309178
+[2026-06-12 10:12:01]   └─ ✓ Creado: sopes1_1781280723932610516_5
+[2026-06-12 10:12:01] ----------------------------------------
+[2026-06-12 10:12:01] Resumen: 5 creados, 0 fallidos
+[2026-06-12 10:12:01] Contenedores sopes1 activos ahora:
+sopes1_1781280723932610516_5 | roldyoran/go-client | Up Less than a second
+sopes1_1781280723379918104_4 | roldyoran/go-client | Up 1 second
+sopes1_1781280722816906527_3 | alpine | Up 1 second
+sopes1_1781280722201361166_2 | alpine | Up 2 seconds
+sopes1_1781280721655253994_1 | alpine | Up 2 seconds
+sopes1_1781280604046105411_5 | alpine | Up 2 minutes
+sopes1_1781280601862777478_1 | alpine | Up 2 minutes
+sopes1_1781280361624343145_2 | alpine | Up 6 minutes
+sopes1_1781280242317868688_3 | alpine | Up 8 minutes
+[2026-06-12 10:12:01] ========================================
+[2026-06-12 10:14:01] ========================================
+[2026-06-12 10:14:01] Iniciando creación de 5 contenedores...
+[2026-06-12 10:14:01] ========================================
+[2026-06-12 10:14:01]   [1/5] Tipo: BAJO → alpine sleep 240
+45ad194360b09aba750ac1ce3e5612c2d34d5ac2221d1a7db4f1df6d07aff13b
+[2026-06-12 10:14:01]   └─ ✓ Creado: sopes1_1781280841562759950_1
+[2026-06-12 10:14:01]   [2/5] Tipo: BAJO → alpine sleep 240
+4934d3199240729effdcd10dabed461f760dd83003acb7464ac5b05231d61ec0
+[2026-06-12 10:14:01]   └─ ✓ Creado: sopes1_1781280842107764421_2
+[2026-06-12 10:14:01]   [3/5] Tipo: ALTO_RAM → roldyoran/go-client
+7cede6a8d1f0efc3e8db3ad88ea34ae8f33f311ef1a8430ed8f398a09776ee12
+[2026-06-12 10:14:01]   └─ ✓ Creado: sopes1_1781280842715164600_3
+[2026-06-12 10:14:01]   [4/5] Tipo: BAJO → alpine sleep 240
+cf85bd8232633200391fe681d8677b7b6d51ac5b42eba838c82fb5d272feb8d6
+[2026-06-12 10:14:01]   └─ ✓ Creado: sopes1_1781280843275122022_4
+[2026-06-12 10:14:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+e8447139e4318c99f7475b1359824ccb67008082ce417482a22c971a9168bba5
+[2026-06-12 10:14:01]   └─ ✓ Creado: sopes1_1781280843815021142_5
+[2026-06-12 10:14:01] ----------------------------------------
+[2026-06-12 10:14:01] Resumen: 5 creados, 0 fallidos
+[2026-06-12 10:14:01] Contenedores sopes1 activos ahora:
+sopes1_1781280843815021142_5 | alpine | Up Less than a second
+sopes1_1781280843275122022_4 | alpine | Up 1 second
+sopes1_1781280842715164600_3 | roldyoran/go-client | Up 1 second
+sopes1_1781280842107764421_2 | alpine | Up 2 seconds
+sopes1_1781280841562759950_1 | alpine | Up 2 seconds
+sopes1_1781280722816906527_3 | alpine | Up 2 minutes
+sopes1_1781280361624343145_2 | alpine | Up 8 minutes
+sopes1_1781280242317868688_3 | alpine | Up 10 minutes
+[2026-06-12 10:14:01] ========================================
+[2026-06-12 10:16:01] ========================================
+[2026-06-12 10:16:01] Iniciando creación de 5 contenedores...
+[2026-06-12 10:16:01] ========================================
+[2026-06-12 10:16:01]   [1/5] Tipo: BAJO → alpine sleep 240
+9f7306006e3b54cbfc25a6a8d0970c065d7d7d67213cc34f7e2f2277c091e0dd
+[2026-06-12 10:16:01]   └─ ✓ Creado: sopes1_1781280961460031938_1
+[2026-06-12 10:16:01]   [2/5] Tipo: BAJO → alpine sleep 240
+68531277259ae3a765a4fc13cf19b23eca6f52167f5d5d7ec20f22beb478cda1
+[2026-06-12 10:16:01]   └─ ✓ Creado: sopes1_1781280962037855730_2
+[2026-06-12 10:16:01]   [3/5] Tipo: ALTO_CPU → alpine + bucle bc
+80371b7b9ca75be8766fc781c5e687e9b11f42d8ed228ab70bcd8b64ec08b977
+[2026-06-12 10:16:01]   └─ ✓ Creado: sopes1_1781280962586894985_3
+[2026-06-12 10:16:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+af79f0c0723028c25e31ebad1d92f5a877fec54c64e58c5ba19b0f59b86f0c82
+[2026-06-12 10:16:01]   └─ ✓ Creado: sopes1_1781280963138712290_4
+[2026-06-12 10:16:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+8263c132e26d48ad4bc0bad42d1d4a50725af4d8415d51e327683236a0499c33
+[2026-06-12 10:16:01]   └─ ✓ Creado: sopes1_1781280963682820294_5
+[2026-06-12 10:16:01] ----------------------------------------
+[2026-06-12 10:16:01] Resumen: 5 creados, 0 fallidos
+[2026-06-12 10:16:01] Contenedores sopes1 activos ahora:
+sopes1_1781280963682820294_5 | alpine | Up Less than a second
+sopes1_1781280963138712290_4 | alpine | Up 1 second
+sopes1_1781280962586894985_3 | alpine | Up 1 second
+sopes1_1781280962037855730_2 | alpine | Up 2 seconds
+sopes1_1781280961460031938_1 | alpine | Up 2 seconds
+sopes1_1781280842107764421_2 | alpine | Up 2 minutes
+sopes1_1781280841562759950_1 | alpine | Up 2 minutes
+sopes1_1781280361624343145_2 | alpine | Up 10 minutes
+sopes1_1781280242317868688_3 | alpine | Up 12 minutes
+[2026-06-12 10:16:01] ========================================
+[2026-06-12 10:18:01] ========================================
+[2026-06-12 10:18:01] Iniciando creación de 5 contenedores...
+[2026-06-12 10:18:01] ========================================
+[2026-06-12 10:18:01]   [1/5] Tipo: ALTO_RAM → roldyoran/go-client
+5b49fccb103abf9f1e337ff7062545628e48688c013fdb65b1dcd23be425c711
+[2026-06-12 10:18:01]   └─ ✓ Creado: sopes1_1781281081328448795_1
+[2026-06-12 10:18:01]   [2/5] Tipo: ALTO_RAM → roldyoran/go-client
+d6886d60604e2ccb69cc92c5f76e52a333be5aa9b9fbbcb875e7527df415bff9
+[2026-06-12 10:18:01]   └─ ✓ Creado: sopes1_1781281081900286178_2
+[2026-06-12 10:18:01]   [3/5] Tipo: ALTO_RAM → roldyoran/go-client
+669e528056f4c9091b777e86aac3aed83c0a59f5fe4dbd150021cfacc5a1d4af
+[2026-06-12 10:18:01]   └─ ✓ Creado: sopes1_1781281082458083557_3
+[2026-06-12 10:18:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+522f93b3a2cbdf2c9d87365b7545a826c715587047f3c38813a4df91312ae747
+[2026-06-12 10:18:01]   └─ ✓ Creado: sopes1_1781281083090057757_4
+[2026-06-12 10:18:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+08d0fc1c37947ae0e18e9533e300bbe7f61cec19cccbf55cc9066e52066062d2
+[2026-06-12 10:18:01]   └─ ✓ Creado: sopes1_1781281083658717990_5
+[2026-06-12 10:18:01] ----------------------------------------
+[2026-06-12 10:18:01] Resumen: 5 creados, 0 fallidos
+[2026-06-12 10:18:01] Contenedores sopes1 activos ahora:
+sopes1_1781281083658717990_5 | alpine | Up Less than a second
+sopes1_1781281083090057757_4 | roldyoran/go-client | Up 1 second
+sopes1_1781281082458083557_3 | roldyoran/go-client | Up 1 second
+sopes1_1781281081900286178_2 | roldyoran/go-client | Up 2 seconds
+sopes1_1781281081328448795_1 | roldyoran/go-client | Up 2 seconds
+sopes1_1781280961460031938_1 | alpine | Up 2 minutes
+sopes1_1781280361624343145_2 | alpine | Up 12 minutes
+sopes1_1781280242317868688_3 | alpine | Up 14 minutes
+[2026-06-12 10:18:01] ========================================
