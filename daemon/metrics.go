@@ -50,12 +50,28 @@ var (
 		Name: "sopes1_active_containers_bajo",
 		Help: "Contenedores de bajo consumo activos actualmente",
 	})
+
+	// NUEVAS MÉTRICAS: Top 5 por RAM y CPU con container_id y pid
+	// Estos GaugeVec persisten en Prometheus hasta que el daemon se reinicia,
+	// lo que permite que los eliminados sigan apareciendo en el top.
+	metricTopRAM = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "sopes1_container_rss_kb",
+		Help: "RSS KB de cada contenedor (activos e históricos)",
+	}, []string{"container_id", "name", "pid", "type"})
+
+	metricTopCPU = promauto.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "sopes1_container_cpu_pct",
+		Help: "CPU% de cada contenedor (activos e históricos)",
+	}, []string{"container_id", "name", "pid", "type"})
 )
 
 // actualizarMetricasContenedores es llamada desde main.go al final de cada ciclo.
 func actualizarMetricasContenedores(contenedores []ContainerInfo, eliminadosEnCiclo int) {
 	var altos, bajos float64
 	for _, c := range contenedores {
+		// Registrar métrica de este contenedor activo
+		registrarMetricasContenedor(c)
+
 		if c.Tipo == TipoAlto {
 			altos++
 		} else {
@@ -69,6 +85,29 @@ func actualizarMetricasContenedores(contenedores []ContainerInfo, eliminadosEnCi
 	for i := 0; i < eliminadosEnCiclo; i++ {
 		metricEliminadosTotal.Inc()
 	}
+}
+
+// registrarMetricasContenedor actualiza los GaugeVec con la métrica de un contenedor.
+// Se llama tanto para activos como para eliminados (para mantener histórico).
+func registrarMetricasContenedor(c ContainerInfo) {
+	pid := fmt.Sprintf("%d", c.PID)
+	tipoStr := string(c.Tipo)
+
+	// Actualizar métricas con los labels: container_id, name, pid, type
+	metricTopRAM.WithLabelValues(c.ID, c.Nombre, pid, tipoStr).Set(float64(c.RSS))
+	metricTopCPU.WithLabelValues(c.ID, c.Nombre, pid, tipoStr).Set(c.CPU)
+}
+
+// registrarEliminacionEnMetricas registra un contenedor eliminado para mantener su presencia
+// en el histórico de Prometheus (no se borra, solo deja de actualizarse).
+func registrarEliminacionEnMetricas(c ContainerInfo) {
+	pid := fmt.Sprintf("%d", c.PID)
+	tipoStr := string(c.Tipo)
+
+	// No borramos, solo dejamos el valor final en el gauge
+	// Prometheus mantendrá estos valores hasta que se reinicie el daemon
+	metricTopRAM.WithLabelValues(c.ID, c.Nombre, pid, tipoStr).Set(float64(c.RSS))
+	metricTopCPU.WithLabelValues(c.ID, c.Nombre, pid, tipoStr).Set(c.CPU)
 }
 
 // ── Collector del sistema (patrón de Clase 5 / lector.go) ────────────────────

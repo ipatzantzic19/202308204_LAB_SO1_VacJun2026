@@ -42,9 +42,18 @@ for i in $(seq 1 $TOTAL_CONTENEDORES); do
     # Número aleatorio entre 0 y 2 (inclusive)
     TIPO=$((RANDOM % 3))
 
-    # Nombre único: timestamp en nanosegundos + índice
-    # Evita colisiones si el script corre varias veces seguidas
-    NOMBRE="sopes1_$(date +%s%N)_${i}"
+    # Nombre corto y descriptivo: sopes1_<TIPO_LETRA>_<TIMESTAMP_CORTO>
+    # Ejemplo: sopes1_R_294841, sopes1_C_294841, sopes1_L_294841
+    # Esto evita nombres gigantes en Grafana y mantiene unicidad
+    TIMESTAMP_CORTO=$(date +%s | tail -c 7)
+    
+    case $TIPO in
+        0) TIPO_LETRA="R" ;;  # RAM alto
+        1) TIPO_LETRA="C" ;;  # CPU alto
+        2) TIPO_LETRA="L" ;;  # Low consumo
+    esac
+    
+    NOMBRE="sopes1_${TIPO_LETRA}_${TIMESTAMP_CORTO}"
 
     case $TIPO in
 

@@ -138,20 +138,20 @@
       "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "decmbytes" } },
       "gridPos": { "h": 9, "w": 12, "x": 0, "y": 15 },
       "id": 7,
-      "options": { "displayLabels": ["name", "percent"], "legend": { "displayMode": "table", "placement": "right", "values": ["value", "percent"] }, "pieType": "pie", "tooltip": { "mode": "single" } },
+      "options": { "displayLabels": [], "legend": { "displayMode": "table", "placement": "right", "values": ["value", "percent"] }, "pieType": "pie", "tooltip": { "mode": "single" } },
       "title": "Top 5 por Consumo de RAM",
       "type": "piechart",
-      "targets": [{ "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" }, "expr": "topk(5, max by (name) (sysinfo_process_rss_kb)) / 1024", "instant": true, "legendFormat": "{{name}}", "refId": "A" }]
+      "targets": [{ "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" }, "expr": "topk(5, max by (name, pid, container_id) (sopes1_container_rss_kb)) / 1024", "instant": true, "legendFormat": "{{name}} [PID:{{pid}}]", "refId": "A" }]
     },
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "percent" } },
       "gridPos": { "h": 9, "w": 12, "x": 12, "y": 15 },
       "id": 8,
-      "options": { "displayLabels": ["name", "percent"], "legend": { "displayMode": "table", "placement": "right", "values": ["value", "percent"] }, "pieType": "pie", "tooltip": { "mode": "single" } },
+      "options": { "displayLabels": [], "legend": { "displayMode": "table", "placement": "right", "values": ["value", "percent"] }, "pieType": "pie", "tooltip": { "mode": "single" } },
       "title": "Top 5 por Consumo de CPU",
       "type": "piechart",
-      "targets": [{ "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" }, "expr": "topk(5, max by (name) (sysinfo_process_cpu_percent))", "instant": true, "legendFormat": "{{name}}", "refId": "A" }]
+      "targets": [{ "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" }, "expr": "topk(5, max by (name, pid, container_id) (sopes1_container_cpu_pct))", "instant": true, "legendFormat": "{{name}} [PID:{{pid}}]", "refId": "A" }]
     }
   ],
   "refresh": "30s",

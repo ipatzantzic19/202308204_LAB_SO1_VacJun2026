@@ -104,7 +104,10 @@ func ejecutarCiclo() {
 		log.Printf("[CICLO] Total acumulado eliminados: %d", total)
 	}
 
-	// 5. Actualizar métricas Prometheus de contenedores ← NUEVO
+	// 5. Actualizar métricas Prometheus de contenedores (activos + eliminados para histórico)
+	for _, c := range eliminados {
+		registrarEliminacionEnMetricas(c)
+	}
 	actualizarMetricasContenedores(contenedores, len(eliminados))
 
 	log.Printf("[CICLO] ✓ Ciclo completado. Próximo en %v.", cfg.LoopInterval)

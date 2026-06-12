@@ -30,7 +30,7 @@ echo ""
 # ── PASO 1: Esperar a que Grafana esté listo ──────────────────
 echo -e "${YELLOW}[1/3] Esperando a que Grafana esté disponible...${NC}"
 MAX=60; WAITED=0
-while ! curl -s "$GRAFANA_URL/api/health" | grep -q '"database":"ok"'; do
+while ! curl -s "$GRAFANA_URL/api/health" | grep -q 'database.*ok'; do
     echo -n "."
     sleep 3; WAITED=$((WAITED+3))
     [ $WAITED -ge $MAX ] && echo -e "\n${RED}✗ Grafana no respondió en ${MAX}s.${NC}" && exit 1
@@ -128,16 +128,10 @@ IMPORT_RESPONSE=$(echo "$IMPORT_PAYLOAD" | curl -s -X POST \
     -d @- \
     "$GRAFANA_URL/api/dashboards/import")
 
-IMPORT_STATUS=$(echo "$IMPORT_RESPONSE" | python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-print(d.get('status','error'), d.get('url',''))
-" 2>/dev/null)
+IMPORT_SUCCESS=$(echo "$IMPORT_RESPONSE" | python3 -c "import json,sys; d=json.load(sys.stdin); print('yes' if d.get('imported',False) else 'no')" 2>/dev/null)
 
-if echo "$IMPORT_STATUS" | grep -q "success\|imported"; then
-    DASH_URL=$(echo "$IMPORT_RESPONSE" | python3 -c "
-import json,sys; d=json.load(sys.stdin); print(d.get('importedUrl',''))
-" 2>/dev/null)
+if [ "$IMPORT_SUCCESS" = "yes" ]; then
+    DASH_URL=$(echo "$IMPORT_RESPONSE" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('importedUrl',''))" 2>/dev/null)
     echo -e "${GREEN}✓ Dashboard importado exitosamente.${NC}"
     echo -e "${GREEN}✓ URL: $GRAFANA_URL$DASH_URL${NC}"
 else
