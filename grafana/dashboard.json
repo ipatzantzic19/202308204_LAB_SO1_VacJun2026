@@ -25,7 +25,7 @@
         "defaults": {
           "color": { "mode": "thresholds" },
           "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
-          "unit": "decmbytes"
+          "unit": "mbytes"
         }
       },
       "gridPos": { "h": 4, "w": 6, "x": 0, "y": 1 },
@@ -41,7 +41,7 @@
         "defaults": {
           "color": { "mode": "thresholds" },
           "thresholds": { "mode": "percentage", "steps": [{ "color": "green", "value": null }, { "color": "yellow", "value": 60 }, { "color": "red", "value": 85 }] },
-          "unit": "decmbytes"
+          "unit": "mbytes"
         }
       },
       "gridPos": { "h": 4, "w": 6, "x": 6, "y": 1 },
@@ -57,7 +57,7 @@
         "defaults": {
           "color": { "mode": "thresholds" },
           "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "yellow", "value": 512 }, { "color": "green", "value": 2048 }] },
-          "unit": "decmbytes"
+          "unit": "mbytes"
         }
       },
       "gridPos": { "h": 4, "w": 6, "x": 12, "y": 1 },
@@ -94,7 +94,7 @@
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
       "fieldConfig": {
-        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "fillOpacity": 15, "lineWidth": 2 }, "unit": "decmbytes" },
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "fillOpacity": 15, "lineWidth": 2 }, "unit": "mbytes" },
         "overrides": [
           { "matcher": { "id": "byName", "options": "RAM Usada" }, "properties": [{ "id": "color", "value": { "fixedColor": "red", "mode": "fixed" } }] },
           { "matcher": { "id": "byName", "options": "RAM Libre" }, "properties": [{ "id": "color", "value": { "fixedColor": "green", "mode": "fixed" } }] }
@@ -135,7 +135,7 @@
     },
     {
       "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
-      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "decmbytes" } },
+      "fieldConfig": { "defaults": { "color": { "mode": "palette-classic" }, "unit": "mbytes" } },
       "gridPos": { "h": 9, "w": 12, "x": 0, "y": 15 },
       "id": 7,
       "options": { "displayLabels": [], "legend": { "displayMode": "table", "placement": "right", "values": ["value", "percent"] }, "pieType": "pie", "tooltip": { "mode": "single" } },
