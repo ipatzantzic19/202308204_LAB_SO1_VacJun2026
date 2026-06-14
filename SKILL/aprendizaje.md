@@ -598,8 +598,7 @@ Sí, Valkey es binariamente compatible con Redis. Los clientes Go de Redis funci
 - **Go concurrencia**: Tour oficial de Go: `tour.golang.org`.
 - **Valkey docs**: `valkey.io/docs`.
 - **Grafana docs**: `grafana.com/docs/grafana`.
-- **Repositorio del curso**: `github.com/CamiloSincal/EJEMPLOS_SOPES1_VACJUN2026`.
-
+- 
 ---
 
 ## 🏁 ¿Qué deberías saber al terminar?

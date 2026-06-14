@@ -4,8 +4,7 @@ package main
 //  proc_reader.go — Lectura del archivo /proc
 //
 //  Lee el JSON que expone el módulo de kernel y lo convierte
-//  a structs de Go. Sigue el mismo patrón del lector.go
-//  de Clase 5 del repositorio del curso.
+//  a structs de Go.
 // ============================================================
 
 import (

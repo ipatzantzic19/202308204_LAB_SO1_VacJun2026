@@ -6,16 +6,9 @@
  *    - Métricas de RAM (total, libre, usada) en KB
  *    - Lista de todos los procesos del sistema con:
  *        PID, Name, Cmdline, VSZ, RSS, %Memoria, %CPU
- * ============================================================
- *
- *  Basado en el patrón enseñado en:
- *  - Clase 3/MetricasSO  → si_meminfo, seq_file, proc_fs
- *  - Clase 3/MetricasSO2 → task_struct, for_each_process,
- *                           get_process_cmdline, jiffies
  */
 /* ============================================================
    HEADERS REQUERIDOS
-   (igual que en el ejemplo MetricasSO2 del curso)
    ============================================================ */
 #include <linux/module.h>       /* module_init, module_exit, MODULE_* */
 #include <linux/kernel.h>       /* printk, KERN_INFO */
@@ -49,7 +42,6 @@ MODULE_VERSION("1.0");
 
 /* ============================================================
    FUNCIÓN: Obtener línea de comandos de un proceso
-   (Copiada directamente del ejemplo MetricasSO2 del curso)
 
    - task:     el proceso cuyo cmdline queremos leer
    - retorna:  string con el cmdline (debe liberarse con kfree)
@@ -136,7 +128,6 @@ static void sanitize_for_json(char *str, int maxlen)
 
 /* ============================================================
    FUNCIÓN PRINCIPAL: Generar el JSON en /proc
-   (Patrón idéntico al MetricasSO2 del curso)
 
    Esta función se ejecuta cada vez que alguien hace:
        cat /proc/continfo_pr1_so1_202308204
@@ -281,7 +272,6 @@ static int sysinfo_show(struct seq_file *m, void *v)
         /*
          * Memory_Usage: "1.5" viene de mem_usage=15 → 15/10=1, 15%10=5
          * CPU_Usage:    "0.25" viene de cpu_usage=25 → 25/100=0, 25%100=25
-         * Formato idéntico al MetricasSO2 del curso.
          */
         seq_printf(m, "      \"Memory_Usage\": %lu.%lu,\n",
                    mem_usage / 10, mem_usage % 10);
@@ -303,7 +293,6 @@ static int sysinfo_show(struct seq_file *m, void *v)
 
 /* ============================================================
    APERTURA DEL ARCHIVO /proc
-   (Patrón estándar del curso: single_open + sysinfo_show)
    ============================================================ */
 static int sysinfo_open(struct inode *inode, struct file *file)
 {
@@ -312,7 +301,6 @@ static int sysinfo_open(struct inode *inode, struct file *file)
 
 /* ============================================================
    TABLA DE OPERACIONES DEL ARCHIVO /proc
-   (Misma estructura que MetricasSO y MetricasSO2 del curso)
    ============================================================ */
 static const struct proc_ops sysinfo_ops = {
     .proc_open    = sysinfo_open,

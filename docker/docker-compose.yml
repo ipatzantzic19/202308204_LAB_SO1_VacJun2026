@@ -7,7 +7,7 @@
 #    3. prometheus     → Recolecta métricas del sistema (port 9090)
 #    4. grafana        → Dashboard de visualización (port 3000)
 #
-#  Arquitectura (igual al ejemplo Clase 5 del curso):
+#  Arquitectura:
 #    Daemon Go → /proc → lee métricas → escribe Valkey
 #                                    → expone :9200/metrics (Prometheus)
 #    Valkey → redis_exporter(:9121) ─┐

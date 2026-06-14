@@ -3,8 +3,6 @@ package main
 // ============================================================
 //  cronjob.go — Gestión del Cronjob
 //
-//  Patrón tomado DIRECTAMENTE del ejemplo del curso:
-//  Clase 4/cronjob/main.go
 //
 //  El daemon registra el cronjob al iniciar y lo elimina
 //  al recibir SIGTERM/SIGINT (apagado limpio).

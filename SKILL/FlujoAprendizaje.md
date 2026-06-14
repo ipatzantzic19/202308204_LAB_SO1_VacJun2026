@@ -155,7 +155,7 @@ static int sysinfo_show(struct seq_file *m, void *v) {
     return 0;
 }
 
-// 2. Función de apertura (patrón estándar del curso)
+// 2. Función de apertura 
 static int sysinfo_open(struct inode *inode, struct file *file) {
     return single_open(file, sysinfo_show, NULL);
     // single_open maneja toda la complejidad de seq_file internamente

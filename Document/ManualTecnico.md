@@ -327,7 +327,7 @@ flowchart TD
 
 ### 5.2 Registro del Cronjob desde Go
 
-El daemon registra y elimina el cronjob programáticamente siguiendo el patrón de la Clase 4 del curso:
+El daemon registra y elimina el cronjob programáticamente:
 
 ```
 Registro:   (crontab -l 2>/dev/null; echo "*/2 * * * * /ruta/spawn_containers.sh >> ...log 2>&1") | crontab -

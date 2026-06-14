@@ -10,7 +10,6 @@
 #    make test     → muestra el contenido del archivo /proc
 #    make log      → muestra los últimos mensajes del kernel (dmesg)
 #
-#  Basado en el patrón del curso (Clase 3/MetricasSO y MetricasSO2)
 # ============================================================
 
 # obj-m indica que construimos un Módulo (no integrado al kernel)

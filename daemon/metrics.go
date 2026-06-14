@@ -3,9 +3,6 @@ package main
 // ============================================================
 //  metrics.go — Servidor de Métricas Prometheus
 //
-//  Patrón idéntico al lector.go de Clase 5 del curso.
-//  Expone métricas en http://localhost:9200/metrics
-//
 //  Métricas del sistema (de /proc):
 //    sysinfo_ram_total_kb
 //    sysinfo_ram_free_kb
