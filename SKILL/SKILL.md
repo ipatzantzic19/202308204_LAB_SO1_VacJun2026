@@ -1,216 +1,421 @@
-# -*- coding: utf-8 -*-Planificación del Proyecto 1 — SOPES 1
-**Nombre: Sonda de Kernel en C y Daemon en Go para Telemetría de Contenedores**
-**Estudiante: [TU_NOMBRE_AQUÍ]**
-Universidad San Carlos de Guatemala | Vacaciones de Junio 2026 | Ponderación: 40 pts
+Sistemas Operativos 1
 
----
+Universidad San Carlos de Guatemala
+Facultad de ingeniería.
+Ingeniería en ciencias y sistemas
 
-## 🎯 Objetivo General
+Proyecto #2
+Quiniela de Mundial 2026 en la Nube con
+Kubernetes
+(Q.M.2026.K8s)
 
-Desarrollar un sistema integral de monitoreo y gestión autónoma de contenedores Docker compuesto por:
-- Un **módulo de kernel en C** que capture métricas del sistema.
-- Un **Daemon en Go** que procese esas métricas y tome decisiones.
-- Un **Cronjob** que simule carga de trabajo con contenedores.
-- Un **Dashboard en Grafana** para visualización en tiempo real.
+PONDERACIÓN: 60pts
 
----
+Sistemas Operativos 1
 
-## 📦 Entregables Finales
+1.  Resumen Ejecutivo
 
-| Entregable | Descripción |
-|---|---|
-| Repositorio GitHub | `Carnet#_LAB_P1_SO1_VacJun2026` (privado, colaborador: CamiloSincal) |
-| Módulo Kernel (C) | Archivo `.c` + `Makefile` |
-| Daemon Go | Código fuente del servicio principal |
-| Docker Compose | Archivo para Grafana + Valkey |
-| Script Cronjob | Shell script de generación de contenedores |
-| Manual Técnico | Guía de instalación y documentación |
-| Evidencia Funcional | Capturas de pantalla del sistema funcionando |
+El  proyecto  “Q.M.2026.K8s”  tiene  como  propósito  aplicar  los  conocimientos  adquiridos  en
+las unidades 1 y 2 del laboratorio, enfocándose en la implementación de una arquitectura de
+sistema  distribuido  y  escalable  en  Google  Cloud  Platform  (GCP)  utilizando  Google
+Kubernetes Engine (GKE).
 
----
+Se  construirá  un  sistema  que  simula  la  recepción  y  procesamiento  de  predicciones  de
+quiniela  del  Mundial  2026  enviadas  en  tiempo  real  por  distintos  usuarios.  Cada  predicción
+representará  el  resultado  estimado  de  un  partido,  incluyendo  el  equipo  local,  equipo
+visitante, goles predichos para cada equipo, el usuario que envía la predicción y una marca
+de tiempo.
 
-## 🗂️ Fases del Proyecto
+Este  sistema  involucrará  la  generación  de  tráfico  con  Locust,  una  API  REST  en  Rust,
+servicios  en  Go  para  procesamiento  y  comunicación  gRPC,  RabbitMQ  como  sistema  de
+mensajería,  consumidores  para  procesar  los  mensajes,  y  bases  de  datos/servicios  de
+visualización  desplegados  sobre  máquinas  virtuales administradas  con KubeVirt  dentro  del
+clúster.  En  particular,  Valkey  y  Grafana  deberán  ejecutarse  de  contenedores  gestionados
+por  containerd  dentro  de  máquinas  virtuales  independientes  sobre  KubeVirt.  Todas  las
+imágenes  Docker  de  los  componentes  deberán  publicarse  y  consumirse  desde  Zot,
+desplegado en una máquina virtual de GCP fuera del clúster.
 
-### FASE 1 — Módulo de Kernel en C + Interfaz /proc
-**Objetivo:** Crear el sensor de bajo nivel que expone métricas del sistema.
+El proyecto busca demostrar la comprensión y aplicación de tecnologías de contenedores,
+orquestación,  virtualización  dentro  de  Kubernetes,  comunicación  entre  microservicios,
+manejo  de  concurrencia,  visualización  de  métricas  y  pruebas  de  carga,  así  como  la
+integración opcional de Dapr como mecanismo alternativo para el envío de mensajes.
 
-**Tareas:**
-- [ ] Instalar herramientas de desarrollo del kernel (`linux-headers`, `build-essential`).
-- [ ] Crear el archivo `sysinfo_module.c` con las funciones básicas de init/exit.
-- [ ] Implementar lectura de métricas de **memoria RAM** (total, libre, en uso) usando `si_meminfo`.
-- [ ] Implementar iteración por procesos usando `task_struct` para capturar: PID, Nombre, Cmdline, VSZ, RSS, %CPU, %Mem.
-- [ ] Crear la entrada `/proc/continfo_pr1_so1_#CARNET` que retorna un JSON.
-- [ ] Crear el `Makefile` para compilar el módulo.
-- [ ] Probar carga (`insmod`) y descarga (`rmmod`) del módulo.
-- [ ] Verificar lectura del archivo: `cat /proc/continfo_pr1_so1_#CARNET`.
+2.  Enunciado del Proyecto
 
-**Criterio de éxito:** El archivo `/proc` retorna datos válidos en JSON con memoria y procesos.
+En  la  actualidad,  los  sistemas  distribuidos  deben  ser  capaces  de  procesar  grandes
+volúmenes  de  eventos  en  tiempo  real,  garantizar  escalabilidad,  tolerancia  a  fallos  y
+observabilidad,  y  además  integrarse  con  distintos  mecanismos  de  comunicación  y
+almacenamiento.  En  este  proyecto  se  simulará  una  plataforma  de  quiniela  donde
+continuamente se reciben predicciones de partidos del Mundial 2026 enviadas por distintos
+usuarios.
 
----
+Cada evento contendrá información resumida sobre las predicciones de quiniela del Mundial
+2026,  por  ejemplo:  equipo  local,  equipo  visitante,  goles  predichos  para  cada  equipo,  el
+usuario  que  envía  la  predicción  y  una  marca  de  tiempo.  El  desafío  consiste  en  diseñar  e
+implementar una arquitectura distribuida, escalable y resiliente que permita recibir, procesar,
+enrutar,  consumir,  almacenar y  visualizar  dichos  datos  utilizando  tecnologías modernas  de
+nube, contenedores y virtualización.
 
-### FASE 2 — Entorno Docker: Imágenes + Compose
-**Objetivo:** Preparar el ambiente donde correrá el sistema.
+La solución deberá ejecutarse en GCP (Google Cloud Platform) utilizando instancias N1, un
+clúster de GKE, Kubernetes Gateway API para exponer el sistema, una API REST en Rust,
+servicios gRPC en Go, RabbitMQ como broker principal de mensajería, Valkey desplegado
+dentro  de  un  contenedor  gestionado  por  contanerd  en  una  máquina  virtual  en  KubeVirt,  y
+Grafana  desplegado  en  otra  máquina  virtual  independiente  dentro  de  un  contenedor
+gestionado  por  containerd  también  en  KubeVirt.  Adicionalmente,  el  estudiante  podrá
+implementar  un  flujo  alternativo  de  mensajería  utilizando  Dapr  como  parte  extra  del
+proyecto.
 
-**Tareas:**
-- [ ] Crear la imagen Docker de **alto consumo de RAM** (`go-client` o usar `roldyoran/go-client`).
-- [ ] Crear el comando para imagen de **alto consumo de CPU** (alpine con bucle de cálculos).
-- [ ] Crear el comando para imagen de **bajo consumo** (alpine con `sleep 240`).
-- [ ] Crear el `docker-compose.yml` con servicios:
-  - `valkey` (base de datos clave-valor, puerto 6379).
-  - `grafana` (dashboard, puerto 3000).
-- [ ] Verificar que Grafana se levanta y puede conectarse a Valkey como datasource.
+3 Alcance del proyecto
 
-**Criterio de éxito:** `docker compose up -d` levanta Grafana accesible en `localhost:3000`.
+Grafica en HD: https://drive.google.com/file/d/10sK4Ls_5_rrsNNl_MXLWENfS46DZDIQt/view?usp=sharing
+ (se recomienda descargar el archivo y abrirlo en https://draw.io)
 
----
+●  Componentes clave incluyen: Locust (generador de carga), Kubernetes Gateway API, API REST (Rust), servicios gRPC (Go),
+RabbitMQ, consumidores (Go), Valkey en contenedor de containerd en una máquina virtual sobre KubeVirt, Grafana en contenedor
+de containerd en máquina virtual sobre KubeVirt y Zot como Container Registry externo al clúster.
 
-### FASE 3 — Script del Cronjob
-**Objetivo:** Automatizar la creación de contenedores de prueba cada 2 minutos.
+4.3 Alcance del proyecto
 
-**Tareas:**
-- [ ] Crear el script `spawn_containers.sh`.
-- [ ] El script debe lanzar exactamente **5 contenedores** por ejecución.
-- [ ] La selección de imagen debe ser **aleatoria** entre las 3 categorías definidas.
-- [ ] Verificar que el script funciona manualmente antes de registrarlo en cron.
+●  Alcance obligatorio:
+o  Locust: Generación de tráfico con la estructura JSON especificada hacia el
 
-**Criterio de éxito:** Ejecutar el script genera 5 contenedores en ejecución.
+endpoint público expuesto mediante Kubernetes Gateway API.
 
----
+o  Los datos enviados deberán simular predicciones de la
 
-### FASE 4 — Daemon en Go (Núcleo del Proyecto)
-**Objetivo:** Desarrollar el servicio central que orquesta todo el sistema.
+quiniela con valores aleatorios dentro de rangos definidos.
 
-**Sub-fases:**
+o  Gateway API: Exposición del sistema utilizando Kubernetes Gateway API en
 
-#### 4a — Estructura Base del Proyecto Go
-- [ ] Inicializar módulo Go: `go mod init daemon_sopes1`.
-- [ ] Instalar dependencias: cliente Valkey/Redis (`go-redis`).
-- [ ] Definir las estructuras de datos (structs) para procesos y memoria.
+sustitución del uso de Ingress Controller. El sistema deberá contar con las rutas
+para:
 
-#### 4b — Inicio del Servicio
-- [ ] Función para ejecutar script que carga el módulo de kernel.
-- [ ] Función para crear el contenedor de Grafana vía Docker.
-- [ ] Función para registrar el cronjob en el sistema operativo.
+▪  /grpc-#carnet
+▪  /dapr-#carnet (parte opcional con Dapr)
 
-#### 4c — Loop Principal (cada 20-60 segundos)
-- [ ] Leer el archivo `/proc/continfo_pr1_so1_#CARNET`.
-- [ ] Parsear/deserializar el JSON.
-- [ ] Filtrar procesos que pertenecen a contenedores Docker.
-- [ ] Clasificar contenedores en "alto consumo" y "bajo consumo".
-- [ ] Aplicar lógica de gestión:
-  - Mantener siempre **3 contenedores de bajo consumo**.
-  - Mantener siempre **2 contenedores de alto consumo**.
-  - Ordenar por RAM, VSZ, RSS, CPU para decidir cuáles eliminar.
-  - Ejecutar `docker stop` + `docker rm` en los excedentes.
-- [ ] Guardar registro (log) del estado en Valkey con timestamp.
+o  Deployments de Rust: API REST que recibe peticiones de Locust, envía a un
+Deployment de Go, soporta alta carga y escala con HPA (1-3 réplicas, CPU >
+30%).
 
-#### 4d — Finalización del Servicio
-- [ ] Capturar señal de interrupción (SIGTERM/SIGINT).
-- [ ] Eliminar el cronjob registrado.
-- [ ] Liberar recursos y cerrar conexiones.
+o  Deployments de Go:
 
-**Criterio de éxito:** El daemon corre indefinidamente, regula los contenedores y almacena logs en Valkey.
+▪  Deployment 1 (API REST y gRPC Client): Recibe de Rust, actúa como
+cliente gRPC, invoca funciones para publicar en RabbitMQ. Es decir un
+deployment con 2 containers.
 
----
+▪  Deployments 2 y 3 (gRPC Server y Writer RabbitMQ): recibe solicitudes
+gRPC y publica mensajes en RabbitMQ. Deben realizarse pruebas con 1 y 2
+réplicas en los componentes que la cátedra defina para análisis de
+rendimiento. Es decir un deployment con 2 containers.
 
-### FASE 5 — Dashboard en Grafana
-**Objetivo:** Visualizar en tiempo real el estado del sistema.
+o  RabbitMQ: Broker principal de mensajería del proyecto. Será el único
 
-**Paneles a crear:**
+sistema de colas obligatorio utilizado para el flujo principal.
 
-| Panel | Tipo | Fuente de datos |
-|---|---|---|
-| Total de RAM | Card / Indicador | Valkey |
-| RAM en uso | Card / Indicador | Valkey |
-| Memoria libre | Card / Indicador | Valkey |
-| Uso de RAM a lo largo del tiempo | Time Series (línea) | Valkey |
-| Contenedores eliminados en el tiempo | Time Series (barras) | Valkey |
-| Top 5 por consumo de RAM | Pie Chart | Valkey |
-| Top 5 por consumo de CPU | Pie Chart | Valkey |
+o  RabbitMQ Client (Consumer) (Deployment): Deployment encargado de consumir
+los mensajes de RabbitMQ, procesarlos y almacenar la información resultante en
+Valkey.
 
-**Tareas:**
-- [ ] Configurar Valkey como datasource en Grafana.
-- [ ] Crear nuevo dashboard y agregar cada panel.
-- [ ] Conectar cada panel a la clave correspondiente en Valkey.
-- [ ] Verificar que los datos se actualizan conforme el daemon guarda logs.
+o  Valkey en contenedor de containerd sobre KubeVirt: Valkey deberá
 
-**Criterio de éxito:** Dashboard muestra datos en tiempo real sin errores.
+ejecutarse dentro de un contenedor gestionado por containerd en una máquina
+virtual administrada por KubeVirt, desplegada dentro del clúster de Kubernetes.
+Esta VM deberá ser independiente y dedicada al almacenamiento de datos
+procesados. Se debe asegurar persistencia y conectividad entre los consumers y
+la VM.
 
----
+o  Grafana en contenedor de containerd sobre KubeVirt: Grafana deberá
 
-### FASE 6 — Pruebas Integrales y Documentación
-**Objetivo:** Validar el sistema completo y documentar para la entrega.
+ejecutarse dentro de un contenedor gestionado por containerd en una máquina
+virtual distinta, también administrada por KubeVirt dentro del clúster. Esta VM
+deberá conectarse a la fuente de datos correspondiente para construir y mostrar
+los dashboards requeridos.
 
-**Tareas:**
-- [ ] Prueba de flujo completo: encender daemon → esperar cronjob → verificar gestión de contenedores → verificar Grafana.
-- [ ] Captura de pantalla: `/proc` mostrando procesos con PID, nombre, memoria y CPU.
-- [ ] Captura de pantalla: Grafana con todos los paneles con datos reales.
-- [ ] Captura de pantalla: Terminal mostrando logs del daemon.
-- [ ] Redactar `README.md` con instrucciones de instalación.
-- [ ] Redactar manual técnico.
-- [ ] Subir todo al repositorio privado y agregar a `CamiloSincal` como colaborador.
+o  Zot: Implementado en una VM de GCP fuera del clúster K8s. Todas las imágenes
+Docker de los componentes se publican y se descargan desde Zot. Usar HTTPS.
+o  OCI Artifact: Descarga de archivo de entrada desde el registry como un OCI Artifact
 
----
+o
 
-## 📅 Cronograma Sugerido
+(se debe especificar qué archivo y cómo se usa en la documentación)
+Infraestructura en GCP: Todo el proyecto debe desplegarse en Google Cloud
+Platform, utilizando instancias N1 para soportar KubeVirt.
 
-```
-Día 1-2:   FASE 1 — Módulo de Kernel (lo más crítico y nuevo)
-Día 3:     FASE 2 — Entorno Docker + Compose
-Día 3:     FASE 3 — Script de Cronjob
-Día 4-6:   FASE 4 — Daemon en Go (la parte más grande)
-Día 7:     FASE 5 — Dashboard en Grafana
-Día 8:     FASE 6 — Pruebas + Documentación
-```
+o  Documentación: El manual técnico deberá explicar:
 
----
+▪  arquitectura general,
+▪
 
-## ⚠️ Restricciones Clave (Nunca Olvidar)
+flujo completo de datos,
 
-1. **Siempre deben existir** 3 contenedores de **bajo consumo** activos.
-2. **Siempre deben existir** 2 contenedores de **alto consumo** activos.
-3. **NUNCA eliminar** el contenedor de Grafana.
-4. El archivo `/proc` debe llamarse exactamente `/proc/continfo_pr1_so1_#CARNET` (reemplazar `#CARNET` con tu número de carnet).
-5. El repositorio GitHub debe ser **privado** y agregar a `CamiloSincal` como colaborador.
+▪  configuración de Gateway API,
+▪  comunicación REST y gRPC,
+▪  uso de RabbitMQ,
+▪  despliegue de Valkey y Grafana en contenedores gestionados por containerd sobre
 
----
+máquinas virtuales de KubeVirt,
 
-## 🛠️ Stack Tecnológico
+▪  configuración de HPA,
+▪  publicación/consumo de imágenes desde Zot,
+▪  pruebas realizadas y conclusiones.
 
-| Tecnología | Rol en el proyecto |
-|---|---|
-| **C (Kernel Module)** | Sensor de bajo nivel — captura métricas del OS |
-| **Go** | Daemon de gestión — cerebro del sistema |
-| **Docker / Docker Compose** | Plataforma de contenedores |
-| **Valkey** | Base de datos para logs y métricas |
-| **Grafana** | Dashboard de visualización |
-| **Linux /proc filesystem** | Canal de comunicación Kernel ↔ Usuario |
-| **Cron** | Programador de tareas periódicas |
+o  El manual técnico deberá ser entregado exclusivamente en
 
----
+formato Markdown.
 
-## 📁 Estructura de Carpetas Propuesta
+o  Sugerencias Generales: Uso de namespaces, Gateway API, creación propia
 
-```
-Carnet#_LAB_P1_SO1_VacJun2026/
-├── kernel_module/
-│   ├── sysinfo_module.c        ← Módulo de kernel
-│   └── Makefile                ← Script de compilación
-├── daemon/
-│   ├── main.go                 ← Punto de entrada del daemon
-│   ├── go.mod                  ← Módulo Go
-│   ├── go.sum
-│   └── (otros archivos .go)
-├── scripts/
-│   ├── spawn_containers.sh     ← Script del cronjob
-│   └── load_module.sh          ← Script para cargar el módulo
-├── docker/
-│   ├── docker-compose.yml      ← Grafana + Valkey
-│   └── Dockerfile.go-client    ← (si creas imagen propia)
-├── grafana/
-│   └── dashboard.json          ← Exportación del dashboard
-├── docs/
-│   ├── manual_tecnico.md
-│   └── screenshots/
-└── README.md
-```
+de imágenes Docker.
+
+o  Requisitos Mínimos para tener derecho a calificación:
+
+▪  Clúster de Kubernetes en GCP
+▪  Uso obligatorio de Locust
+▪  Uso obligatorio de GKE
+▪  Uso obligatorio de RabbitMQ
+▪  Uso obligatorio de KubeVirt y Containerd para Valkey y Grafana
+
+▪  Restricciones: Proyecto individual, uso obligatorio de Locust y GKE
+▪
+
+NO HABRÁ PRÓRROGA.
+
+o  Github: Repositorio privado con nombre <CARNET>_LAB_P2_SO1_VacJun2026 o
+
+<CARNET>_LAB_SO1_VacJun2026 con una carpeta que divida al proyecto 2 del 1. NO
+OLVIDAR AGREGARME AL REPOSITORIO: CamiloSincal
+
+●  Alcance opcional / punteo extra en Clase Magistral
+
+o
+
+Implementación con Dapr (10pts extra sobre 100): Se deberá
+implementar un flujo adicional de envío de mensajes utilizando Dapr,
+expuesto por medio de la ruta:
+
+▪
+
+/dapr-#carnet
+
+Esta implementación podrá coexistir con el flujo base /grpc-#carnet, con
+el objetivo de comparar ambos enfoques a nivel de arquitectura, integración y
+comportamiento.
+
+Para la implementación con Dapr, deberá integrarse el SDK de Dapr en los
+servicios que actualmente utilizan gRPC, con el fin de habilitar:
+-  El envío de información mediante pub/sub (publicador)
+-  La recepción de información mediante suscripción a eventos
+-  La comunicación desacoplada entre servicios a través de RabbitMQ
+
+Esta implementación deberá estar debidamente documentada en el manual
+técnico y será presentada al finalizar la evaluación.
+
+o  Pruebas locales con k3s (5pts extra sobre 100): Se deberá
+utilizar k3s para realizar y documentar pruebas locales de
+kubernetes.
+
+●  Recomendaciones:
+
+o  Optimización del rendimiento: Uso de requests y limits en los
+
+deployments para mejorar estabilidad del sistema.
+
+o  Expiración de datos: Configuración de TTL o políticas de expiración en
+
+Valkey para evitar saturación de memoria.
+
+4.3.1 Estructura de los mensajes:
+
+La estructura de los mensajes deberá representar prediccións de quiniela simulados.
+Un ejemplo de JSON válido es el siguiente:
+{
+
+"home_team": "GTM",
+
+"away_team": "MEX",
+
+""home_goals": 2,
+
+"away_goals": 1,
+
+"username": "user_42",
+
+"timestamp": "2026-06-15T18:00:00Z"
+
+}
+
+Reglas de generación
+
+home_team: código del equipo local (3 letras, p.ej. GTM, MEX, BRA, ARG, ESP).
+
+away_team: código del equipo visitante (3 letras, distinto al local).
+
+home_goals: goles predichos para el equipo local, entero aleatorio.
+
+away_goals: goles predichos para el equipo visitante, entero aleatorio.
+
+username: identificador del usuario que envía la predicción.
+
+timestamp: fecha y hora del evento.
+
+Rangos sugeridos
+
+●  home_goals: entre 0 y 5
+
+●  away_goals: entre 0 y 5
+
+●  username: cadena alfanumérica aleatoria, p.ej. "user_N" con N entre 1 y 1000
+
+Propuesta de estructura gRPC
+
+syntax = "proto3";
+
+package worldcup2026;
+
+option go_package = "./proto";
+
+// Mensaje que se enviará
+
+message MatchPredictionRequest {
+
+Teams home_team = 1;
+
+Teams away_team = 2;
+
+int32 home_goals  = 3;
+
+int32 away_goals  = 4;
+
+string username = 5;
+
+string timestamp  = 6;
+
+}
+
+// Equipos aceptados por el proyecto
+
+enum Teams {
+
+TEAMS_UNKNOWN = 0;
+
+GTM = 1;
+
+MEX = 2;
+
+BRA = 3;
+
+ARG = 4;
+
+ESP = 5;
+
+}
+
+//  Respuesta  del  servidor
+
+message MatchPredictionResponse {
+
+string status = 1;
+
+}
+
+// Servicio gRPC
+
+service MatchPredictionService {
+
+rpc SendPrediction (MatchPredictionRequest) returns
+
+(MatchPredictionResponse);
+
+}
+
+4.3.2 Estructura del Dashboard Requerido
+
+Asignación de país en base al último dígito de su carnet
+
+0,1 = GTM
+
+2,3 = MEX
+
+4,5 = BRA
+
+6,7 = ARG
+
+8,9 = ESP
+
+Visualizaciones requeridas
+▪  Mayor cantidad de goles predichos en un partido (local)
+▪  Menor cantidad de goles predichos en un partido (local)
+▪  Mayor cantidad de goles predichos en un partido (visitante)
+▪  Menor cantidad de goles predichos en un partido (visitante)
+▪  Top de equipos con más victorias predichas
+▪  Top de usuarios más activos (más predicciones enviadas)
+▪  Moda de goles predichos (local)
+▪  Moda de goles predichos (visitante)
+▪  Serie temporal del equipo asignado, mostrando la evolución de:
+
+o  goles predichos como local
+o  goles predichos como visitante
+
+▪  Nombre del equipo asignado
+▪  Cantidad total de predicciones recibidas para el equipo asignado
+
+A continuación, se presenta un ejemplo ilustrativo del dashboard que se
+espera desarrollar en Grafana, mostrando su estructura y visualizaciones
+esperadas
+
+Gráfica en HD: https://drive.google.com/file/d/1xd_uKJ_6Q9pJ66fJwinSK-5CKvBwni_q/view?usp=sharing
+(se recomienda descargar el archivo y abrirlo en https://draw.io)
+
+3.3 Entregables
+
+1.  Código fuente en repositorio privado GitHub nombre y añadir al auxiliar: @CamiloSincal
+2.  Manual técnico y guía de reproducibilidad/ejecución.
+3.  Capturas de prueba y evidencia funcional
+4.  Metodología
+5.  Fase 1: Configuración e Infraestructura Base
+5.1.  Configurar cuenta de GCP y crear el clúster de GKE utilizando instancias N1.
+5.2.  Verificar los requisitos necesarios para soportar KubeVirt y virtualización anidada dentro del entorno.
+5.3.  Instalar y configurar Zot en una VM de GCP fuera del clúster.
+5.4.  Desarrollar y contenerizar la API REST en Rust. Publicar la imagen en Zot.
+5.5.  Desarrollar y contenerizar el Go Deployment 1 encargado de la comunicación inicial y del rol de gRPC Client   Publicar la imagen en Zot.
+5.6.  Configurar Locust para generar tráfico básico con la estructura JSON definida para predicciones de quiniela.
+5.7.  Desplegar y configurar Kubernetes Gateway API para exponer los serviciosdel sistema.
+5.8.  Realizar pruebas iniciales del flujo: Locust → Gateway API → API Rust → Go Deployment 1
+6. Fase 2: Comunicación Interna y Publicación de Mensajes
+6.1.  Desplegar RabbitMQ en GKE como broker principal de mensajería.
+6.2.  Desarrollar y contenerizar el Go Deployment 2, encargado del rol de gRPC Server y publicación de mensajes en RabbitMQ. Publicar la imagen en Zot. 
+6.3.  Integrar el Go Deployment 1 con el servicio publicador mediante gRPC.
+6.4.  Configurar la ruta principal del sistema para el flujo estándar: /grpc-#carnet
+6.5.  Realizar pruebas de publicación de mensajes hacia RabbitMQ.
+6.6. Validar el flujo completo de recepción, transformación y envío de mensajes.
+7.  Fase 3: Consumo de Mensajes y Persistencia en Máquina Virtual
+7.1.  Desarrollar y contenerizar el Consumer en Go para procesar mensajes desde RabbitMQ. Publicar la imagen en Zot.
+7.2.  Desplegar KubeVirt dentro del clúster de Kubernetes.
+7.3.  Crear y configurar un contenedor con containerd en VM para Valkey dentro de KubeVirt, asegurando conectividad y persistencia.
+7.4.Instalar y configurar Valkey dentro del contenedor de containerd de dicha máquina virtual.
+7.5. Integrar el Consumer para almacenar los datos procesados en Valkey.
+7.6.  Realizar pruebas de consumo y almacenamiento.
+7.7. Validar la persistencia y consulta de los datos generados por el sistema.
+Fase 4: Visualización, Ruta Alternativa y Pruebas de Carga
+8.1.  Crear y configurar un contenedor con containerd en una VM independiente para Grafana dentro de KubeVirt.
+8.2   Instalar y configurar Grafana en este contenedor de containerd De la máquina virtual.
+8.3.  Configurar los dashboards requeridos para visualizar la información almacenada y procesada.
+8.4.  Implementar, como parte de punteo extra, la ruta alternativa: /dapr-#carnet
+8.5   Integrar y probar el envío de mensajes utilizando Dapr.
+8.6.  Realizar pruebas de carga completas con Locust.
+8.7.  Implementar y probar HPA para el deployment de Rust.
+8.8.  Analizar el rendimiento del sistema con 1 y 2 réplicas en los deployments de Go definidos para evaluación.
+8.9.  Comparar el comportamiento general del flujo estándar y del flujo con Dapr, en caso de haberse implementado.
+9. Fase 5: Documentación, Validación y Entrega
+9.1  Redactar el manual técnico, incluyendo respuestas a las preguntas y análisis
+de rendimiento.
+9.2  Verificar que todos los componentes estén correctamente configurados y
+documentados en el repositorio.
+9.3  Validar que las imágenes publicadas en Zot puedan ser consumidas
+correctamente por los componentes del sistema.
+9.4  Preparar la entrega final conforme a los requisitos establecidos.
+6. Recursos y herramientas a utilizar
+Listado de materiales que los estudiantes deberán usar o investigar:
+●  Dapr sidecar: https://docs.dapr.io/concepts/dapr-services/sidecar/
+●  Kubervirt: https://kubevirt.io/
+

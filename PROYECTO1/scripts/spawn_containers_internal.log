@@ -1,0 +1,458 @@
+[2026-06-16 18:42:01] ========================================
+[2026-06-16 18:42:01] Iniciando creación de 5 contenedores...
+[2026-06-16 18:42:01] ========================================
+[2026-06-16 18:42:01]   [1/5] Tipo: ALTO_CPU → alpine + bucle bc
+1cb97868f62f4b69ad49b50a252551372733441ba80e3a543e4bdaf63568082b
+[2026-06-16 18:42:01]   └─ ✓ Creado: sopes1_C_656921
+[2026-06-16 18:42:01]   [2/5] Tipo: BAJO → alpine sleep 240
+2421eec59641c07919dd9fec56f381d4a1993c2402aa937d7e4130a2e53d11fc
+[2026-06-16 18:42:01]   └─ ✓ Creado: sopes1_L_656922
+[2026-06-16 18:42:01]   [3/5] Tipo: BAJO → alpine sleep 240
+7e9f89c373ab470a8ecd2556eda9670687cd7d329fe40128a9668fb26401de79
+[2026-06-16 18:42:01]   └─ ✓ Creado: sopes1_L_656923
+[2026-06-16 18:42:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+54e3659c54a328c23f241dbbc9d3aea14c4c3958a7d3eb6650d82a22bf0edc38
+[2026-06-16 18:42:01]   └─ ✓ Creado: sopes1_C_656923
+[2026-06-16 18:42:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+d0e79398da4d4d2fac56bcdf120e50cdb2c6d30c59f9e1b4736f4163ae6dedf4
+[2026-06-16 18:42:01]   └─ ✓ Creado: sopes1_C_656924
+[2026-06-16 18:42:01] ----------------------------------------
+[2026-06-16 18:42:01] Resumen: 5 creados, 0 fallidos
+[2026-06-16 18:42:01] Contenedores sopes1 activos ahora:
+sopes1_C_656924 | alpine | Up Less than a second
+sopes1_C_656923 | alpine | Up 1 second
+sopes1_L_656923 | alpine | Up 1 second
+sopes1_L_656922 | alpine | Up 2 seconds
+sopes1_C_656921 | alpine | Up 2 seconds
+[2026-06-16 18:42:01] ========================================
+[2026-06-16 18:44:01] ========================================
+[2026-06-16 18:44:01] Iniciando creación de 5 contenedores...
+[2026-06-16 18:44:01] ========================================
+[2026-06-16 18:44:01]   [1/5] Tipo: ALTO_RAM → roldyoran/go-client
+379883d8577cf3dbfddace056a5f0ad9e6b23c0267042d3976e17ec2577809c3
+[2026-06-16 18:44:01]   └─ ✓ Creado: sopes1_R_657041
+[2026-06-16 18:44:01]   [2/5] Tipo: ALTO_RAM → roldyoran/go-client
+2df1b218e7534f993e4d0b75c2b39aa23d3d80de118c9dc25cc606dfedaea714
+[2026-06-16 18:44:01]   └─ ✓ Creado: sopes1_R_657042
+[2026-06-16 18:44:01]   [3/5] Tipo: ALTO_CPU → alpine + bucle bc
+1523627c84ad7355a8da2b290f573c089009aad4c89e5480cdcec8d3f5e66ebd
+[2026-06-16 18:44:01]   └─ ✓ Creado: sopes1_C_657042
+[2026-06-16 18:44:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+8246722c1eeb0a21d33a7c75eb3204f72565ae397048d48dd7ca2e680dcdce34
+[2026-06-16 18:44:01]   └─ ✓ Creado: sopes1_C_657043
+[2026-06-16 18:44:01]   [5/5] Tipo: BAJO → alpine sleep 240
+73c99bdf58201842c0a1ecff9eb8116aa26c5ccd9cbc090f53560dd5a52e748f
+[2026-06-16 18:44:01]   └─ ✓ Creado: sopes1_L_657044
+[2026-06-16 18:44:01] ----------------------------------------
+[2026-06-16 18:44:01] Resumen: 5 creados, 0 fallidos
+[2026-06-16 18:44:01] Contenedores sopes1 activos ahora:
+sopes1_L_657044 | alpine | Up Less than a second
+sopes1_C_657043 | alpine | Up 1 second
+sopes1_C_657042 | alpine | Up 1 second
+sopes1_R_657042 | roldyoran/go-client | Up 2 seconds
+sopes1_R_657041 | roldyoran/go-client | Up 2 seconds
+sopes1_C_656924 | alpine | Up 2 minutes
+sopes1_L_656923 | alpine | Up 2 minutes
+sopes1_L_656922 | alpine | Up 2 minutes
+sopes1_C_656921 | alpine | Up 2 minutes
+[2026-06-16 18:44:01] ========================================
+[2026-06-16 18:46:01] ========================================
+[2026-06-16 18:46:01] Iniciando creación de 5 contenedores...
+[2026-06-16 18:46:01] ========================================
+[2026-06-16 18:46:01]   [1/5] Tipo: ALTO_RAM → roldyoran/go-client
+0b73d6aa5ea726652d893fe805160a5528468e4f08a85965119a450f438d4ab4
+[2026-06-16 18:46:01]   └─ ✓ Creado: sopes1_R_657161
+[2026-06-16 18:46:01]   [2/5] Tipo: BAJO → alpine sleep 240
+35dae9b18a811976f8616961ae0db5cce48765620d499addab579e8123fe217f
+[2026-06-16 18:46:01]   └─ ✓ Creado: sopes1_L_657162
+[2026-06-16 18:46:01]   [3/5] Tipo: ALTO_CPU → alpine + bucle bc
+882d8541fbb7533e10c703850fa7a47c7956bc400b11a31eab6bd68e83a91d53
+[2026-06-16 18:46:01]   └─ ✓ Creado: sopes1_C_657162
+[2026-06-16 18:46:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+fcf7a63575e24e31a189b418863d0c04d656690db93c21a7b23e7b60abf5bc7d
+[2026-06-16 18:46:01]   └─ ✓ Creado: sopes1_R_657163
+[2026-06-16 18:46:01]   [5/5] Tipo: ALTO_RAM → roldyoran/go-client
+9b9db53021a632f05b05e4e5de1a3dce282ae26cff49209dba3d6d6edb3419c6
+[2026-06-16 18:46:01]   └─ ✓ Creado: sopes1_R_657164
+[2026-06-16 18:46:01] ----------------------------------------
+[2026-06-16 18:46:01] Resumen: 5 creados, 0 fallidos
+[2026-06-16 18:46:01] Contenedores sopes1 activos ahora:
+sopes1_R_657164 | roldyoran/go-client | Up Less than a second
+sopes1_R_657163 | roldyoran/go-client | Up 1 second
+sopes1_C_657162 | alpine | Up 1 second
+sopes1_L_657162 | alpine | Up 2 seconds
+sopes1_R_657161 | roldyoran/go-client | Up 2 seconds
+sopes1_L_657044 | alpine | Up 2 minutes
+sopes1_C_657043 | alpine | Up 2 minutes
+sopes1_C_656924 | alpine | Up 4 minutes
+[2026-06-16 18:46:01] ========================================
+[2026-06-16 18:54:01] ========================================
+[2026-06-16 18:54:01] Iniciando creación de 5 contenedores...
+[2026-06-16 18:54:01] ========================================
+[2026-06-16 18:54:01]   [1/5] Tipo: ALTO_CPU → alpine + bucle bc
+72243be5c62135642b0fa896de10f90bd28c423568980f82f2f721897069ccc7
+[2026-06-16 18:54:01]   └─ ✓ Creado: sopes1_C_657641
+[2026-06-16 18:54:01]   [2/5] Tipo: ALTO_RAM → roldyoran/go-client
+5f3e9ae2b9718c2e2007220abb51d87b8f4e0e7d73be56bc212815948bca0887
+[2026-06-16 18:54:01]   └─ ✓ Creado: sopes1_R_657642
+[2026-06-16 18:54:01]   [3/5] Tipo: ALTO_CPU → alpine + bucle bc
+738a98d1b777f210c795cdd7c7c0d2f8b3397eadf4056cb0f1119be72945a5e6
+[2026-06-16 18:54:01]   └─ ✓ Creado: sopes1_C_657642
+[2026-06-16 18:54:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+2942462f372a7d8525aac85dc895d852f78a45e1d7a9fe5e7045700b259e7c62
+[2026-06-16 18:54:01]   └─ ✓ Creado: sopes1_C_657643
+[2026-06-16 18:54:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+docker: Error response from daemon: Conflict. The container name "/sopes1_C_657643" is already in use by container "2942462f372a7d8525aac85dc895d852f78a45e1d7a9fe5e7045700b259e7c62". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+[2026-06-16 18:54:01]   └─ ✗ Error creando: sopes1_C_657643 (código: 125)
+[2026-06-16 18:54:01] ----------------------------------------
+[2026-06-16 18:54:01] Resumen: 4 creados, 1 fallidos
+[2026-06-16 18:54:01] Contenedores sopes1 activos ahora:
+sopes1_C_657643 | alpine | Up Less than a second
+sopes1_C_657642 | alpine | Up 1 second
+sopes1_R_657642 | roldyoran/go-client | Up 1 second
+sopes1_C_657641 | alpine | Up 2 seconds
+sopes1_C_657043 | alpine | Up 10 minutes
+sopes1_C_656924 | alpine | Up 12 minutes
+[2026-06-16 18:54:01] ========================================
+[2026-06-16 22:12:01] ========================================
+[2026-06-16 22:12:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:12:01] ========================================
+[2026-06-16 22:12:01]   [1/5] Tipo: ALTO_CPU → alpine + bucle bc
+6c041d82961e18addb73d9bf4ad780adfe1708a090a7c166d00c3c55a817cad3
+[2026-06-16 22:12:01]   └─ ✓ Creado: sopes1_C_669521
+[2026-06-16 22:12:01]   [2/5] Tipo: ALTO_CPU → alpine + bucle bc
+8d1b3fcb16fbd3776a282e60f2fbf94ea213e371f1f065d401a8a144cd3f0968
+[2026-06-16 22:12:01]   └─ ✓ Creado: sopes1_C_669522
+[2026-06-16 22:12:01]   [3/5] Tipo: ALTO_CPU → alpine + bucle bc
+docker: Error response from daemon: Conflict. The container name "/sopes1_C_669522" is already in use by container "8d1b3fcb16fbd3776a282e60f2fbf94ea213e371f1f065d401a8a144cd3f0968". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+[2026-06-16 22:12:01]   └─ ✗ Error creando: sopes1_C_669522 (código: 125)
+[2026-06-16 22:12:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+a877351037fc337283b032eeb7a3092da2e652528632a74de4976f3442be0481
+[2026-06-16 22:12:01]   └─ ✓ Creado: sopes1_C_669523
+[2026-06-16 22:12:01]   [5/5] Tipo: ALTO_RAM → roldyoran/go-client
+d1d2128aa54fa4fb8eee12f407932a574dca411edfcd575e3590743e864d8eab
+[2026-06-16 22:12:01]   └─ ✓ Creado: sopes1_R_669523
+[2026-06-16 22:12:01] ----------------------------------------
+[2026-06-16 22:12:01] Resumen: 4 creados, 1 fallidos
+[2026-06-16 22:12:01] Contenedores sopes1 activos ahora:
+sopes1_R_669523 | roldyoran/go-client | Up Less than a second
+sopes1_C_669523 | alpine | Up 1 second
+sopes1_C_669522 | alpine | Up 2 seconds
+sopes1_C_669521 | alpine | Up 2 seconds
+sopes1_C_657641 | alpine | Up 3 hours
+sopes1_C_656924 | alpine | Up 3 hours
+[2026-06-16 22:12:01] ========================================
+[2026-06-16 22:14:01] ========================================
+[2026-06-16 22:14:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:14:01] ========================================
+[2026-06-16 22:14:01]   [1/5] Tipo: BAJO → alpine sleep 240
+5c245addd0f475fb9260239a97aeaed34808c7b20d85b26763dc4ff582c60480
+[2026-06-16 22:14:01]   └─ ✓ Creado: sopes1_L_669641
+[2026-06-16 22:14:01]   [2/5] Tipo: ALTO_CPU → alpine + bucle bc
+410c86f909ce24694c238781044807a92b53510155552229d4f1c7e415639609
+[2026-06-16 22:14:01]   └─ ✓ Creado: sopes1_C_669641
+[2026-06-16 22:14:01]   [3/5] Tipo: BAJO → alpine sleep 240
+68e947943419e2bf6ee0927fd590e07b341b0acfa5cfbee3c16c7c7b9140d68b
+[2026-06-16 22:14:01]   └─ ✓ Creado: sopes1_L_669642
+[2026-06-16 22:14:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+8b44a674cdf181f03b33b7eef44cb2e2e4dcad38bfc3f43f9786eaf8f3619b0a
+[2026-06-16 22:14:01]   └─ ✓ Creado: sopes1_R_669643
+[2026-06-16 22:14:01]   [5/5] Tipo: BAJO → alpine sleep 240
+50dccb8e58128447039aa0f7c8373b9eaeae5176bc6a5249d192527b6b002742
+[2026-06-16 22:14:01]   └─ ✓ Creado: sopes1_L_669643
+[2026-06-16 22:14:01] ----------------------------------------
+[2026-06-16 22:14:01] Resumen: 5 creados, 0 fallidos
+[2026-06-16 22:14:01] Contenedores sopes1 activos ahora:
+sopes1_L_669643 | alpine | Up Less than a second
+sopes1_R_669643 | roldyoran/go-client | Up 1 second
+sopes1_L_669642 | alpine | Up 1 second
+sopes1_C_669641 | alpine | Up 2 seconds
+sopes1_L_669641 | alpine | Up 2 seconds
+sopes1_C_669522 | alpine | Up 2 minutes
+sopes1_C_669521 | alpine | Up 2 minutes
+[2026-06-16 22:14:01] ========================================
+[2026-06-16 22:16:01] ========================================
+[2026-06-16 22:16:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:16:01] ========================================
+[2026-06-16 22:16:01]   [1/5] Tipo: ALTO_CPU → alpine + bucle bc
+a6b3876b02f78429549b8ad1dd571cc987613c4c070ab8a9d76b3dd36bceadb3
+[2026-06-16 22:16:01]   └─ ✓ Creado: sopes1_C_669761
+[2026-06-16 22:16:01]   [2/5] Tipo: BAJO → alpine sleep 240
+06eed7e12dec7e292199620053f8970f55c21688b09a5c0971ab19d8436b0482
+[2026-06-16 22:16:01]   └─ ✓ Creado: sopes1_L_669761
+[2026-06-16 22:16:01]   [3/5] Tipo: BAJO → alpine sleep 240
+da5194926d8e4504f61395896be5e796a89ecbbb567091856d81d6f253820824
+[2026-06-16 22:16:01]   └─ ✓ Creado: sopes1_L_669762
+[2026-06-16 22:16:01]   [4/5] Tipo: BAJO → alpine sleep 240
+154ab803956067ef6152db249045ff7066975f9fa9973a7da45fcb5d89c5b0be
+[2026-06-16 22:16:01]   └─ ✓ Creado: sopes1_L_669763
+[2026-06-16 22:16:01]   [5/5] Tipo: ALTO_RAM → roldyoran/go-client
+5d5ee4b14a4205623211cda28e8e0f0019eb8cd66bcee10ed37f8d823a61c3ec
+[2026-06-16 22:16:01]   └─ ✓ Creado: sopes1_R_669763
+[2026-06-16 22:16:01] ----------------------------------------
+[2026-06-16 22:16:01] Resumen: 5 creados, 0 fallidos
+[2026-06-16 22:16:01] Contenedores sopes1 activos ahora:
+sopes1_R_669763 | roldyoran/go-client | Up Less than a second
+sopes1_L_669763 | alpine | Up 1 second
+sopes1_L_669762 | alpine | Up 1 second
+sopes1_L_669761 | alpine | Up 2 seconds
+sopes1_C_669761 | alpine | Up 3 seconds
+sopes1_L_669643 | alpine | Up 2 minutes
+sopes1_L_669642 | alpine | Up 2 minutes
+sopes1_L_669641 | alpine | Up 2 minutes
+sopes1_C_669522 | alpine | Up 4 minutes
+sopes1_C_669521 | alpine | Up 4 minutes
+[2026-06-16 22:16:01] ========================================
+[2026-06-16 22:18:01] ========================================
+[2026-06-16 22:18:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:18:01] ========================================
+[2026-06-16 22:18:01]   [1/5] Tipo: BAJO → alpine sleep 240
+ffba82ae73ee62e4cbc1e7c30c6472809f2e188a7e3dac5a59622af8a4d95a31
+[2026-06-16 22:18:01]   └─ ✓ Creado: sopes1_L_669881
+[2026-06-16 22:18:01]   [2/5] Tipo: BAJO → alpine sleep 240
+d996e152b47ec2ce8c4d769f80d1b8bf266b83aa4652c4f570018e3c71057d6e
+[2026-06-16 22:18:01]   └─ ✓ Creado: sopes1_L_669882
+[2026-06-16 22:18:01]   [3/5] Tipo: BAJO → alpine sleep 240
+docker: Error response from daemon: Conflict. The container name "/sopes1_L_669882" is already in use by container "d996e152b47ec2ce8c4d769f80d1b8bf266b83aa4652c4f570018e3c71057d6e". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+[2026-06-16 22:18:01]   └─ ✗ Error creando: sopes1_L_669882 (código: 125)
+[2026-06-16 22:18:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+8fddc9126615ed28eea4c9634b9c2fc951012049e461baa604d0e593eb756a58
+[2026-06-16 22:18:01]   └─ ✓ Creado: sopes1_C_669883
+[2026-06-16 22:18:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+docker: Error response from daemon: Conflict. The container name "/sopes1_C_669883" is already in use by container "8fddc9126615ed28eea4c9634b9c2fc951012049e461baa604d0e593eb756a58". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+[2026-06-16 22:18:01]   └─ ✗ Error creando: sopes1_C_669883 (código: 125)
+[2026-06-16 22:18:01] ----------------------------------------
+[2026-06-16 22:18:01] Resumen: 3 creados, 2 fallidos
+[2026-06-16 22:18:01] Contenedores sopes1 activos ahora:
+sopes1_C_669883 | alpine | Up Less than a second
+sopes1_L_669882 | alpine | Up 1 second
+sopes1_L_669881 | alpine | Up 2 seconds
+sopes1_L_669763 | alpine | Up 2 minutes
+sopes1_L_669762 | alpine | Up 2 minutes
+sopes1_L_669761 | alpine | Up 2 minutes
+sopes1_C_669522 | alpine | Up 6 minutes
+sopes1_C_669521 | alpine | Up 6 minutes
+[2026-06-16 22:18:01] ========================================
+[2026-06-16 22:20:01] ========================================
+[2026-06-16 22:20:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:20:01] ========================================
+[2026-06-16 22:20:01]   [1/5] Tipo: ALTO_CPU → alpine + bucle bc
+c481b9485ae5031f2339a48652d2a1cb2afb43d919c80ac543b2a9a96e6a4ae4
+[2026-06-16 22:20:01]   └─ ✓ Creado: sopes1_C_670001
+[2026-06-16 22:20:01]   [2/5] Tipo: ALTO_RAM → roldyoran/go-client
+d084e3e1c4882024b4004f84e1ede06b71151d950132f28cade477591fb54c65
+[2026-06-16 22:20:01]   └─ ✓ Creado: sopes1_R_670001
+[2026-06-16 22:20:01]   [3/5] Tipo: ALTO_RAM → roldyoran/go-client
+cc81158b43f93eacc7451cd70729f9cfd0025c85a2dc2b583fcf560c0e18ddc9
+[2026-06-16 22:20:01]   └─ ✓ Creado: sopes1_R_670002
+[2026-06-16 22:20:01]   [4/5] Tipo: BAJO → alpine sleep 240
+1de65ce6277fb1a44cfc720dda70d732b5b3f6b99efae6f3f20c60ab8aa28f67
+[2026-06-16 22:20:01]   └─ ✓ Creado: sopes1_L_670002
+[2026-06-16 22:20:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+aa0c77e60f9f360b8a4bd22a9bf49ecb02db9eccb2236626151efe31492a3c7c
+[2026-06-16 22:20:01]   └─ ✓ Creado: sopes1_C_670003
+[2026-06-16 22:20:01] ----------------------------------------
+[2026-06-16 22:20:01] Resumen: 5 creados, 0 fallidos
+[2026-06-16 22:20:01] Contenedores sopes1 activos ahora:
+sopes1_C_670003 | alpine | Up Less than a second
+sopes1_L_670002 | alpine | Up 1 second
+sopes1_R_670002 | roldyoran/go-client | Up 1 second
+sopes1_R_670001 | roldyoran/go-client | Up 2 seconds
+sopes1_C_670001 | alpine | Up 2 seconds
+sopes1_L_669882 | alpine | Up 2 minutes
+sopes1_C_669522 | alpine | Up 8 minutes
+sopes1_C_669521 | alpine | Up 8 minutes
+[2026-06-16 22:20:01] ========================================
+[2026-06-16 22:22:01] ========================================
+[2026-06-16 22:22:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:22:01] ========================================
+[2026-06-16 22:22:01]   [1/5] Tipo: BAJO → alpine sleep 240
+29fd38b2dc90812b45a195ced3b3c12df554bb739864af39d31e1a65b9864e78
+[2026-06-16 22:22:01]   └─ ✓ Creado: sopes1_L_670121
+[2026-06-16 22:22:01]   [2/5] Tipo: ALTO_RAM → roldyoran/go-client
+986fd14f5894850c6a54864c1c44ec78ae0b0283c9ecdcee01ea3429eec39823
+[2026-06-16 22:22:01]   └─ ✓ Creado: sopes1_R_670121
+[2026-06-16 22:22:01]   [3/5] Tipo: ALTO_CPU → alpine + bucle bc
+a0c46eae819305d2f9ed0a87c12c4f7c46672acf48222ce6f5517ed38be9bc6a
+[2026-06-16 22:22:01]   └─ ✓ Creado: sopes1_C_670122
+[2026-06-16 22:22:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+docker: Error response from daemon: Conflict. The container name "/sopes1_C_670122" is already in use by container "a0c46eae819305d2f9ed0a87c12c4f7c46672acf48222ce6f5517ed38be9bc6a". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+[2026-06-16 22:22:01]   └─ ✗ Error creando: sopes1_C_670122 (código: 125)
+[2026-06-16 22:22:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+d129e6cf099941d35a8d691fc2b917e8acc018f09e68a9470cf8f585a05bdc37
+[2026-06-16 22:22:01]   └─ ✓ Creado: sopes1_C_670123
+[2026-06-16 22:22:01] ----------------------------------------
+[2026-06-16 22:22:01] Resumen: 4 creados, 1 fallidos
+[2026-06-16 22:22:01] Contenedores sopes1 activos ahora:
+sopes1_C_670123 | alpine | Up Less than a second
+sopes1_C_670122 | alpine | Up 1 second
+sopes1_R_670121 | roldyoran/go-client | Up 1 second
+sopes1_L_670121 | alpine | Up 2 seconds
+sopes1_L_670002 | alpine | Up 2 minutes
+sopes1_C_670001 | alpine | Up 2 minutes
+sopes1_C_669521 | alpine | Up 10 minutes
+[2026-06-16 22:22:01] ========================================
+[2026-06-16 22:24:01] ========================================
+[2026-06-16 22:24:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:24:01] ========================================
+[2026-06-16 22:24:01]   [1/5] Tipo: ALTO_CPU → alpine + bucle bc
+deff8bf131290e10ef8b128aafe96ec1732b7f377f40b1483292f161a8add4c1
+[2026-06-16 22:24:01]   └─ ✓ Creado: sopes1_C_670241
+[2026-06-16 22:24:01]   [2/5] Tipo: BAJO → alpine sleep 240
+9ae0dfdfe814ed0f50f08c07aa93c8d526028ce67a282b9452a66d8f1c4408ab
+[2026-06-16 22:24:01]   └─ ✓ Creado: sopes1_L_670242
+[2026-06-16 22:24:01]   [3/5] Tipo: BAJO → alpine sleep 240
+docker: Error response from daemon: Conflict. The container name "/sopes1_L_670242" is already in use by container "9ae0dfdfe814ed0f50f08c07aa93c8d526028ce67a282b9452a66d8f1c4408ab". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+[2026-06-16 22:24:01]   └─ ✗ Error creando: sopes1_L_670242 (código: 125)
+[2026-06-16 22:24:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+1737cece1ab3168df63a147aacc531b26871ed47972a75674b7d7cc3dd38b633
+[2026-06-16 22:24:01]   └─ ✓ Creado: sopes1_R_670243
+[2026-06-16 22:24:01]   [5/5] Tipo: ALTO_RAM → roldyoran/go-client
+docker: Error response from daemon: Conflict. The container name "/sopes1_R_670243" is already in use by container "1737cece1ab3168df63a147aacc531b26871ed47972a75674b7d7cc3dd38b633". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+[2026-06-16 22:24:01]   └─ ✗ Error creando: sopes1_R_670243 (código: 125)
+[2026-06-16 22:24:01] ----------------------------------------
+[2026-06-16 22:24:01] Resumen: 3 creados, 2 fallidos
+[2026-06-16 22:24:01] Contenedores sopes1 activos ahora:
+sopes1_R_670243 | roldyoran/go-client | Up Less than a second
+sopes1_L_670242 | alpine | Up 1 second
+sopes1_C_670241 | alpine | Up 2 seconds
+sopes1_L_670121 | alpine | Up 2 minutes
+sopes1_C_670001 | alpine | Up 4 minutes
+sopes1_C_669521 | alpine | Up 12 minutes
+[2026-06-16 22:24:01] ========================================
+[2026-06-16 22:26:01] ========================================
+[2026-06-16 22:26:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:26:01] ========================================
+[2026-06-16 22:26:01]   [1/5] Tipo: ALTO_RAM → roldyoran/go-client
+f2fee4b6310175214be28978b26e81a607555547948c3eaea99e3441daa47fe7
+[2026-06-16 22:26:01]   └─ ✓ Creado: sopes1_R_670361
+[2026-06-16 22:26:01]   [2/5] Tipo: ALTO_RAM → roldyoran/go-client
+docker: Error response from daemon: Conflict. The container name "/sopes1_R_670361" is already in use by container "f2fee4b6310175214be28978b26e81a607555547948c3eaea99e3441daa47fe7". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+[2026-06-16 22:26:01]   └─ ✗ Error creando: sopes1_R_670361 (código: 125)
+[2026-06-16 22:26:01]   [3/5] Tipo: ALTO_RAM → roldyoran/go-client
+ed29c1261b095a9e7e12556f04164432df8324593711963d53c69078345920c7
+[2026-06-16 22:26:01]   └─ ✓ Creado: sopes1_R_670362
+[2026-06-16 22:26:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+docker: Error response from daemon: Conflict. The container name "/sopes1_R_670362" is already in use by container "ed29c1261b095a9e7e12556f04164432df8324593711963d53c69078345920c7". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+[2026-06-16 22:26:01]   └─ ✗ Error creando: sopes1_R_670362 (código: 125)
+[2026-06-16 22:26:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+845eefa99011807cb8c5b46550a2fee4bedbd15a74639c9638834dcf0f97c2c9
+[2026-06-16 22:26:01]   └─ ✓ Creado: sopes1_C_670363
+[2026-06-16 22:26:01] ----------------------------------------
+[2026-06-16 22:26:01] Resumen: 3 creados, 2 fallidos
+[2026-06-16 22:26:01] Contenedores sopes1 activos ahora:
+sopes1_C_670363 | alpine | Up Less than a second
+sopes1_R_670362 | roldyoran/go-client | Up 1 second
+sopes1_R_670361 | roldyoran/go-client | Up 2 seconds
+sopes1_L_670242 | alpine | Up 2 minutes
+sopes1_C_670001 | alpine | Up 6 minutes
+sopes1_C_669521 | alpine | Up 14 minutes
+[2026-06-16 22:26:01] ========================================
+[2026-06-16 22:28:01] ========================================
+[2026-06-16 22:28:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:28:01] ========================================
+[2026-06-16 22:28:01]   [1/5] Tipo: BAJO → alpine sleep 240
+137c5b2c3b42c7f901ec49e7b357423b932bbaad82f4adb3df7b454068d59602
+[2026-06-16 22:28:01]   └─ ✓ Creado: sopes1_L_670481
+[2026-06-16 22:28:01]   [2/5] Tipo: ALTO_CPU → alpine + bucle bc
+ee4b0040de91bb2630643fe5a369b2bb9e66d490b45e9e982bfa70e77d20df3a
+[2026-06-16 22:28:01]   └─ ✓ Creado: sopes1_C_670482
+[2026-06-16 22:28:01]   [3/5] Tipo: ALTO_RAM → roldyoran/go-client
+f6651d1e8c4027f668943e694adededefbbe97ce197a32396110b55fb55bfc6c
+[2026-06-16 22:28:01]   └─ ✓ Creado: sopes1_R_670482
+[2026-06-16 22:28:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+6212898667edec6f27ed9b6fa069e359a7df49350641aca2f54252a1434ba76c
+[2026-06-16 22:28:01]   └─ ✓ Creado: sopes1_R_670483
+[2026-06-16 22:28:01]   [5/5] Tipo: ALTO_RAM → roldyoran/go-client
+docker: Error response from daemon: Conflict. The container name "/sopes1_R_670483" is already in use by container "6212898667edec6f27ed9b6fa069e359a7df49350641aca2f54252a1434ba76c". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+[2026-06-16 22:28:01]   └─ ✗ Error creando: sopes1_R_670483 (código: 125)
+[2026-06-16 22:28:01] ----------------------------------------
+[2026-06-16 22:28:01] Resumen: 4 creados, 1 fallidos
+[2026-06-16 22:28:01] Contenedores sopes1 activos ahora:
+sopes1_R_670483 | roldyoran/go-client | Up Less than a second
+sopes1_R_670482 | roldyoran/go-client | Up 1 second
+sopes1_C_670482 | alpine | Up 1 second
+sopes1_L_670481 | alpine | Up 2 seconds
+sopes1_C_670001 | alpine | Up 8 minutes
+sopes1_C_669521 | alpine | Up 16 minutes
+[2026-06-16 22:28:01] ========================================
+[2026-06-16 22:30:01] ========================================
+[2026-06-16 22:30:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:30:01] ========================================
+[2026-06-16 22:30:01]   [1/5] Tipo: BAJO → alpine sleep 240
+88d14086fe447a1abc8fec616a15b22e0f38784762a9ba0b15b242f8372d2ab8
+[2026-06-16 22:30:01]   └─ ✓ Creado: sopes1_L_670601
+[2026-06-16 22:30:01]   [2/5] Tipo: ALTO_CPU → alpine + bucle bc
+1f4c8cda3b4ff6367973f7c584eb169c18e9ef3573fa4c5cccca57292d8663cf
+[2026-06-16 22:30:01]   └─ ✓ Creado: sopes1_C_670601
+[2026-06-16 22:30:01]   [3/5] Tipo: ALTO_RAM → roldyoran/go-client
+a01aef1c063bb2e11f31d9df41bed2e3bd397d05dc630c292f5e1cd9f0adc3fe
+[2026-06-16 22:30:01]   └─ ✓ Creado: sopes1_R_670602
+[2026-06-16 22:30:01]   [4/5] Tipo: ALTO_CPU → alpine + bucle bc
+8e62bc2ce6e1685f7af254db7c39009cf4e6f0dfa16d4e3a489481cc6e64c927
+[2026-06-16 22:30:01]   └─ ✓ Creado: sopes1_C_670603
+[2026-06-16 22:30:01]   [5/5] Tipo: ALTO_RAM → roldyoran/go-client
+8076947758b0fac39b70022607fd135d49286b9692d93a9440ac24212f4c4669
+[2026-06-16 22:30:01]   └─ ✓ Creado: sopes1_R_670603
+[2026-06-16 22:30:01] ----------------------------------------
+[2026-06-16 22:30:01] Resumen: 5 creados, 0 fallidos
+[2026-06-16 22:30:01] Contenedores sopes1 activos ahora:
+sopes1_R_670603 | roldyoran/go-client | Up Less than a second
+sopes1_C_670603 | alpine | Up 1 second
+sopes1_R_670602 | roldyoran/go-client | Up 1 second
+sopes1_C_670601 | alpine | Up 2 seconds
+sopes1_L_670601 | alpine | Up 2 seconds
+sopes1_L_670481 | alpine | Up 2 minutes
+sopes1_C_670001 | alpine | Up 10 minutes
+sopes1_C_669521 | alpine | Up 18 minutes
+[2026-06-16 22:30:01] ========================================
+[2026-06-16 22:32:01] ========================================
+[2026-06-16 22:32:01] Iniciando creación de 5 contenedores...
+[2026-06-16 22:32:01] ========================================
+[2026-06-16 22:32:01]   [1/5] Tipo: ALTO_RAM → roldyoran/go-client
+489ead5839ace18641b7bf6cf7f360f99b6950f9f59eeff785c1f5cb1c402962
+[2026-06-16 22:32:01]   └─ ✓ Creado: sopes1_R_670721
+[2026-06-16 22:32:01]   [2/5] Tipo: BAJO → alpine sleep 240
+407e959f842a8d04add36a7299b386b6a8764fbe549f9c7d0039e42e33ec9462
+[2026-06-16 22:32:01]   └─ ✓ Creado: sopes1_L_670721
+[2026-06-16 22:32:01]   [3/5] Tipo: ALTO_RAM → roldyoran/go-client
+96ae4392a8a893f92fb1a4e5cc88edc2520e5ea5d199075c7781228005f6cb51
+[2026-06-16 22:32:01]   └─ ✓ Creado: sopes1_R_670722
+[2026-06-16 22:32:01]   [4/5] Tipo: ALTO_RAM → roldyoran/go-client
+47fde8831d63d17fadededca0743e5fc2f9a59f5819386b2bc41aef9ce498d45
+[2026-06-16 22:32:01]   └─ ✓ Creado: sopes1_R_670723
+[2026-06-16 22:32:01]   [5/5] Tipo: ALTO_CPU → alpine + bucle bc
+f24a52973af3f78a1d36dcab19bacea36fb9af8ce3210087fcf42da4543ebc3a
+[2026-06-16 22:32:01]   └─ ✓ Creado: sopes1_C_670723
+[2026-06-16 22:32:01] ----------------------------------------
+[2026-06-16 22:32:01] Resumen: 5 creados, 0 fallidos
+[2026-06-16 22:32:01] Contenedores sopes1 activos ahora:
+sopes1_C_670723 | alpine | Up Less than a second
+sopes1_R_670723 | roldyoran/go-client | Up 1 second
+sopes1_R_670722 | roldyoran/go-client | Up 1 second
+sopes1_L_670721 | alpine | Up 2 seconds
+sopes1_R_670721 | roldyoran/go-client | Up 2 seconds
+sopes1_L_670601 | alpine | Up 2 minutes
+sopes1_C_670001 | alpine | Up 12 minutes
+sopes1_C_669521 | alpine | Up 20 minutes
+[2026-06-16 22:32:01] ========================================

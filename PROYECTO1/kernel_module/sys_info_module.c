@@ -229,8 +229,6 @@ static int sysinfo_show(struct seq_file *m, void *v)
            Multiplicamos ×10000 para tener 2 decimales,
            luego dividimos por el número de CPUs online.
 
-           NOTA: el valor puede ser grande en sistemas que llevan
-           mucho tiempo corriendo. Esto es normal según el enunciado.
         ──────────────────────────────────────────────────────── */
         total_time = task->utime + task->stime;
         if (total_jiffies > 0) {

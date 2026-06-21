@@ -38,8 +38,7 @@ type Config struct {
 // cfg es la instancia global de configuración.
 // Todos los archivos del daemon usan cfg.X para leer valores.
 var cfg = Config{
-	// *** AJUSTA ESTAS RUTAS A TU MÁQUINA ***
-	// Usa rutas absolutas para que funcionen cuando cron ejecuta el script.
+	// Rutas absolutas para que funcionen cuando cron ejecuta el script.
 
 	ProcFile: "/proc/continfo_pr1_so1_202308204",
 
