@@ -10,3 +10,7 @@ resources:
   - rust-api/deployment.yaml
   - rust-api/service.yaml
   - gateway/gateway.yaml
+  - valkey/pvc.yaml
+  - valkey/vm.yaml
+  - valkey/service.yaml
+  - consumer/deployment.yaml

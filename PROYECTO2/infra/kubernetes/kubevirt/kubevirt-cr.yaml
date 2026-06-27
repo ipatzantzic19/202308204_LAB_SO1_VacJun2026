@@ -1,0 +1,15 @@
+apiVersion: kubevirt.io/v1
+kind: KubeVirt
+metadata:
+  name: kubevirt
+  namespace: kubevirt
+spec:
+  workloads:
+    nodePlacement:
+      nodeSelector:
+        nested-virtualization: enabled
+      tolerations:
+      - key: kubevirt.io/dedicated
+        operator: Equal
+        value: virtualization
+        effect: NoSchedule

@@ -1,6 +1,6 @@
 SHELL := /usr/bin/env bash
 
-.PHONY: proto test build push images deploy validate zot-provision
+.PHONY: proto test build push images deploy validate zot-provision kubevirt
 
 proto:
 	./scripts/generate-proto.sh
@@ -22,6 +22,9 @@ deploy:
 
 validate:
 	./scripts/validate.sh
+
+kubevirt:
+	./scripts/install-kubevirt.sh
 
 zot-provision:
 	./infra/zot/provision-gcp.sh

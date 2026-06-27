@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-consumer
+  namespace: sopes1-p2
+  labels:
+    app: go-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-consumer
+  template:
+    metadata:
+      labels:
+        app: go-consumer
+    spec:
+      containers:
+      - name: consumer
+        image: zot.35-226-224-23.sslip.io/sopes1/go-consumer:v1
+        ports:
+        - name: health
+          containerPort: 8080
+        env:
+        - name: RABBITMQ_HOST
+          value: rabbitmq-cluster.rabbitmq-system.svc.cluster.local:5672
+        - name: RABBITMQ_QUEUE
+          value: predictions
+        - name: RABBITMQ_USER
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-credentials
+              key: username
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-credentials
+              key: password
+        - name: VALKEY_ADDR
+          value: valkey-service.sopes1-p2.svc.cluster.local:6379
+        - name: TIMESERIES_MAX_POINTS
+          value: "10000"
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: health
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: health
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 128Mi

@@ -1,0 +1,94 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: valkey-vm
+  namespace: sopes1-p2
+  labels:
+    app: valkey-vm
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      labels:
+        app: valkey-vm
+        kubevirt.io/domain: valkey-vm
+    spec:
+      nodeSelector:
+        nested-virtualization: enabled
+      tolerations:
+      - key: kubevirt.io/dedicated
+        operator: Equal
+        value: virtualization
+        effect: NoSchedule
+      terminationGracePeriodSeconds: 60
+      domain:
+        cpu:
+          cores: 1
+        resources:
+          requests:
+            memory: 2Gi
+        devices:
+          autoattachGraphicsDevice: false
+          disks:
+          - name: rootdisk
+            disk:
+              bus: virtio
+          - name: cloudinit
+            disk:
+              bus: virtio
+          filesystems:
+          - name: valkeydata
+            virtiofs: {}
+          interfaces:
+          - name: default
+            masquerade: {}
+            ports:
+            - name: valkey
+              port: 6379
+      networks:
+      - name: default
+        pod: {}
+      volumes:
+      - name: rootdisk
+        containerDisk:
+          image: zot.35-226-224-23.sslip.io/library/ubuntu-container-disk:24.04
+          imagePullPolicy: IfNotPresent
+      - name: valkeydata
+        persistentVolumeClaim:
+          claimName: valkey-data
+      - name: cloudinit
+        cloudInitNoCloud:
+          userData: |-
+            #cloud-config
+            package_update: true
+            packages:
+              - containerd
+            write_files:
+              - path: /etc/systemd/system/valkey-container.service
+                permissions: '0644'
+                content: |
+                  [Unit]
+                  Description=Valkey administrado por containerd
+                  After=containerd.service network-online.target var-lib-valkey.mount
+                  Wants=network-online.target
+                  Requires=containerd.service
+
+                  [Service]
+                  Type=simple
+                  Restart=always
+                  RestartSec=5
+                  ExecStartPre=/usr/bin/ctr images pull zot.35-226-224-23.sslip.io/library/valkey:8-alpine
+                  ExecStartPre=-/usr/bin/ctr tasks kill --signal SIGKILL valkey
+                  ExecStartPre=-/usr/bin/ctr containers delete valkey
+                  ExecStart=/usr/bin/ctr run --rm --net-host --mount type=bind,src=/var/lib/valkey,dst=/data,options=rbind:rw zot.35-226-224-23.sslip.io/library/valkey:8-alpine valkey valkey-server --appendonly yes --appendfsync everysec --dir /data --bind 0.0.0.0 --protected-mode no
+                  ExecStop=-/usr/bin/ctr tasks kill --signal SIGTERM valkey
+
+                  [Install]
+                  WantedBy=multi-user.target
+            mounts:
+              - [valkeydata, /var/lib/valkey, virtiofs, "defaults,nofail", "0", "0"]
+            runcmd:
+              - [mkdir, -p, /var/lib/valkey]
+              - [chmod, "0777", /var/lib/valkey]
+              - [systemctl, daemon-reload]
+              - [systemctl, enable, --now, valkey-container.service]

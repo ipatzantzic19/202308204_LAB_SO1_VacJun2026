@@ -17,9 +17,14 @@ build_images() {
   docker build -t "$GO_D2_GRPC_IMAGE" \
     -f "$PROJECT_ROOT/go-d2/grpc-server/Dockerfile" "$PROJECT_ROOT"
   docker build -t "$GO_D2_WRITER_IMAGE" "$PROJECT_ROOT/go-d2/rabbit-writer"
+  docker build -t "$GO_CONSUMER_IMAGE" -f "$PROJECT_ROOT/go-consumer/Dockerfile" "$PROJECT_ROOT"
   docker build -t "$LOCUST_IMAGE" "$PROJECT_ROOT/locust"
   docker pull "$RABBITMQ_SOURCE_IMAGE"
   docker tag "$RABBITMQ_SOURCE_IMAGE" "$RABBITMQ_IMAGE"
+  docker pull "$VALKEY_SOURCE_IMAGE"
+  docker tag "$VALKEY_SOURCE_IMAGE" "$VALKEY_IMAGE"
+  docker pull "$UBUNTU_DISK_SOURCE_IMAGE"
+  docker tag "$UBUNTU_DISK_SOURCE_IMAGE" "$UBUNTU_DISK_IMAGE"
 }
 
 push_images() {
@@ -29,8 +34,11 @@ push_images() {
     "$GO_D1_GRPC_IMAGE" \
     "$GO_D2_GRPC_IMAGE" \
     "$GO_D2_WRITER_IMAGE" \
+    "$GO_CONSUMER_IMAGE" \
     "$LOCUST_IMAGE" \
-    "$RABBITMQ_IMAGE"; do
+    "$RABBITMQ_IMAGE" \
+    "$VALKEY_IMAGE" \
+    "$UBUNTU_DISK_IMAGE"; do
     docker push "$image"
   done
 }

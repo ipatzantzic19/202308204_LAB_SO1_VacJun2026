@@ -8,7 +8,8 @@ for module in \
   go-d1/rest-server \
   go-d1/grpc-client \
   go-d2/grpc-server \
-  go-d2/rabbit-writer; do
+  go-d2/rabbit-writer \
+  go-consumer; do
   echo "==> go test $module"
   (cd "$PROJECT_ROOT/$module" && go test ./...)
 done
