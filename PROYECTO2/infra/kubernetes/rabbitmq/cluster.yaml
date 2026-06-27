@@ -18,3 +18,21 @@ spec:
     storage: 10Gi
   service:
     type: ClusterIP
+  override:
+    statefulSet:
+      spec:
+        template:
+          spec:
+            containers:
+            - name: rabbitmq
+              startupProbe:
+                exec:
+                  command:
+                  - /bin/bash
+                  - -c
+                  - rabbitmqctl eval 'rabbit_nodes:reached_target_cluster_size().' | grep -q '^true$'
+                failureThreshold: 30
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 20

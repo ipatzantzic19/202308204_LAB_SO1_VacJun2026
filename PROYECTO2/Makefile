@@ -1,6 +1,6 @@
 SHELL := /usr/bin/env bash
 
-.PHONY: proto test build push images deploy validate
+.PHONY: proto test build push images deploy validate zot-provision
 
 proto:
 	./scripts/generate-proto.sh
@@ -22,3 +22,6 @@ deploy:
 
 validate:
 	./scripts/validate.sh
+
+zot-provision:
+	./infra/zot/provision-gcp.sh

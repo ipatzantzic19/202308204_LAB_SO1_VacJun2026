@@ -89,12 +89,9 @@ gcloud compute addresses create zot-registry-ip \
   --addresses=35.226.224.23 \
   --region=us-central1
 
-gcloud compute scp PROYECTO2/infra/zot/Caddyfile \
-  PROYECTO2/infra/zot/configure.sh \
-  zot-registry:/tmp/ --zone=us-central1-a
-
-gcloud compute ssh zot-registry --zone=us-central1-a \
-  --command='chmod +x /tmp/configure.sh && /tmp/configure.sh'
+cd PROYECTO2
+make zot-provision
+cd ..
 
 gcloud compute firewall-rules update allow-zot --allow=tcp:80,tcp:443
 curl --fail https://zot.35-226-224-23.sslip.io/v2/

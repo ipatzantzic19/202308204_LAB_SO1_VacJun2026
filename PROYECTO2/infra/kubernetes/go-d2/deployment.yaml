@@ -37,7 +37,7 @@ spec:
             cpu: 200m
             memory: 128Mi
       - name: rabbit-writer
-        image: zot.35-226-224-23.sslip.io/sopes1/go-d2-rabbit-writer:v1
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d2-rabbit-writer:v4
         ports:
         - name: writer-http
           containerPort: 9100
@@ -64,9 +64,9 @@ spec:
           periodSeconds: 5
         livenessProbe:
           httpGet:
-            path: /health
+            path: /live
             port: writer-http
-          initialDelaySeconds: 180
+          initialDelaySeconds: 5
           periodSeconds: 10
         resources:
           requests:

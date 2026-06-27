@@ -48,7 +48,12 @@ probes; las credenciales no se almacenan en Git.
 - DNS: `zot.35-226-224-23.sslip.io` resuelve a la IP estática.
 - Caddy escucha en 80/443, obtiene y renueva el certificado público y reenvía a Zot.
 - La regla `allow-zot` expone únicamente TCP 80 y 443.
-- TCP 5000 no está publicado a `0.0.0.0/0` por el firewall de GCP.
+- Zot no publica TCP 5000 en la interfaz de la VM; su HTTP solo existe en la red
+  Docker privada compartida con Caddy.
+- El catálogo vive en `/var/lib/zot` sobre el disco persistente estándar de la VM,
+  ampliado de 10 a 20 GB y con `auto-delete` desactivado. Sumado al PVC estándar de
+  10 GB, el proyecto utiliza exactamente los 30 GB-mes incluidos en Always Free.
+- Zot usa la versión fija `v2.1.18`; Caddy usa `2.10.2`.
 - Los nodos GKE confían en el certificado público; no requieren configuración manual de
   containerd.
 
@@ -65,20 +70,16 @@ gcloud compute addresses create zot-registry-ip \
   --region=us-central1
 ```
 
-### Instalar el proxy TLS en la VM
+### Provisionar almacenamiento, Zot y el proxy TLS
 
-Zot debe existir como contenedor llamado `zot` y escuchar en el puerto 5000 de la red
-Docker. El script no elimina ni recrea Zot, por lo que conserva su catálogo actual.
+La receta es idempotente: valida que el proyecto no exceda 30 GB de `pd-standard`,
+amplía el disco existente y su filesystem, copia el catálogo de un contenedor legado
+detenido y recrea Zot con almacenamiento persistente. El contenedor anterior se
+conserva detenido como `zot-legacy` hasta que se valide el catálogo.
 
 ```bash
-gcloud compute scp \
-  PROYECTO2/infra/zot/Caddyfile \
-  PROYECTO2/infra/zot/configure.sh \
-  zot-registry:/tmp/ \
-  --zone=us-central1-a
-
-gcloud compute ssh zot-registry --zone=us-central1-a \
-  --command='chmod +x /tmp/configure.sh && /tmp/configure.sh'
+cd PROYECTO2
+make zot-provision
 
 gcloud compute firewall-rules update allow-zot \
   --allow=tcp:80,tcp:443
@@ -91,7 +92,20 @@ curl --fail https://zot.35-226-224-23.sslip.io/v2/
 curl --fail https://zot.35-226-224-23.sslip.io/v2/_catalog
 openssl s_client -connect zot.35-226-224-23.sslip.io:443 \
   -servername zot.35-226-224-23.sslip.io </dev/null
+
+gcloud compute ssh zot-registry --zone=us-central1-a --command='\
+  findmnt /var/lib/zot; \
+  sudo docker inspect zot --format="mounts={{json .Mounts}} ports={{json .HostConfig.PortBindings}}"'
 ```
+
+Tras comprobar que todos los repositorios y tags están presentes, el respaldo legado
+puede eliminarse en la VM con
+`sudo CONFIRM_DELETE_LEGACY=yes zot-cleanup-legacy`.
+
+La ampliación no añade costo de disco bajo el estado auditado de la cuenta: el único
+proyecto vinculado pasa de 20 a 30 GB totales de `pd-standard`. Esto no implica que la
+arquitectura completa sea gratuita; los tres nodos `n1-standard-4` deben mantenerse en
+cero fuera de las prácticas y demostraciones.
 
 No se configura `insecure-registries`, no se usa `skip_verify` y no se modifica
 containerd en cada nodo.

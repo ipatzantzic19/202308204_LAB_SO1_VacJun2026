@@ -37,7 +37,7 @@ PROYECTO2/
 
 ```bash
 kubectl create namespace rabbitmq-system
-kubectl apply -f https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml
+kubectl apply -f https://github.com/rabbitmq/cluster-operator/releases/download/v2.21.1/cluster-operator.yml
 kubectl rollout status deployment/rabbitmq-cluster-operator -n rabbitmq-system
 kubectl apply -f PROYECTO2/infra/kubernetes/rabbitmq/cluster.yaml
 kubectl get rabbitmqcluster,pods,svc -n rabbitmq-system
@@ -63,7 +63,10 @@ Secret al namespace `sopes1-p2`; nunca se guardan en Git.
 - Lee `RABBITMQ_URL` y `RABBITMQ_QUEUE`.
 - Declara la cola durable `predictions`.
 - Publica mensajes persistentes en el default exchange.
-- Expone `/health` para probes.
+- Si una conexión establecida se pierde, reconecta y reintenta la publicación una vez
+  sin depender de que Kubernetes reinicie el contenedor.
+- Expone `/health` para readiness de RabbitMQ y `/live` para verificar el proceso sin
+  provocar reinicios durante una desconexión recuperable.
 
 ## Paso 3 — Go D1 gRPC real
 
@@ -81,7 +84,7 @@ Debe usar timeout y propagar error HTTP si gRPC falla.
 ```text
 zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v3
 zot.35-226-224-23.sslip.io/sopes1/go-d2-grpc-server:v2
-zot.35-226-224-23.sslip.io/sopes1/go-d2-rabbit-writer:v1
+zot.35-226-224-23.sslip.io/sopes1/go-d2-rabbit-writer:v4
 zot.35-226-224-23.sslip.io/library/rabbitmq:3.13-management
 ```
 
@@ -97,6 +100,8 @@ Todas se publican o espejan en Zot y se verifican mediante HTTPS en
 - Go D1 usa el cliente gRPC `v3` y Go D2 el servidor gRPC `v2`, ambos enlazados al
   módulo compartido `PROYECTO2/proto`.
 - RabbitMQ usa la imagen `library/rabbitmq:3.13-management` alojada en Zot.
+- El writer `v4` verifica y recupera la conexión RabbitMQ cada cinco segundos sin
+  depender del tráfico ni del reinicio del Pod.
 
 ## Paso 6 — Gateway API
 
@@ -130,6 +135,9 @@ curl -X POST http://GATEWAY_IP/grpc-202308204 \
 ```
 
 La cola se verifica con la API de management o `rabbitmqctl list_queues name messages`.
+
+Las pruebas unitarias de ambos componentes de Go D2 se ejecutan con `make test` y
+cubren la conversión gRPC, los fallos del writer, validación HTTP y health.
 
 ## Criterio de finalización
 
