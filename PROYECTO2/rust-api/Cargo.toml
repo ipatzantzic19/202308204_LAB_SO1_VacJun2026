@@ -1,0 +1,18 @@
+[package]
+name = "rust-api"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+# Framework web async para Rust (equivalente a Go's net/http)
+axum    = "0.7"
+# Runtime async (necesario para axum)
+tokio   = { version = "1", features = ["full"] }
+# Serialización/deserialización JSON
+serde       = { version = "1", features = ["derive"] }
+serde_json  = "1"
+# Cliente HTTP para reenviar al Go D1
+reqwest = { version = "0.12", features = ["json"] }
+# Logs
+tracing            = "0.1"
+tracing-subscriber = "0.3"

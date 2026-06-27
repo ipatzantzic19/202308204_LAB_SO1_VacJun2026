@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-d1-service
+  namespace: sopes1-p2
+spec:
+  type: ClusterIP   # Solo accesible dentro del clúster (Clase 9: ClusterIP)
+  selector:
+    app: go-d1
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rust-api-service
+  namespace: sopes1-p2
+spec:
+  type: LoadBalancer   # ← Expone al exterior (Clase 9: LoadBalancer)
+  selector:
+    app: rust-api
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP

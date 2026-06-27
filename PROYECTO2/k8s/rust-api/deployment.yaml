@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rust-api
+  namespace: sopes1-p2
+  labels:
+    app: rust-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rust-api
+  template:
+    metadata:
+      labels:
+        app: rust-api
+    spec:
+      # Solo agregar imagePullSecrets si Zot requiere auth
+      # imagePullSecrets:
+      # - name: zot-credentials
+      containers:
+      - name: rust-api
+        image: <IP-ZOT>:5000/sopes1/rust-api:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: GO_D1_URL
+          # Nombre DNS interno del Service de Go D1 (Clase 9: DNS de Services)
+          value: "http://go-d1-service.sopes1-p2.svc.cluster.local:8080"
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"

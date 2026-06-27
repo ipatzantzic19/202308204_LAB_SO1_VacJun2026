@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-d1
+  namespace: sopes1-p2
+  labels:
+    app: go-d1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-d1
+  template:
+    metadata:
+      labels:
+        app: go-d1
+    spec:
+      containers:
+      # Container A: REST Server — escucha en :8080
+      - name: rest-server
+        image: <IP-ZOT>:5000/sopes1/go-d1-rest:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: GRPC_CLIENT_URL
+          # Container B está en el MISMO pod → localhost
+          value: "http://localhost:9000/send"
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "64Mi"
+          limits:
+            cpu: "200m"
+            memory: "128Mi"
+
+      # Container B: gRPC Client — escucha en :9000
+      - name: grpc-client
+        image: <IP-ZOT>:5000/sopes1/go-d1-grpc-client:v1
+        ports:
+        - containerPort: 9000
+        env:
+        # En Fase 2 se activará con la dirección de Go D2
+        - name: GO_D2_GRPC_ADDR
+          value: "go-d2-service.sopes1-p2.svc.cluster.local:50051"
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "64Mi"
+          limits:
+            cpu: "200m"
+            memory: "128Mi"
