@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 // Estructura del mensaje (debe coincidir con Rust)
@@ -27,7 +28,12 @@ type Response struct {
 	Status string `json:"status"`
 }
 
-func predictionHandler(w http.ResponseWriter, r *http.Request) {
+type server struct {
+	grpcClientURL string
+	httpClient    *http.Client
+}
+
+func (s *server) predictionHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -52,19 +58,17 @@ func predictionHandler(w http.ResponseWriter, r *http.Request) {
 		pred.HomeTeam, pred.AwayTeam, pred.HomeGoals, pred.AwayGoals, pred.Username)
 
 	// Reenviar al gRPC Client (Container B, mismo Pod → localhost)
-	grpcClientURL := os.Getenv("GRPC_CLIENT_URL")
-	if grpcClientURL == "" {
-		grpcClientURL = "http://localhost:9000/send"
-	}
-
-	resp, err := http.Post(grpcClientURL, "application/json", bytes.NewBuffer(body))
+	resp, err := s.httpClient.Post(s.grpcClientURL, "application/json", bytes.NewBuffer(body))
 	if err != nil {
 		log.Printf("[REST-SERVER] Error llamando al gRPC client: %v", err)
-		// En Fase 1, esto es normal (Go D2 no existe aún)
-		// No fallar: devolver OK de todas formas
-	} else {
-		defer resp.Body.Close()
-		log.Printf("[REST-SERVER] gRPC client respondió: %d", resp.StatusCode)
+		http.Error(w, "gRPC client no disponible", http.StatusBadGateway)
+		return
+	}
+	defer resp.Body.Close()
+	log.Printf("[REST-SERVER] gRPC client respondió: %d", resp.StatusCode)
+	if resp.StatusCode < http.StatusOK || resp.StatusCode >= http.StatusMultipleChoices {
+		http.Error(w, "falló la publicación", http.StatusBadGateway)
+		return
 	}
 
 	// Responder al Rust API
@@ -74,7 +78,15 @@ func predictionHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", predictionHandler)
+	grpcClientURL := os.Getenv("GRPC_CLIENT_URL")
+	if grpcClientURL == "" {
+		grpcClientURL = "http://localhost:9000/send"
+	}
+	s := &server{
+		grpcClientURL: grpcClientURL,
+		httpClient:    &http.Client{Timeout: 6 * time.Second},
+	}
+	http.HandleFunc("/", s.predictionHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {

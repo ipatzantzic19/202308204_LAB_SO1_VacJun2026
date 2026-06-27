@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-d2
+  namespace: sopes1-p2
+  labels:
+    app: go-d2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-d2
+  template:
+    metadata:
+      labels:
+        app: go-d2
+    spec:
+      containers:
+      - name: grpc-server
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d2-grpc-server:v1
+        ports:
+        - name: grpc
+          containerPort: 50051
+        env:
+        - name: RABBIT_WRITER_URL
+          value: "http://localhost:9100/publish"
+        readinessProbe:
+          tcpSocket:
+            port: grpc
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+      - name: rabbit-writer
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d2-rabbit-writer:v1
+        ports:
+        - name: writer-http
+          containerPort: 9100
+        env:
+        - name: RABBITMQ_HOST
+          value: "rabbitmq-cluster.rabbitmq-system.svc.cluster.local:5672"
+        - name: RABBITMQ_QUEUE
+          value: "predictions"
+        - name: RABBITMQ_USER
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-credentials
+              key: username
+        - name: RABBITMQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-credentials
+              key: password
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: writer-http
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: writer-http
+          initialDelaySeconds: 180
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi

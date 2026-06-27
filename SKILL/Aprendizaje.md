@@ -514,21 +514,21 @@ tar -xzf nerdctl-*.tar.gz
 sudo mv nerdctl /usr/local/bin/
 
 # Pull de imagen desde Zot
-sudo nerdctl pull <IP-ZOT>:5000/sopes1/valkey:latest
+sudo nerdctl pull zot.35-226-224-23.sslip.io/sopes1/valkey:latest
 
 # Correr contenedor de Valkey
 sudo nerdctl run -d \
   --name valkey \
   -p 6379:6379 \
-  <IP-ZOT>:5000/sopes1/valkey:latest
+  zot.35-226-224-23.sslip.io/sopes1/valkey:latest
 
 # Verificar
 sudo nerdctl ps
 sudo nerdctl logs valkey
 
 # Equivalente con ctr (más bajo nivel)
-sudo ctr images pull <IP-ZOT>:5000/sopes1/valkey:latest
-sudo ctr run -d <IP-ZOT>:5000/sopes1/valkey:latest valkey-container
+sudo ctr images pull zot.35-226-224-23.sslip.io/sopes1/valkey:latest
+sudo ctr run -d zot.35-226-224-23.sslip.io/sopes1/valkey:latest valkey-container
 ```
 
 ### La cadena de abstracción
@@ -570,11 +570,11 @@ Un **OCI Artifact** es cualquier archivo distribuido usando el protocolo de regi
 
 ```bash
 # Push del proto como artefacto
-oras push <IP-ZOT>:5000/sopes1/proto:v1 \
+oras push zot.35-226-224-23.sslip.io/sopes1/proto:v1 \
   proto/prediction.proto:application/vnd.worldcup.proto.v1
 
 # Pull del proto (en otro servicio que lo necesite)
-oras pull <IP-ZOT>:5000/sopes1/proto:v1
+oras pull zot.35-226-224-23.sslip.io/sopes1/proto:v1
 # → descarga prediction.proto en el directorio actual
 ```
 

@@ -3,11 +3,11 @@ WORKDIR /app
 COPY go.mod ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o rest-server .
+RUN CGO_ENABLED=0 GOOS=linux go build -o grpc-client .
 
-FROM alpine:latest
+FROM alpine:3.19
 RUN apk --no-cache add ca-certificates
-WORKDIR /root/
-COPY --from=builder /app/rest-server .
-EXPOSE 8080
-CMD ["./rest-server"]
+WORKDIR /app
+COPY --from=builder /app/grpc-client .
+EXPOSE 9000
+CMD ["./grpc-client"]

@@ -1,0 +1,20 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq-cluster
+  namespace: rabbitmq-system
+spec:
+  replicas: 1
+  image: zot.35-226-224-23.sslip.io/library/rabbitmq:3.13-management
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 250m
+      memory: 512Mi
+  persistence:
+    storageClassName: standard
+    storage: 10Gi
+  service:
+    type: ClusterIP

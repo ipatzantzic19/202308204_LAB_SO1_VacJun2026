@@ -4,12 +4,13 @@
 use axum::{
     extract::State,
     http::StatusCode,
-    routing::post,
+    routing::{get, post},
     Json, Router,
 };
 use serde::{Deserialize, Serialize};
 use std::{env, sync::Arc};
 use tracing::info;
+use std::time::Duration;
 
 // Estructura del mensaje JSON (Clase 6: tipos de datos)
 // #[derive(Deserialize)] → axum deserializa el JSON automáticamente
@@ -54,9 +55,14 @@ async fn receive_prediction(
         .await;
 
     match resultado {
-        Ok(resp) => {
+        Ok(resp) if resp.status().is_success() => {
             info!("Go D1 respondió con status: {}", resp.status());
             (StatusCode::OK, Json(ApiResponse { status: "ok".to_string() }))
+        }
+        Ok(resp) => {
+            tracing::error!("Go D1 respondió con error: {}", resp.status());
+            (StatusCode::BAD_GATEWAY,
+             Json(ApiResponse { status: "error".to_string() }))
         }
         Err(e) => {
             // Clase 6: Err es un valor, no una excepción
@@ -65,6 +71,10 @@ async fn receive_prediction(
              Json(ApiResponse { status: "error".to_string() }))
         }
     }
+}
+
+async fn health() -> &'static str {
+    "ok"
 }
 
 #[tokio::main]
@@ -80,12 +90,16 @@ async fn main() {
 
     let state = Arc::new(AppState {
         go_d1_url,
-        http_client: reqwest::Client::new(),
+        http_client: reqwest::Client::builder()
+            .timeout(Duration::from_secs(7))
+            .build()
+            .expect("no se pudo crear el cliente HTTP"),
     });
 
     // Definir rutas (Clase 8: REST endpoint)
     let app = Router::new()
         .route("/", post(receive_prediction))
+        .route("/health", get(health))
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8080")
@@ -94,4 +108,48 @@ async fn main() {
 
     info!("Escuchando en 0.0.0.0:8080");
     axum::serve(listener, app).await.unwrap();
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    async fn state_for(url: String) -> Arc<AppState> {
+        Arc::new(AppState {
+            go_d1_url: url,
+            http_client: reqwest::Client::builder()
+                .timeout(Duration::from_secs(1))
+                .build()
+                .unwrap(),
+        })
+    }
+
+    fn prediction() -> Prediction {
+        Prediction {
+            home_team: "BRA".into(), away_team: "MEX".into(),
+            home_goals: 2, away_goals: 1,
+            username: "user_42".into(), timestamp: "2026-06-27T00:00:00Z".into(),
+        }
+    }
+
+    #[tokio::test]
+    async fn downstream_error_is_not_reported_as_success() {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move {
+            let app = Router::new().route("/", post(|| async { StatusCode::BAD_GATEWAY }));
+            axum::serve(listener, app).await.unwrap();
+        });
+
+        let (status, _) = receive_prediction(
+            State(state_for(format!("http://{address}/")).await),
+            Json(prediction()),
+        ).await;
+        assert_eq!(status, StatusCode::BAD_GATEWAY);
+    }
+
+    #[tokio::test]
+    async fn health_is_ok() {
+        assert_eq!(health().await, "ok");
+    }
 }

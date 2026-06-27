@@ -6,3 +6,4 @@ kernel_module/*.order
 kernel_module/*.symvers
 kernel_module/.*.cmd
 kernel_module/..*.cmd
+PROYECTO2/rust-api/target/

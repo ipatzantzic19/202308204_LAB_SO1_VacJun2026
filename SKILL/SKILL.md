@@ -419,3 +419,42 @@ Listado de materiales que los estudiantes deberán usar o investigar:
 ●  Dapr sidecar: https://docs.dapr.io/concepts/dapr-services/sidecar/
 ●  Kubervirt: https://kubevirt.io/
 
+## Anexo operativo del repositorio
+
+Este archivo conserva el enunciado como fuente principal. La ejecución se divide en las
+guías de `SKILL/FASES/` y debe seguir este orden:
+
+1. `Fase1.md`: GKE, Zot, Rust, Go D1 y Locust.
+2. `Fase2.md`: RabbitMQ, Go D2, gRPC real y Gateway API.
+3. `Fase3.md`: Consumer, KubeVirt y Valkey sobre containerd.
+4. `Fase4.md`: Grafana, HPA, pruebas de carga y Dapr opcional.
+5. `Fase5.md`: documentación, reproducibilidad y entrega.
+
+### Referencia de clases
+
+Se usan los patrones del repositorio público
+`CamiloSincal/EJEMPLOS_SOPES1_VACJUN2026`:
+
+| Tema | Patrón de referencia |
+|---|---|
+| Rust y contenedores | Clases 6, 7 y 10 |
+| REST y gRPC en Go | Clase 8 |
+| Deployments, Services, Secrets y HPA | Clase 9 |
+| RabbitMQ Cluster Operator | Clase 11 |
+| Arquitectura distribuida y Gateway API | Clase 12 |
+| KubeVirt, VM y containerd | Clase 13 |
+
+Los ejemplos enseñan la forma de implementación; cuando exista una diferencia, prevalece
+el enunciado. En particular, Go D1 y Go D2 son Pods de dos contenedores, RabbitMQ es el
+broker obligatorio, la ruta principal es `/grpc-202308204`, y Valkey/Grafana deben correr
+en contenedores administrados por containerd dentro de VMs independientes de KubeVirt.
+
+### Política de trabajo por fases
+
+- No se marca una fase como completa solo porque compile localmente.
+- Cada imagen debe publicarse en Zot y desplegarse en GKE.
+- Cada fase termina con evidencia de Pods, Services, logs y una prueba funcional en GCP.
+- Los manifiestos usan el namespace `sopes1-p2`, requests/limits y DNS interno de Services.
+- No se avanza si la fase anterior deja Pods en `Pending`, `CrashLoopBackOff` o
+  `ImagePullBackOff`.
+- `SKILL/Planificacion.md` registra el estado real y no un estado esperado.

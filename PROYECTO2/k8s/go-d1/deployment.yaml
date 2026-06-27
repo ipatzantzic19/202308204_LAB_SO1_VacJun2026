@@ -18,7 +18,7 @@ spec:
       containers:
       # Container A: REST Server — escucha en :8080
       - name: rest-server
-        image: 10.128.0.13:5000/sopes1/go-d1-rest:v1
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v2
         ports:
         - containerPort: 8080
         env:
@@ -35,13 +35,19 @@ spec:
 
       # Container B: gRPC Client — escucha en :9000
       - name: grpc-client
-        image: 10.128.0.13:5000/sopes1/go-d1-grpc-client:v1
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v2
         ports:
         - containerPort: 9000
         env:
         # En Fase 2 se activará con la dirección de Go D2
         - name: GO_D2_GRPC_ADDR
           value: "go-d2-service.sopes1-p2.svc.cluster.local:50051"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 9000
+          initialDelaySeconds: 3
+          periodSeconds: 5
         resources:
           requests:
             cpu: "50m"

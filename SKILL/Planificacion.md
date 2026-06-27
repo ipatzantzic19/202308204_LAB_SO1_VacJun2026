@@ -7,15 +7,16 @@
 
 | Fase | Nombre | Estado | Clase asociada |
 |---|---|---|---|
-| **Fase 1** | Infraestructura Base | ⬜ Pendiente | Clase 6-7 |
-| **Fase 2** | Comunicación Interna y Mensajería | 🔒 Bloqueada | Clase 8-9 |
-| **Fase 3** | Consumo y Persistencia en VM | 🔒 Bloqueada | Clase 10-11 |
-| **Fase 4** | Visualización y Pruebas de Carga | 🔒 Bloqueada | Clase 12+ |
-| **Fase 5** | Documentación y Entrega | 🔒 Bloqueada | Final |
+| **Fase 1** | Infraestructura Base | ✅ Corregida y verificada | Clases 6-9 y 12 |
+| **Fase 2** | Comunicación Interna y Mensajería | ✅ Corregida y verificada | Clases 8, 11 y 12 |
+| **Fase 3** | Consumo y Persistencia en VM | ⬜ Planificada | Clases 11 y 13 |
+| **Fase 4** | Visualización y Pruebas de Carga | ⬜ Planificada | Clases 9, 11-13 |
+| **Fase 5** | Documentación y Entrega | ⬜ Planificada | Validación final |
 
-> **Leyenda:** ✅ Completado · 🔄 En progreso · ⬜ Pendiente · 🔒 Bloqueado (falta clase)
+> **Leyenda:** ✅ Completado · 🔄 En progreso · ⬜ Pendiente · 🔒 Bloqueado
 >
-> **Actualiza este archivo** conforme avances y conforme se publiquen nuevas clases del curso.
+> Fuente operativa: `SKILL/FASES/Fase1.md` a `Fase5.md`. Los patrones se toman de
+> `CamiloSincal/EJEMPLOS_SOPES1_VACJUN2026`, sin contradecir el enunciado.
 
 ---
 
@@ -74,115 +75,37 @@ Internet
 
 ## Fase 1 — Infraestructura Base
 
-> **Clase asociada:** Clase 6-7 del curso
-> **Objetivo:** Tener el flujo básico funcionando: Locust → Gateway → Rust → Go D1
+> **Estado:** completada y revalidada el 27 de junio de 2026.
 
-### 1.1 GCP y GKE
-
-- [ ] Crear cuenta / proyecto en Google Cloud Platform
-- [ ] Activar facturación y créditos disponibles
-- [ ] Instalar y configurar `gcloud` CLI localmente
-- [ ] Crear clúster GKE con **instancias N1** (necesarias para KubeVirt)
-  - [ ] Verificar soporte de virtualización anidada en los nodos
-- [ ] Configurar `kubectl` para apuntar al clúster
-- [ ] Crear namespace para el proyecto: `kubectl create namespace sopes1-p2`
-
-### 1.2 Zot Registry (VM externa)
-
-- [ ] Crear VM N1 en GCP fuera del clúster para Zot
-- [ ] Instalar Zot en la VM
-- [ ] Configurar HTTPS (certificado TLS)
-- [ ] Verificar acceso: `curl https://<IP-ZOT>/v2/`
-- [ ] Apuntar Docker local al registry: `docker login <IP-ZOT>`
-
-### 1.3 API REST en Rust
-
-- [ ] Inicializar proyecto Rust: `cargo new rust-api`
-- [ ] Endpoint `POST /` que recibe el JSON de predicción
-- [ ] Reenvía el JSON via HTTP POST al Go Deployment 1
-- [ ] Manejo de errores y respuestas apropiadas
-- [ ] Crear `Dockerfile` para la imagen
-- [ ] Build y push a Zot: `docker push <IP-ZOT>/rust-api:latest`
-
-### 1.4 Go Deployment 1 (REST receiver + gRPC Client)
-
-- [ ] Inicializar módulo Go
-- [ ] **Container A:** servidor HTTP que recibe el JSON de Rust
-- [ ] **Container B:** cliente gRPC que invoca `SendPrediction` en Go D2
-- [ ] Crear `Dockerfile` para cada container
-- [ ] Build y push ambas imágenes a Zot
-
-### 1.5 Locust
-
-- [ ] Crear archivo `locustfile.py` con la tarea de predicción
-  - [ ] Genera `home_team` y `away_team` aleatorios (distintos)
-  - [ ] `home_goals` y `away_goals`: 0-5 aleatorio
-  - [ ] `username`: `"user_N"` N entre 1-1000
-  - [ ] `timestamp`: hora actual ISO 8601
-- [ ] Configurar para apuntar al endpoint del Gateway API
-- [ ] Dockerizar Locust y push a Zot
-
-### 1.6 Kubernetes Gateway API
-
-- [ ] Instalar CRDs de Gateway API en GKE
-- [ ] Crear `GatewayClass` y `Gateway`
-- [ ] Crear `HTTPRoute` para `/grpc-202308204` apuntando al service de Rust
-- [ ] Obtener IP externa del Gateway
-
-### 1.7 Manifiestos Kubernetes (Fase 1)
-
-- [ ] `deployment-rust.yaml` — Rust API, imagen desde Zot
-- [ ] `service-rust.yaml` — ClusterIP para Rust
-- [ ] `deployment-go-d1.yaml` — Go D1 con 2 containers
-- [ ] `service-go-d1.yaml`
-- [ ] `gateway.yaml` — GatewayClass + Gateway
-- [ ] `httproute.yaml` — ruta `/grpc-202308204`
-- [ ] `deployment-locust.yaml` — o correr Locust localmente
-
-### 1.8 Pruebas de Fase 1
-
-- [ ] `curl -X POST https://<GATEWAY-IP>/grpc-202308204 -d '{...}'` → respuesta OK
-- [ ] Locust lanza requests → Go D1 los recibe (verificar logs)
-- [ ] `kubectl logs -n sopes1-p2 <pod-go-d1>` muestra JSON recibido
+- [x] GKE Standard con tres nodos `n1-standard-4`, 50 GB y virtualización anidada.
+- [x] Namespace `sopes1-p2` y contexto kubectl configurados.
+- [x] Zot en VM externa con IP estática `35.226.224.23`.
+- [x] Registry `zot.35-226-224-23.sslip.io` con certificado TLS público confiable.
+- [x] Firewall de Zot limitado públicamente a TCP 80/443.
+- [x] Rust API con health check, timeout y propagación de errores.
+- [x] Go D1 con REST server y cliente gRPC real en dos contenedores.
+- [x] Locust genera el JSON requerido y usa `/grpc-202308204`.
+- [x] Gateway API `Programmed/Accepted`, IP `136.68.202.37`.
+- [x] Imágenes publicadas y consumidas desde Zot mediante HTTPS.
+- [x] Pruebas unitarias Rust y Go D1 exitosas.
+- [x] No se modifica containerd en los nodos GKE.
 
 ---
 
 ## Fase 2 — Comunicación Interna y Mensajería
 
-> **Clase asociada:** Clase 8-9 del curso (gRPC + RabbitMQ)
-> **Estado:** 🔒 Actualizar cuando se vean estas clases
+> **Estado:** completada y revalidada el 27 de junio de 2026.
 
-### 2.1 RabbitMQ en GKE
-
-- [ ] Desplegar RabbitMQ (Helm chart o manifest YAML)
-- [ ] Crear queue y exchange para predicciones
-- [ ] Verificar acceso al management UI
-- [ ] Credenciales configuradas como Secret de K8s
-
-### 2.2 Go Deployment 2 (gRPC Server + Publisher)
-
-- [ ] **Container A:** implementar servidor gRPC con el proto definido
-  - [ ] Método `SendPrediction` que recibe `MatchPredictionRequest`
-- [ ] **Container B:** publicar mensaje recibido en RabbitMQ
-- [ ] Generar código Go desde el proto: `protoc --go_out=. --go-grpc_out=. prediction.proto`
-- [ ] Dockerizar y push a Zot
-
-### 2.3 Integrar Go D1 con gRPC
-
-- [ ] Go D1 Container B: gRPC client llama a Go D2 Container A
-- [ ] Configurar la dirección del service de Go D2 (via env var o ConfigMap)
-- [ ] Rebuild de imagen y push a Zot
-
-### 2.4 Ruta Gateway API
-
-- [ ] Verificar que `/grpc-202308204` llega correctamente hasta Go D2
-- [ ] Ajustar HTTPRoute si se necesitan reglas de path rewrite
-
-### 2.5 Pruebas de Fase 2
-
-- [ ] Enviar predicción → verificar en RabbitMQ Management UI que el mensaje llegó
-- [ ] `rabbitmq-cli list-messages` o ver en la UI el contador de mensajes
-- [ ] Logs de Go D2 muestran el mensaje publicado
+- [x] RabbitMQ Cluster Operator, una réplica y PVC de 10 GiB.
+- [x] RabbitMQ `3.13-management` espejado y consumido desde Zot.
+- [x] Credenciales generadas por el operador y usadas mediante Secret.
+- [x] Cola durable `predictions` y mensajes persistentes.
+- [x] Go D2 con gRPC server y writer AMQP en dos contenedores.
+- [x] Go D1 llama a Go D2 mediante gRPC real con timeout.
+- [x] `/grpc-202308204` publica en RabbitMQ.
+- [x] Prueba negativa: Go D2 detenido produce HTTP `502` público.
+- [x] Prueba de recuperación: Go D2 restaurado produce HTTP `200`.
+- [x] Todos los Pods actuales están `Running`.
 
 ---
 
@@ -399,6 +322,9 @@ Crear paneles en Grafana:
 
 | Fecha | Fase | Tarea completada | Notas |
 |---|---|---|---|
-| | | | |
+| 2026-06-26 | Fase 1 | GKE, Zot, imágenes, Rust y Go D1 desplegados | 3 nodos Ready; prueba Locust 2896 requests, 0 errores |
+| 2026-06-26 | Fase 2 | Inicio de implementación | Referencias de clases 8, 11 y 12 auditadas |
+| 2026-06-27 | Fase 2 | RabbitMQ, Go D2 y Gateway verificados | 2759 requests, 0 errores; cola persistente |
+| 2026-06-27 | Auditoría | HTTPS, Zot, RabbitMQ y errores corregidos | TLS confiable; prueba 502/200; tests unitarios |
 
 > Llena esta tabla conforme avances en el proyecto.

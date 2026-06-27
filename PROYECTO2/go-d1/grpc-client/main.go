@@ -1,14 +1,18 @@
-// FASE 1: Stub — recibe de Container A y loguea.
-// FASE 2: Se reemplazará por el cliente gRPC real hacia Go D2.
 package main
 
 import (
+	"context"
 	"encoding/json"
-	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"os"
+	"strings"
+	"time"
+
+	pb "grpc-client/proto"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 type Prediction struct {
@@ -20,44 +24,68 @@ type Prediction struct {
 	Timestamp string `json:"timestamp"`
 }
 
-type Response struct {
-	Status string `json:"status"`
+type server struct {
+	client pb.MatchPredictionServiceClient
 }
 
-func sendHandler(w http.ResponseWriter, r *http.Request) {
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "Error leyendo body", http.StatusBadRequest)
-		return
+func teamToEnum(team string) (pb.Teams, bool) {
+	value, ok := pb.Teams_value[strings.ToUpper(team)]
+	if !ok || value == int32(pb.Teams_TEAMS_UNKNOWN) {
+		return pb.Teams_TEAMS_UNKNOWN, false
 	}
-	defer r.Body.Close()
+	return pb.Teams(value), true
+}
 
+func (s *server) sendHandler(w http.ResponseWriter, r *http.Request) {
 	var pred Prediction
-	if err := json.Unmarshal(body, &pred); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&pred); err != nil {
 		http.Error(w, "JSON inválido", http.StatusBadRequest)
 		return
 	}
 
-	log.Printf("[GRPC-CLIENT][FASE1-STUB] Mensaje recibido de Container A:")
-	log.Printf("  Local: %s | Visitante: %s", pred.HomeTeam, pred.AwayTeam)
-	log.Printf("  Goles: %d - %d | Usuario: %s", pred.HomeGoals, pred.AwayGoals, pred.Username)
-	log.Printf("  Timestamp: %s", pred.Timestamp)
-	log.Printf("  → [TODO Fase 2] Aquí se llamará al gRPC Server (Go D2)")
+	home, homeOK := teamToEnum(pred.HomeTeam)
+	away, awayOK := teamToEnum(pred.AwayTeam)
+	if !homeOK || !awayOK || home == away {
+		http.Error(w, "Equipos inválidos", http.StatusBadRequest)
+		return
+	}
 
-	// Responder OK
+	ctx, cancel := context.WithTimeout(r.Context(), 5*time.Second)
+	defer cancel()
+
+	resp, err := s.client.SendPrediction(ctx, &pb.MatchPredictionRequest{
+		HomeTeam: home, AwayTeam: away,
+		HomeGoals: pred.HomeGoals, AwayGoals: pred.AwayGoals,
+		Username: pred.Username, Timestamp: pred.Timestamp,
+	})
+	if err != nil {
+		log.Printf("[GRPC-CLIENT] Error llamando Go D2: %v", err)
+		http.Error(w, "Error gRPC", http.StatusBadGateway)
+		return
+	}
+
+	log.Printf("[GRPC-CLIENT] %s vs %s por %s -> %s",
+		pred.HomeTeam, pred.AwayTeam, pred.Username, resp.Status)
+
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(Response{Status: "ok"})
+	json.NewEncoder(w).Encode(map[string]string{"status": resp.Status})
 }
 
 func main() {
-	http.HandleFunc("/send", sendHandler)
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "9000"
+	address := os.Getenv("GO_D2_GRPC_ADDR")
+	if address == "" {
+		address = "go-d2-service.sopes1-p2.svc.cluster.local:50051"
 	}
 
-	fmt.Printf("[GRPC-CLIENT] Escuchando en :%s (modo stub Fase 1)\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	conn, err := grpc.NewClient(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("No se pudo crear cliente gRPC: %v", err)
+	}
+	defer conn.Close()
+
+	s := &server{client: pb.NewMatchPredictionServiceClient(conn)}
+	http.HandleFunc("/send", s.sendHandler)
+	http.HandleFunc("/health", func(w http.ResponseWriter, _ *http.Request) { _, _ = w.Write([]byte("ok")) })
+	log.Printf("[GRPC-CLIENT] HTTP bridge :9000 -> %s", address)
+	log.Fatal(http.ListenAndServe(":9000", nil))
 }

@@ -77,80 +77,28 @@ kubectl get ns
 
 ---
 
-### Paso 1.2 — Configurar Zot Registry (VM externa)
+### Paso 1.2 — Zot Registry HTTPS (VM externa)
+
+La configuración aplicada usa la IP estática `35.226.224.23`, el dominio
+`zot.35-226-224-23.sslip.io` y Caddy para obtener un certificado público. La regla de
+firewall expone únicamente TCP 80/443; Zot no se consume directamente por el puerto
+5000. La receta y su explicación están en `SKILL/FASES/Fase1.md`.
 
 ```bash
-# Crear VM para Zot en GCP (fuera del clúster)
-gcloud compute instances create zot-registry \
-  --machine-type=n1-standard-2 \
-  --zone=us-central1-a \
-  --image-family=ubuntu-2204-lts \
-  --image-project=ubuntu-os-cloud \
-  --tags=zot-registry
+gcloud compute addresses create zot-registry-ip \
+  --addresses=35.226.224.23 \
+  --region=us-central1
 
-# Regla de firewall para HTTPS (puerto 443) y registry (5000)
-gcloud compute firewall-rules create allow-zot \
-  --allow=tcp:443,tcp:5000 \
-  --target-tags=zot-registry
+gcloud compute scp PROYECTO2/zot/Caddyfile \
+  PROYECTO2/scripts/configure-zot-https.sh \
+  zot-registry:/tmp/ --zone=us-central1-a
 
-# Obtener IP externa de la VM
-gcloud compute instances describe zot-registry \
-  --zone=us-central1-a \
-  --format='get(networkInterfaces[0].accessConfigs[0].natIP)'
+gcloud compute ssh zot-registry --zone=us-central1-a \
+  --command='chmod +x /tmp/configure-zot-https.sh && /tmp/configure-zot-https.sh'
 
-# SSH a la VM de Zot
-gcloud compute ssh zot-registry --zone=us-central1-a
+gcloud compute firewall-rules update allow-zot --allow=tcp:80,tcp:443
+curl --fail https://zot.35-226-224-23.sslip.io/v2/
 ```
-
-```bash
-# DENTRO DE LA VM DE ZOT:
-
-# Instalar Zot
-wget https://github.com/project-zot/zot/releases/download/v2.0.0-rc7/zot-linux-amd64
-chmod +x zot-linux-amd64
-sudo mv zot-linux-amd64 /usr/local/bin/zot
-
-# Crear configuración básica de Zot
-mkdir -p /etc/zot
-cat > /etc/zot/config.json << 'EOF'
-{
-  "distSpecVersion": "1.1.0",
-  "storage": {
-    "rootDirectory": "/var/lib/zot"
-  },
-  "http": {
-    "address": "0.0.0.0",
-    "port": "5000"
-  },
-  "log": {
-    "level": "info"
-  }
-}
-EOF
-
-# Crear directorio de almacenamiento
-sudo mkdir -p /var/lib/zot
-
-# Iniciar Zot (en background para prueba)
-zot serve /etc/zot/config.json &
-
-# Verificar que responde
-curl http://localhost:5000/v2/
-```
-
-```bash
-# DESDE TU MÁQUINA LOCAL:
-# Login al registry Zot
-docker login <IP-EXTERNA-ZOT>:5000
-
-# Prueba push de imagen
-docker pull alpine
-docker tag alpine <IP-EXTERNA-ZOT>:5000/test/alpine:latest
-docker push <IP-EXTERNA-ZOT>:5000/test/alpine:latest
-```
-
-> **Nota HTTPS:** El enunciado pide HTTPS. Configura certificados TLS usando Let's Encrypt
-> o un certificado autofirmado. Ver documentación de Zot: https://zotregistry.dev/
 
 ---
 
@@ -255,8 +203,8 @@ CMD ["rust-api"]
 
 ```bash
 # Build y push a Zot
-docker build -t <IP-ZOT>:5000/sopes1/rust-api:latest .
-docker push <IP-ZOT>:5000/sopes1/rust-api:latest
+docker build -t zot.35-226-224-23.sslip.io/sopes1/rust-api:v3 .
+docker push zot.35-226-224-23.sslip.io/sopes1/rust-api:v3
 ```
 
 ---
@@ -548,7 +496,7 @@ spec:
     spec:
       containers:
       - name: rust-api
-        image: <IP-ZOT>:5000/sopes1/rust-api:latest
+        image: zot.35-226-224-23.sslip.io/sopes1/rust-api:v3
         ports:
         - containerPort: 8080
         env:
@@ -595,7 +543,7 @@ spec:
     spec:
       containers:
       - name: rest-server
-        image: <IP-ZOT>:5000/sopes1/go-d1-rest:latest
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v2
         ports:
         - containerPort: 8080
         env:
@@ -606,7 +554,7 @@ spec:
             cpu: "100m"
             memory: "64Mi"
       - name: grpc-client
-        image: <IP-ZOT>:5000/sopes1/go-d1-grpc-client:latest
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v2
         ports:
         - containerPort: 9000
         env:
@@ -895,20 +843,20 @@ kubectl port-forward svc/<servicio> 8080:80 -n sopes1-p2
 
 ```bash
 # Build con tag para Zot
-docker build -t <IP-ZOT>:5000/sopes1/<imagen>:<tag> .
+docker build -t zot.35-226-224-23.sslip.io/sopes1/<imagen>:<tag> .
 
 # Push a Zot
-docker push <IP-ZOT>:5000/sopes1/<imagen>:<tag>
+docker push zot.35-226-224-23.sslip.io/sopes1/<imagen>:<tag>
 
 # Ver imágenes en Zot via API
-curl https://<IP-ZOT>:5000/v2/_catalog
+curl https://zot.35-226-224-23.sslip.io/v2/_catalog
 
 # OCI Artifact — push de un archivo (ej: el proto)
-oras push <IP-ZOT>:5000/sopes1/artifacts/prediction-proto:latest \
+oras push zot.35-226-224-23.sslip.io/sopes1/artifacts/prediction-proto:latest \
   proto/prediction.proto:application/vnd.worldcup.proto.v1
 
 # OCI Artifact — pull
-oras pull <IP-ZOT>:5000/sopes1/artifacts/prediction-proto:latest
+oras pull zot.35-226-224-23.sslip.io/sopes1/artifacts/prediction-proto:latest
 ```
 
 > **Nota `oras`:** Instalar ORAS CLI para manejar OCI Artifacts:
@@ -927,7 +875,7 @@ kubectl describe pod <pod> -n sopes1-p2
 
 # Crear Secret para pull desde Zot
 kubectl create secret docker-registry zot-credentials \
-  --docker-server=<IP-ZOT>:5000 \
+  --docker-server=zot.35-226-224-23.sslip.io \
   --docker-username=<user> \
   --docker-password=<password> \
   -n sopes1-p2

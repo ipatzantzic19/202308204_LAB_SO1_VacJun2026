@@ -20,13 +20,25 @@ spec:
       # - name: zot-credentials
       containers:
       - name: rust-api
-        image: 10.128.0.13:5000/sopes1/rust-api:v1
+        image: zot.35-226-224-23.sslip.io/sopes1/rust-api:v3
         ports:
         - containerPort: 8080
         env:
         - name: GO_D1_URL
           # Nombre DNS interno del Service de Go D1 (Clase 9: DNS de Services)
           value: "http://go-d1-service.sopes1-p2.svc.cluster.local:8080"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
         resources:
           requests:
             cpu: "100m"

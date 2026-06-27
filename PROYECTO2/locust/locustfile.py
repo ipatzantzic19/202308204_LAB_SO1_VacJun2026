@@ -24,9 +24,9 @@ class QuinielaUser(HttpUser):
             "timestamp":  time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         }
 
-        # POST a la ruta del Gateway API (Fase 1: apuntamos al service de Rust)
+        # Ruta principal del Gateway API (carnet 202308204)
         self.client.post(
-            "/",   # En Fase 1 usamos / hasta tener Gateway API
+            "/grpc-202308204",
             json=payload,
             headers={"Content-Type": "application/json"}
         )

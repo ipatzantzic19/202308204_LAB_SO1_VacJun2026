@@ -1,4 +1,4 @@
-module grpc-client
+module go-d2-grpc-server
 
 go 1.22
 

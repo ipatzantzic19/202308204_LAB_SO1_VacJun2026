@@ -1,0 +1,4 @@
+zot.35-226-224-23.sslip.io {
+	reverse_proxy zot:5000
+	encode zstd gzip
+}
