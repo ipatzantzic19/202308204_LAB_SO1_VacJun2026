@@ -116,31 +116,31 @@ Internet
 
 ### 3.1 Consumer en Go
 
-- [ ] Nuevo módulo Go: `go-consumer`
-- [ ] Conectarse a RabbitMQ y consumir mensajes de la queue
-- [ ] Parsear el mensaje JSON
-- [ ] Guardar datos en Valkey con las claves apropiadas para el dashboard
-- [ ] Dockerizar y push a Zot
-- [ ] Deployment de K8s: `deployment-consumer.yaml`
+- [x] Nuevo módulo Go: `go-consumer`
+- [x] Conectarse a RabbitMQ y consumir mensajes de la queue
+- [x] Parsear el mensaje JSON
+- [x] Guardar datos en Valkey con las claves apropiadas para el dashboard
+- [x] Dockerizar y push a Zot
+- [x] Deployment de K8s: `deployment-consumer.yaml`
 
 ### 3.2 KubeVirt
 
-- [ ] Instalar KubeVirt operator en el clúster GKE
-- [ ] Verificar que los nodos N1 soportan virtualización anidada
-- [ ] Instalar `virtctl` (CLI de KubeVirt)
+- [x] Instalar KubeVirt operator en el clúster GKE
+- [x] Verificar que los nodos N1 soportan virtualización anidada
+- [x] Instalar `virtctl` (CLI de KubeVirt)
 
 ### 3.3 VM 1 — Valkey
 
-- [ ] Crear `VirtualMachine` en K8s (YAML) para VM de Valkey
+- [x] Crear `VirtualMachine` en K8s (YAML) para VM de Valkey
 - [ ] Dentro de la VM: instalar `containerd`
 - [ ] Crear contenedor con Valkey usando containerd (no Docker)
-- [ ] Exponer Valkey vía Service de K8s para que Consumer pueda conectar
+- [x] Exponer Valkey vía Service de K8s para que Consumer pueda conectar
 - [ ] Configurar TTL en Valkey para evitar saturación
 
 ### 3.4 Integrar Consumer con Valkey
 
-- [ ] Variable de entorno `VALKEY_ADDR` apuntando al service de Valkey
-- [ ] Prueba: enviar predicción y verificar con `valkey-cli GET <clave>`
+- [x] Variable de entorno `VALKEY_ADDR` apuntando al service de Valkey
+- [x] Prueba: enviar predicción y verificar con `valkey-cli GET <clave>`
 
 ### 3.5 Claves Valkey para el Dashboard
 
@@ -164,11 +164,13 @@ stats:away:goals:min          → mínimo de goles visitante en un partido
 
 ### 3.6 Pruebas de Fase 3
 
-- [ ] Predicciones fluyen hasta Valkey
-- [ ] `valkey-cli KEYS "prediction:bra:*"` muestra claves con datos
-- [ ] Consumer no pierde mensajes (manejar acknowledgment de RabbitMQ)
+- [x] Predicciones fluyen hasta Valkey
+- [x] `valkey-cli KEYS "prediction:bra:*"` muestra claves con datos
+- [x] Consumer no pierde mensajes (manejar acknowledgment de RabbitMQ)
 
 ---
+
+> Nota: `valkey-vm` está `Running/Ready=True` y `valkey-service` responde funcionalmente. No se validó internamente con `virtctl ssh` porque la VM no tiene SSH activo en puerto 22. La evidencia funcional se obtuvo con `valkey-cli` desde Kubernetes.
 
 ## Fase 4 — Visualización y Pruebas de Carga
 

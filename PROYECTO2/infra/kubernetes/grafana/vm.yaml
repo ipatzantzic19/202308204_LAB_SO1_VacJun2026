@@ -1,0 +1,64 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: grafana-vm
+  namespace: sopes1-p2
+  labels:
+    app: grafana-vm
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      labels:
+        app: grafana-vm
+        kubevirt.io/domain: grafana-vm
+    spec:
+      nodeSelector:
+        nested-virtualization: enabled
+      tolerations:
+        - key: kubevirt.io/dedicated
+          operator: Equal
+          value: virtualization
+          effect: NoSchedule
+      terminationGracePeriodSeconds: 60
+      domain:
+        cpu:
+          cores: 1
+        resources:
+          requests:
+            memory: 2Gi
+        devices:
+          autoattachGraphicsDevice: false
+          disks:
+            - name: rootdisk
+              disk:
+                bus: virtio
+            - name: cloudinit
+              disk:
+                bus: virtio
+          filesystems:
+            - name: grafanadata
+              virtiofs: {}
+          interfaces:
+            - name: default
+              masquerade: {}
+              ports:
+                - name: grafana
+                  port: 3000
+                - name: prometheus
+                  port: 9090
+      networks:
+        - name: default
+          pod: {}
+      volumes:
+        - name: rootdisk
+          containerDisk:
+            image: zot.35-226-224-23.sslip.io/library/ubuntu-container-disk:24.04
+            imagePullPolicy: IfNotPresent
+        - name: grafanadata
+          persistentVolumeClaim:
+            claimName: grafana-data
+        - name: cloudinit
+          cloudInitNoCloud:
+            secretRef:
+              name: grafana-cloudinit

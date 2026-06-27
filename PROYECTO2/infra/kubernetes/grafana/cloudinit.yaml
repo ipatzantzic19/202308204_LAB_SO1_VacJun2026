@@ -1,0 +1,99 @@
+#cloud-config
+users:
+  - name: ubuntu
+    groups: sudo
+    shell: /bin/bash
+    lock_passwd: false
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+chpasswd:
+  expire: false
+  users:
+    - name: ubuntu
+      password: ubuntu202308204
+
+ssh_pwauth: true
+
+package_update: true
+packages:
+  - containerd
+
+write_files:
+  - path: /etc/prometheus/prometheus.yml
+    permissions: '0644'
+    content: |
+      global:
+        scrape_interval: 5s
+
+      scrape_configs:
+        - job_name: "go-metrics-exporter"
+          static_configs:
+            - targets:
+                - "go-metrics-exporter-service.sopes1-p2.svc.cluster.local:9100"
+
+  - path: /etc/systemd/system/prometheus-container.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Prometheus administrado por containerd
+      After=containerd.service network-online.target
+      Wants=network-online.target
+      Requires=containerd.service
+
+      [Service]
+      Type=simple
+      Restart=always
+      RestartSec=5
+      ExecStartPre=/usr/bin/ctr images pull zot.35-226-224-23.sslip.io/library/prometheus:v2.55.1
+      ExecStartPre=-/usr/bin/ctr tasks kill --signal SIGKILL prometheus
+      ExecStartPre=-/usr/bin/ctr containers delete prometheus
+      ExecStart=/usr/bin/ctr run --rm --net-host \
+        --mount type=bind,src=/etc/prometheus,dst=/etc/prometheus,options=rbind:ro \
+        zot.35-226-224-23.sslip.io/library/prometheus:v2.55.1 \
+        prometheus \
+        /bin/prometheus \
+        --config.file=/etc/prometheus/prometheus.yml \
+        --web.listen-address=0.0.0.0:9090
+      ExecStop=-/usr/bin/ctr tasks kill --signal SIGTERM prometheus
+
+      [Install]
+      WantedBy=multi-user.target
+
+  - path: /etc/systemd/system/grafana-container.service
+    permissions: '0644'
+    content: |
+      [Unit]
+      Description=Grafana administrado por containerd
+      After=containerd.service network-online.target prometheus-container.service
+      Wants=network-online.target
+      Requires=containerd.service
+
+      [Service]
+      Type=simple
+      Restart=always
+      RestartSec=5
+      ExecStartPre=/usr/bin/ctr images pull zot.35-226-224-23.sslip.io/library/grafana-oss:11.5.2
+      ExecStartPre=-/usr/bin/ctr tasks kill --signal SIGKILL grafana
+      ExecStartPre=-/usr/bin/ctr containers delete grafana
+      ExecStart=/usr/bin/ctr run --rm --net-host \
+        --mount type=bind,src=/var/lib/grafana,dst=/var/lib/grafana,options=rbind:rw \
+        --env GF_SECURITY_ADMIN_USER=admin \
+        --env GF_SECURITY_ADMIN_PASSWORD=admin202308204 \
+        --env GF_USERS_ALLOW_SIGN_UP=false \
+        zot.35-226-224-23.sslip.io/library/grafana-oss:11.5.2 \
+        grafana
+      ExecStop=-/usr/bin/ctr tasks kill --signal SIGTERM grafana
+
+      [Install]
+      WantedBy=multi-user.target
+
+mounts:
+  - [grafanadata, /var/lib/grafana, virtiofs, "defaults,nofail", "0", "0"]
+
+runcmd:
+  - [mkdir, -p, /etc/prometheus]
+  - [mkdir, -p, /var/lib/grafana]
+  - [chmod, "0777", /var/lib/grafana]
+  - [systemctl, daemon-reload]
+  - [systemctl, enable, --now, prometheus-container.service]
+  - [systemctl, enable, --now, grafana-container.service]

@@ -14,3 +14,5 @@ resources:
   - valkey/vm.yaml
   - valkey/service.yaml
   - consumer/deployment.yaml
+  - grafana/pvc.yaml
+  - grafana/vm.yaml
