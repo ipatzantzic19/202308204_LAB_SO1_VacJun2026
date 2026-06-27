@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	pb "grpc-client/proto"
+	pb "github.com/ipatzantzic19/202308204_LAB_SO1_VacJun2026/PROYECTO2/proto"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

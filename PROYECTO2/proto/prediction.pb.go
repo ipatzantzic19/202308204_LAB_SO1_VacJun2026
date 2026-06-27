@@ -231,7 +231,7 @@ const file_prediction_proto_rawDesc = "" +
 	"\x03ARG\x10\x04\x12\a\n" +
 	"\x03ESP\x10\x052w\n" +
 	"\x16MatchPredictionService\x12]\n" +
-	"\x0eSendPrediction\x12$.worldcup2026.MatchPredictionRequest\x1a%.worldcup2026.MatchPredictionResponseB\tZ\a./protob\x06proto3"
+	"\x0eSendPrediction\x12$.worldcup2026.MatchPredictionRequest\x1a%.worldcup2026.MatchPredictionResponseBGZEgithub.com/ipatzantzic19/202308204_LAB_SO1_VacJun2026/PROYECTO2/protob\x06proto3"
 
 var (
 	file_prediction_proto_rawDescOnce sync.Once

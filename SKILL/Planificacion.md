@@ -241,10 +241,10 @@ Crear paneles en Grafana:
 
 ### 5.2 Repositorio GitHub
 
-- [ ] Estructura limpia de carpetas
-- [ ] README.md en raíz de PROYECTO2/
-- [ ] Todos los Dockerfiles presentes
-- [ ] Todos los manifiestos Kubernetes organizados
+- [x] Estructura modular de carpetas
+- [x] README.md en raíz de PROYECTO2/
+- [x] Todos los Dockerfiles presentes
+- [x] Manifiestos organizados por componente con Kustomize
 - [ ] Manual técnico completo en Markdown
 - [ ] @CamiloSincal agregado como colaborador
 
@@ -262,46 +262,29 @@ Crear paneles en Grafana:
 
 ```
 202308204_LAB_SO1_VacJun2026/
-├── PROYECTO1/              ← Proyecto 1 (ya entregado)
-│   └── ...
+├── SKILL/                  ← enunciado, fases y planificación
 └── PROYECTO2/
-    ├── SKILL.md            ← Referencia del enunciado
-    ├── planificacion.md    ← Este archivo
-    ├── guia_paso_a_paso.md ← Guía de implementación
-    ├── aprendizaje.md      ← Conceptos del proyecto
+    ├── README.md           ← entrada operativa
+    ├── Makefile            ← comandos estables
     ├── rust-api/
     │   ├── src/
     │   ├── Cargo.toml
     │   └── Dockerfile
     ├── go-d1/
-    │   ├── rest-receiver/
-    │   ├── grpc-client/
-    │   └── Dockerfiles
+    │   ├── rest-server/
+    │   └── grpc-client/
     ├── go-d2/
     │   ├── grpc-server/
-    │   ├── mq-publisher/
-    │   └── Dockerfiles
-    ├── go-consumer/
-    │   ├── main.go
-    │   └── Dockerfile
+    │   └── rabbit-writer/
     ├── locust/
     │   ├── locustfile.py
     │   └── Dockerfile
     ├── proto/
     │   └── prediction.proto
-    ├── k8s/
-    │   ├── namespace.yaml
-    │   ├── gateway/
-    │   ├── rust/
-    │   ├── go-d1/
-    │   ├── go-d2/
-    │   ├── consumer/
-    │   ├── rabbitmq/
-    │   └── kubevirt/
-    │       ├── vm-valkey.yaml
-    │       └── vm-grafana.yaml
-    └── docs/
-        └── manual-tecnico.md
+    ├── infra/
+    │   ├── kubernetes/     ← Kustomize y recursos por componente
+    │   └── zot/            ← Caddy y configuración TLS
+    └── scripts/            ← build, tests, deploy y validación
 ```
 
 ---
@@ -326,5 +309,6 @@ Crear paneles en Grafana:
 | 2026-06-26 | Fase 2 | Inicio de implementación | Referencias de clases 8, 11 y 12 auditadas |
 | 2026-06-27 | Fase 2 | RabbitMQ, Go D2 y Gateway verificados | 2759 requests, 0 errores; cola persistente |
 | 2026-06-27 | Auditoría | HTTPS, Zot, RabbitMQ y errores corregidos | TLS confiable; prueba 502/200; tests unitarios |
+| 2026-06-27 | Modularización | Infraestructura y operación reorganizadas | Kustomize, Makefile, scripts y proto único |
 
 > Llena esta tabla conforme avances en el proyecto.

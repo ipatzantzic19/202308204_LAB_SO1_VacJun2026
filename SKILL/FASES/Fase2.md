@@ -27,7 +27,7 @@ PROYECTO2/
 ├── go-d2/
 │   ├── grpc-server/
 │   └── rabbit-writer/
-└── k8s/
+└── infra/kubernetes/
     ├── rabbitmq/
     ├── go-d2/
     └── gateway/
@@ -39,7 +39,7 @@ PROYECTO2/
 kubectl create namespace rabbitmq-system
 kubectl apply -f https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml
 kubectl rollout status deployment/rabbitmq-cluster-operator -n rabbitmq-system
-kubectl apply -f PROYECTO2/k8s/rabbitmq/cluster.yaml
+kubectl apply -f PROYECTO2/infra/kubernetes/rabbitmq/cluster.yaml
 kubectl get rabbitmqcluster,pods,svc -n rabbitmq-system
 ```
 
@@ -79,8 +79,8 @@ Debe usar timeout y propagar error HTTP si gRPC falla.
 ## Paso 4 — Imágenes Zot por HTTPS
 
 ```text
-zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v2
-zot.35-226-224-23.sslip.io/sopes1/go-d2-grpc-server:v1
+zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v3
+zot.35-226-224-23.sslip.io/sopes1/go-d2-grpc-server:v2
 zot.35-226-224-23.sslip.io/sopes1/go-d2-rabbit-writer:v1
 zot.35-226-224-23.sslip.io/library/rabbitmq:3.13-management
 ```
@@ -94,7 +94,8 @@ Todas se publican o espejan en Zot y se verifican mediante HTTPS en
 - RabbitMQ URL desde Secret (`secretKeyRef`).
 - Requests/limits en ambos contenedores.
 - Readiness y liveness en el writer.
-- Go D1 actualizado a imagen `v2`.
+- Go D1 usa el cliente gRPC `v3` y Go D2 el servidor gRPC `v2`, ambos enlazados al
+  módulo compartido `PROYECTO2/proto`.
 - RabbitMQ usa la imagen `library/rabbitmq:3.13-management` alojada en Zot.
 
 ## Paso 6 — Gateway API

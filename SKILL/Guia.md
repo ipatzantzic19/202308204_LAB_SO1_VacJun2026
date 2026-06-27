@@ -89,12 +89,12 @@ gcloud compute addresses create zot-registry-ip \
   --addresses=35.226.224.23 \
   --region=us-central1
 
-gcloud compute scp PROYECTO2/zot/Caddyfile \
-  PROYECTO2/scripts/configure-zot-https.sh \
+gcloud compute scp PROYECTO2/infra/zot/Caddyfile \
+  PROYECTO2/infra/zot/configure.sh \
   zot-registry:/tmp/ --zone=us-central1-a
 
 gcloud compute ssh zot-registry --zone=us-central1-a \
-  --command='chmod +x /tmp/configure-zot-https.sh && /tmp/configure-zot-https.sh'
+  --command='chmod +x /tmp/configure.sh && /tmp/configure.sh'
 
 gcloud compute firewall-rules update allow-zot --allow=tcp:80,tcp:443
 curl --fail https://zot.35-226-224-23.sslip.io/v2/
@@ -470,7 +470,7 @@ locust -f locustfile.py --host=http://<IP-GATEWAY> --headless \
 ### Paso 1.7 — Manifiestos Kubernetes (Fase 1)
 
 ```yaml
-# k8s/namespace.yaml
+# infra/kubernetes/namespace.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -478,7 +478,7 @@ metadata:
 ```
 
 ```yaml
-# k8s/rust/deployment.yaml
+# infra/kubernetes/rust-api/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -524,7 +524,7 @@ spec:
 ```
 
 ```yaml
-# k8s/go-d1/deployment.yaml
+# infra/kubernetes/go-d1/deployment.yaml
 # Deployment con 2 containers en el mismo pod
 apiVersion: apps/v1
 kind: Deployment
@@ -543,7 +543,7 @@ spec:
     spec:
       containers:
       - name: rest-server
-        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v2
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v3
         ports:
         - containerPort: 8080
         env:
@@ -554,7 +554,7 @@ spec:
             cpu: "100m"
             memory: "64Mi"
       - name: grpc-client
-        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v2
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v3
         ports:
         - containerPort: 9000
         env:
@@ -579,7 +579,7 @@ spec:
 ```
 
 ```yaml
-# k8s/gateway/gateway.yaml
+# infra/kubernetes/gateway/gateway.yaml
 # Instalar primero los CRDs de Gateway API:
 # kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
 
@@ -623,10 +623,7 @@ spec:
 
 ```bash
 # Aplicar todos los manifiestos de Fase 1
-kubectl apply -f k8s/namespace.yaml
-kubectl apply -f k8s/gateway/
-kubectl apply -f k8s/rust/
-kubectl apply -f k8s/go-d1/
+kubectl apply -k infra/kubernetes
 
 # Verificar
 kubectl get pods -n sopes1-p2
@@ -733,7 +730,7 @@ sudo mv virtctl /usr/local/bin/
 ```
 
 ```yaml
-# k8s/kubevirt/vm-valkey.yaml — PENDIENTE DE DETALLES DEL CURSO
+# infra/kubernetes/kubevirt/vm-valkey.yaml — PENDIENTE DE DETALLES DEL CURSO
 # VirtualMachine con Ubuntu, containerd instalado, Valkey en contenedor
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
@@ -755,7 +752,7 @@ spec:
 ### Paso 4.1 — HPA para Rust
 
 ```yaml
-# k8s/rust/hpa.yaml
+# infra/kubernetes/rust-api/hpa.yaml
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -778,7 +775,7 @@ spec:
 ```
 
 ```bash
-kubectl apply -f k8s/rust/hpa.yaml
+kubectl apply -f infra/kubernetes/rust-api/hpa.yaml
 kubectl get hpa -n sopes1-p2
 
 # Observar el scaling bajo carga

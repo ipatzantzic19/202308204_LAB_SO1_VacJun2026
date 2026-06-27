@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package worldcup2026;
 
-option go_package = "./proto";
+option go_package = "github.com/ipatzantzic19/202308204_LAB_SO1_VacJun2026/PROYECTO2/proto";
 
 message MatchPredictionRequest {
   Teams  home_team  = 1;

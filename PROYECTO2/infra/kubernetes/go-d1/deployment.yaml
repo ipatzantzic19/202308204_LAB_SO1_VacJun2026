@@ -18,7 +18,7 @@ spec:
       containers:
       # Container A: REST Server — escucha en :8080
       - name: rest-server
-        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v2
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v3
         ports:
         - containerPort: 8080
         env:
@@ -35,7 +35,7 @@ spec:
 
       # Container B: gRPC Client — escucha en :9000
       - name: grpc-client
-        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v2
+        image: zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v3
         ports:
         - containerPort: 9000
         env:

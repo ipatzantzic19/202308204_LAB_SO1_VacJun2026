@@ -33,7 +33,7 @@ gcloud container clusters get-credentials sopes1-p2-cluster \
   --project project-20c03ab3-bd8f-4b4b-aae
 
 kubectl get nodes
-kubectl apply -f PROYECTO2/k8s/namespace.yaml
+kubectl apply -f PROYECTO2/infra/kubernetes/namespace.yaml
 ```
 
 El clúster usa el namespace `sopes1-p2`. Los manifiestos contienen requests, limits y
@@ -52,8 +52,8 @@ probes; las credenciales no se almacenan en Git.
 - Los nodos GKE confían en el certificado público; no requieren configuración manual de
   containerd.
 
-El archivo de Caddy está en `PROYECTO2/zot/Caddyfile` y la configuración reproducible de
-la VM en `PROYECTO2/scripts/configure-zot-https.sh`.
+El archivo de Caddy y la configuración reproducible de la VM están agrupados en
+`PROYECTO2/infra/zot/`.
 
 ### Promover la IP efímera existente
 
@@ -72,13 +72,13 @@ Docker. El script no elimina ni recrea Zot, por lo que conserva su catálogo act
 
 ```bash
 gcloud compute scp \
-  PROYECTO2/zot/Caddyfile \
-  PROYECTO2/scripts/configure-zot-https.sh \
+  PROYECTO2/infra/zot/Caddyfile \
+  PROYECTO2/infra/zot/configure.sh \
   zot-registry:/tmp/ \
   --zone=us-central1-a
 
 gcloud compute ssh zot-registry --zone=us-central1-a \
-  --command='chmod +x /tmp/configure-zot-https.sh && /tmp/configure-zot-https.sh'
+  --command='chmod +x /tmp/configure.sh && /tmp/configure.sh'
 
 gcloud compute firewall-rules update allow-zot \
   --allow=tcp:80,tcp:443
@@ -124,14 +124,15 @@ Ambas capas propagan fallos. Si el bridge o Go D2 no están disponibles, Go D1 d
 
 ```bash
 docker build \
-  -t zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v2 \
+  -t zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v3 \
   PROYECTO2/go-d1/rest-server
-docker push zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v2
+docker push zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v3
 
 docker build \
-  -t zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v2 \
-  PROYECTO2/go-d1/grpc-client
-docker push zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v2
+  -f PROYECTO2/go-d1/grpc-client/Dockerfile \
+  -t zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v3 \
+  PROYECTO2
+docker push zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v3
 ```
 
 ### Locust
@@ -143,9 +144,7 @@ respuesta no exitosa.
 ## Despliegue
 
 ```bash
-kubectl apply -f PROYECTO2/k8s/rust-api/
-kubectl apply -f PROYECTO2/k8s/go-d1/
-kubectl apply -f PROYECTO2/k8s/gateway/gateway.yaml
+kubectl apply -k PROYECTO2/infra/kubernetes
 
 kubectl rollout status deployment/rust-api -n sopes1-p2
 kubectl rollout status deployment/go-d1 -n sopes1-p2
@@ -155,8 +154,8 @@ Las imágenes aplicadas son:
 
 ```text
 zot.35-226-224-23.sslip.io/sopes1/rust-api:v3
-zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v2
-zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v2
+zot.35-226-224-23.sslip.io/sopes1/go-d1-rest:v3
+zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v3
 ```
 
 ## Pruebas
@@ -165,6 +164,8 @@ zot.35-226-224-23.sslip.io/sopes1/go-d1-grpc-client:v2
 (cd PROYECTO2/rust-api && cargo test)
 (cd PROYECTO2/go-d1/rest-server && go test ./...)
 (cd PROYECTO2/go-d1/grpc-client && go test ./...)
+# O ejecutar toda la suite de forma modular:
+make -C PROYECTO2 test
 ```
 
 Las pruebas unitarias cubren health, errores HTTP posteriores, fallos gRPC, equipos

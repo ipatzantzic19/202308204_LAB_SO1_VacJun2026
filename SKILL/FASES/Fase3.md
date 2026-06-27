@@ -25,6 +25,25 @@ un contenedor de containerd dentro de una VM administrada por KubeVirt.
 9. Implementar claves para máximos, mínimos, modas, victorias, usuarios y serie temporal.
 10. Validar AMQP ACK, reinicio del consumer y persistencia tras reiniciar la VM.
 
+## Extensión de la estructura modular
+
+La fase debe extender la organización existente sin volver a crear árboles paralelos:
+
+```text
+PROYECTO2/
+├── go-consumer/                    # nuevo módulo de aplicación
+└── infra/kubernetes/
+    ├── consumer/                   # Deployment y Service si aplica
+    ├── kubevirt/                   # operador/CR y recursos compartidos
+    └── valkey/                     # VM, PVC y Service
+```
+
+Los nuevos recursos se agregan a `infra/kubernetes/kustomization.yaml`; las nuevas
+imágenes y pruebas se incorporan a `scripts/common.sh`, `scripts/images.sh` y
+`scripts/test.sh`. El contrato se toma de `proto/prediction.proto` y se regenera con
+`make proto`. El consumer importará el módulo Go compartido de `proto/`, sin crear otra
+carpeta con código generado.
+
 ## Criterio de finalización
 
 - KubeVirt está Available.
@@ -32,4 +51,3 @@ un contenedor de containerd dentro de una VM administrada por KubeVirt.
 - Valkey corre bajo `ctr`, no Docker.
 - Consumer está Running en GKE y la cola vuelve a cero.
 - Consultas a Valkey muestran información real del flujo público.
-
