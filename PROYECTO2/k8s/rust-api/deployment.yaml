@@ -20,7 +20,7 @@ spec:
       # - name: zot-credentials
       containers:
       - name: rust-api
-        image: <IP-ZOT>:5000/sopes1/rust-api:v1
+        image: 10.128.0.13:5000/sopes1/rust-api:v1
         ports:
         - containerPort: 8080
         env:
