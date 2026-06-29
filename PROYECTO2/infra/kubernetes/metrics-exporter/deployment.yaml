@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: exporter
-          image: zot.35-226-224-23.sslip.io/sopes1/go-metrics-exporter:v5
+          image: zot.35-226-224-23.sslip.io/sopes1/go-metrics-exporter:v6
           ports:
             - name: metrics
               containerPort: 9100
@@ -32,7 +32,7 @@ spec:
             periodSeconds: 5
           livenessProbe:
             httpGet:
-              path: /health
+              path: /live
               port: metrics
             initialDelaySeconds: 10
             periodSeconds: 10

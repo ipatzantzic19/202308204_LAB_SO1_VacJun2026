@@ -35,7 +35,7 @@ make artifact    # publicar y verificar prediction.proto como OCI Artifact (adic
 make artifact-pull # descargar el contrato desde Zot
 make deploy      # operador, RabbitMQ, Secret y aplicaciones
 make validate    # manifiestos, registry y estado del clúster
-make load-test   # evidencia Locust con 1 y 2 réplicas de Rust
+make load-test   # evidencia Locust con 1 y 2 réplicas de Go D2
 make validate-hpa # evidencia del ciclo automático 1 → 3 → 1
 make zot-provision # ampliar disco gratuito, migrar y configurar Zot
 ```
@@ -110,8 +110,10 @@ queda bajo `evidence/hpa/`.
 ## Documentación de entrega
 
 - [Manual técnico](docs/ManualTecnico.md)
+- [Aprendizaje del proyecto](docs/Aprendizaje.md)
 - [Guía de calificación](docs/GuiaCalificacion.md)
 - [Metodología](docs/Metodologia.md)
 - [Auditoría de requisitos](docs/AuditoriaRequisitos.md)
+- [Checklist de entrega](docs/ChecklistEntrega.md)
 
 La documentación detallada por fase se encuentra en `../SKILL/FASES/`.

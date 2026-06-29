@@ -93,14 +93,18 @@ rg -n 'containerd|ctr run' PROYECTO2/infra/kubernetes/{valkey,grafana}
 ## 7. Grafana
 
 ```bash
-kubectl port-forward -n sopes1-p2 service/grafana-service 3000:3000
+PROYECTO2/.bin/virtctl port-forward -n sopes1-p2 \
+  vmi/grafana-vm 13000:3000
 ```
 
-Abrir `http://localhost:3000/d/quiniela-bra/quiniela-mundial-2026-brasil-bra` y mostrar los
-paneles. En otra terminal puede comprobarse Prometheus:
+Abrir
+`http://localhost:13000/d/quiniela-bra-202308204/quiniela-mundial-2026-brasil-bra` y mostrar
+los paneles. Se usa 13000 porque la máquina de desarrollo puede tener otro Grafana ocupando
+el puerto 3000. En otra terminal puede comprobarse Prometheus:
 
 ```bash
-kubectl port-forward -n sopes1-p2 service/grafana-service 9090:9090
+PROYECTO2/.bin/virtctl port-forward -n sopes1-p2 \
+  vmi/grafana-vm 19090:9090
 ```
 
 ## 8. HPA y pruebas

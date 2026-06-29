@@ -238,7 +238,7 @@ Crear paneles en Grafana:
 - [x] Publicación y consumo de imágenes desde Zot
 - [x] OCI Artifact adicional documentado; requisito dispensado por el auxiliar
 - [x] Pruebas realizadas y conclusiones (análisis 1 vs 2 réplicas)
-- [ ] Captura final del dashboard después del arranque limpio de la VM
+- [x] Captura final del dashboard después del arranque limpio de la VM
 
 ### 5.2 Repositorio GitHub
 
@@ -247,6 +247,8 @@ Crear paneles en Grafana:
 - [x] Todos los Dockerfiles presentes
 - [x] Manifiestos organizados por componente con Kustomize
 - [x] Manual técnico completo en Markdown
+- [x] Documento integral de aprendizaje y explicación del flujo
+- [x] Checklist reproducible de validación y entrega
 - [ ] @CamiloSincal agregado como colaborador
 
 ### 5.3 Validación Final

@@ -1,0 +1,496 @@
+# Estado general
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl get nodes
+NAME                                                STATUS   ROLES    AGE    VERSION
+gke-sopes1-p2-cluster-default-pool-774a33b1-b4t4    Ready    <none>   10m    v1.35.5-gke.1057002
+gke-sopes1-p2-cluster-default-pool-774a33b1-v96s    Ready    <none>   10m    v1.35.5-gke.1057002
+gke-sopes1-p2-cluster-kubevirt-pool-df2e6345-xrq2   Ready    <none>   7m5s   v1.35.5-gke.1057002
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl get pods -A
+NAMESPACE         NAME                                                           READY   STATUS    RESTARTS        AGE
+gke-managed-cim   kube-state-metrics-0                                           2/2     Running   0               3h55m
+gmp-system        collector-97xxk                                                2/2     Running   0               7m13s
+gmp-system        collector-99mld                                                2/2     Running   0               10m
+gmp-system        collector-l5dhl                                                2/2     Running   0               10m
+gmp-system        gmp-operator-6f45659565-d9rw5                                  1/1     Running   0               3h55m
+kube-system       event-exporter-gke-86b64cfb59-cl2jb                            2/2     Running   0               3h55m
+kube-system       fluentbit-gke-s5lzp                                            3/3     Running   0               10m
+kube-system       fluentbit-gke-t5h4f                                            3/3     Running   0               10m
+kube-system       fluentbit-gke-t7hmk                                            3/3     Running   0               7m13s
+kube-system       gke-metrics-agent-2hvtp                                        3/3     Running   0               7m13s
+kube-system       gke-metrics-agent-p8jvm                                        3/3     Running   0               10m
+kube-system       gke-metrics-agent-zd7gv                                        3/3     Running   0               10m
+kube-system       konnectivity-agent-5cf77b59b4-7nzr6                            2/2     Running   0               3h54m
+kube-system       konnectivity-agent-5cf77b59b4-jxnmj                            2/2     Running   0               3h55m
+kube-system       konnectivity-agent-5cf77b59b4-w5sbs                            2/2     Running   0               7m3s
+kube-system       konnectivity-agent-autoscaler-7f4b7c494b-rkt4k                 1/1     Running   0               3h55m
+kube-system       kube-dns-666fd8dd49-4k4dl                                      4/4     Running   0               3h54m
+kube-system       kube-dns-666fd8dd49-9g4g5                                      4/4     Running   0               3h54m
+kube-system       kube-dns-autoscaler-7dc78dc96-rr2mh                            1/1     Running   0               3h54m
+kube-system       kube-proxy-gke-sopes1-p2-cluster-default-pool-774a33b1-b4t4    1/1     Running   0               10m
+kube-system       kube-proxy-gke-sopes1-p2-cluster-default-pool-774a33b1-v96s    1/1     Running   0               10m
+kube-system       kube-proxy-gke-sopes1-p2-cluster-kubevirt-pool-df2e6345-xrq2   1/1     Running   0               7m13s
+kube-system       l7-default-backend-7d8d77ff56-9tvmq                            1/1     Running   0               3h54m
+kube-system       metrics-server-v1.35.1-f474d5b49-w7qls                         1/1     Running   0               3h54m
+kube-system       node-local-dns-2k7cq                                           2/2     Running   0               10m
+kube-system       node-local-dns-bdv5t                                           2/2     Running   0               7m13s
+kube-system       node-local-dns-n9p2q                                           2/2     Running   0               10m
+kube-system       pdcsi-node-cq5bk                                               3/3     Running   0               10m
+kube-system       pdcsi-node-qbjqx                                               3/3     Running   0               7m13s
+kube-system       pdcsi-node-wnz7l                                               3/3     Running   0               10m
+kubevirt          virt-api-5cb57bf6c7-lb8hp                                      1/1     Running   0               3h46m
+kubevirt          virt-controller-74d9977c48-rnj4b                               1/1     Running   0               166m
+kubevirt          virt-controller-74d9977c48-zwd8h                               1/1     Running   0               3h46m
+kubevirt          virt-handler-xjmdc                                             1/1     Running   0               7m12s
+kubevirt          virt-operator-58b69c47d4-7hnm5                                 1/1     Running   0               3h54m
+kubevirt          virt-operator-58b69c47d4-cd9jh                                 1/1     Running   0               3h54m
+rabbitmq-system   rabbitmq-cluster-operator-757bb9458b-4njb6                     1/1     Running   0               3h54m
+rabbitmq-system   rabbitmq-cluster-server-0                                      1/1     Running   0               3h54m
+sopes1-p2         go-consumer-65857f6664-hhpmp                                   1/1     Running   0               3h54m
+sopes1-p2         go-d1-6c68879776-j6fcn                                         2/2     Running   0               3h54m
+sopes1-p2         go-d2-769659b4c5-qr5mv                                         2/2     Running   3 (8m27s ago)   3h54m
+sopes1-p2         go-metrics-exporter-8657b984d6-vqd6v                           1/1     Running   7 (4m17s ago)   3h54m
+sopes1-p2         locust-7c5df8bbb9-lm7d2                                        1/1     Running   0               3h54m
+sopes1-p2         rust-api-6bffd8b84-nvjvr                                       1/1     Running   0               3h54m
+sopes1-p2         virt-launcher-grafana-vm-jkkn2                                 3/3     Running   0               6m39s
+sopes1-p2         virt-launcher-valkey-vm-tmgg9                                  4/4     Running   0               6m39s
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl get deployments -A
+NAMESPACE         NAME                            READY   UP-TO-DATE   AVAILABLE   AGE
+gmp-system        gmp-operator                    1/1     1            1           46h
+gmp-system        rule-evaluator                  0/0     0            0           46h
+kube-system       event-exporter-gke              1/1     1            1           46h
+kube-system       konnectivity-agent              3/3     3            3           46h
+kube-system       konnectivity-agent-autoscaler   1/1     1            1           46h
+kube-system       kube-dns                        2/2     2            2           46h
+kube-system       kube-dns-autoscaler             1/1     1            1           46h
+kube-system       l7-default-backend              1/1     1            1           46h
+kube-system       metrics-server-v1.35.1          1/1     1            1           46h
+kubevirt          virt-api                        1/1     1            1           32h
+kubevirt          virt-controller                 2/2     2            2           32h
+kubevirt          virt-operator                   2/2     2            2           35h
+rabbitmq-system   rabbitmq-cluster-operator       1/1     1            1           46h
+sopes1-p2         go-consumer                     1/1     1            1           32h
+sopes1-p2         go-d1                           1/1     1            1           46h
+sopes1-p2         go-d2                           1/1     1            1           46h
+sopes1-p2         go-metrics-exporter             1/1     1            1           12h
+sopes1-p2         locust                          1/1     1            1           12h
+sopes1-p2         rust-api                        1/1     1            1           46h
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl get services -A
+NAMESPACE         NAME                                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                        AGE
+default           kubernetes                                  ClusterIP   34.118.224.1     <none>        443/TCP                        46h
+gmp-system        alertmanager                                ClusterIP   None             <none>        9093/TCP                       46h
+gmp-system        gmp-operator                                ClusterIP   34.118.226.208   <none>        8443/TCP,443/TCP               46h
+gmp-system        rule-evaluator                              ClusterIP   34.118.226.50    <none>        19092/TCP                      46h
+kube-system       default-http-backend                        NodePort    34.118.236.56    <none>        80:32516/TCP                   46h
+kube-system       kube-dns                                    ClusterIP   34.118.224.10    <none>        53/UDP,53/TCP                  46h
+kube-system       kube-dns-upstream                           ClusterIP   34.118.230.45    <none>        53/UDP,53/TCP                  46h
+kube-system       metrics-server                              ClusterIP   34.118.238.50    <none>        443/TCP                        46h
+kubevirt          kubevirt-operator-webhook                   ClusterIP   34.118.225.225   <none>        443/TCP                        32h
+kubevirt          kubevirt-prometheus-metrics                 ClusterIP   None             <none>        443/TCP                        32h
+kubevirt          virt-api                                    ClusterIP   34.118.228.189   <none>        443/TCP                        32h
+kubevirt          virt-exportproxy                            ClusterIP   34.118.239.251   <none>        443/TCP                        32h
+rabbitmq-system   rabbitmq-cluster                            ClusterIP   34.118.237.191   <none>        5672/TCP,15672/TCP,15692/TCP   46h
+rabbitmq-system   rabbitmq-cluster-nodes                      ClusterIP   None             <none>        4369/TCP,25672/TCP             46h
+rabbitmq-system   rabbitmq-cluster-operator-metrics-service   ClusterIP   34.118.225.14    <none>        8080/TCP                       46h
+sopes1-p2         go-d1-service                               ClusterIP   34.118.226.120   <none>        8080/TCP                       46h
+sopes1-p2         go-d2-service                               ClusterIP   34.118.233.207   <none>        50051/TCP                      46h
+sopes1-p2         go-metrics-exporter-service                 ClusterIP   34.118.232.101   <none>        9100/TCP                       12h
+sopes1-p2         grafana-service                             ClusterIP   34.118.239.32    <none>        3000/TCP,9090/TCP              31h
+sopes1-p2         rust-api-service                            ClusterIP   34.118.225.32    <none>        80/TCP                         46h
+sopes1-p2         valkey-service                              ClusterIP   34.118.239.100   <none>        6379/TCP                       32h
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl get hpa -A
+NAMESPACE         NAME                 REFERENCE                        TARGETS                  MINPODS   MAXPODS   REPLICAS   AGE
+gke-managed-cim   kube-state-metrics   StatefulSet/kube-state-metrics   memory: 46018560/400Mi   1         10        1          46h
+sopes1-p2         rust-api             Deployment/rust-api              cpu: 10%/30%             1         3         1          12h
+
+# Gateway
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl get gateway -A
+NAMESPACE   NAME               CLASS                            ADDRESS         PROGRAMMED   AGE
+sopes1-p2   rust-api-gateway   gke-l7-global-external-managed   136.68.202.37   True         46h
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl get httproute -A
+NAMESPACE   NAME             HOSTNAMES   AGE
+sopes1-p2   rust-api-route               46h
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl describe gateway rust-api-gateway -n sopes1-p2
+Name:         rust-api-gateway
+Namespace:    sopes1-p2
+Labels:       <none>
+Annotations:  networking.gke.io/addresses: /projects/262787282207/global/addresses/gkegw1-g38g-sopes1-p2-rust-api-gateway-crol6u8c3kuk
+              networking.gke.io/backend-services:
+                /projects/262787282207/global/backendServices/gkegw1-g38g-sopes1-p2-gw-serve404-80-4qyko4bhmb00, /projects/262787282207/global/backendServ...
+              networking.gke.io/firewalls: /projects/262787282207/global/firewalls/gkegw1-g38g-l7-default-global
+              networking.gke.io/forwarding-rules: /projects/262787282207/global/forwardingRules/gkegw1-g38g-sopes1-p2-rust-api-gateway-vj76kd601xoz
+              networking.gke.io/health-checks:
+                /projects/262787282207/global/healthChecks/gkegw1-g38g-sopes1-p2-gw-serve404-80-4qyko4bhmb00, /projects/262787282207/global/healthChecks/g...
+              networking.gke.io/last-reconcile-time: 2026-06-29T03:40:29Z
+              networking.gke.io/lb-edge-extensions: 
+              networking.gke.io/lb-route-extensions: 
+              networking.gke.io/lb-traffic-extensions: 
+              networking.gke.io/ssl-certificates: 
+              networking.gke.io/target-http-proxies: /projects/262787282207/global/targetHttpProxies/gkegw1-g38g-sopes1-p2-rust-api-gateway-ktltl610l1br
+              networking.gke.io/target-https-proxies: 
+              networking.gke.io/target-tcp-proxies: 
+              networking.gke.io/url-maps: /projects/262787282207/global/urlMaps/gkegw1-g38g-sopes1-p2-rust-api-gateway-ktltl610l1br
+              networking.gke.io/wasm-plugin-versions: 
+              networking.gke.io/wasm-plugins: 
+API Version:  gateway.networking.k8s.io/v1
+Kind:         Gateway
+Metadata:
+  Creation Timestamp:  2026-06-27T05:39:03Z
+  Finalizers:
+    gateway.finalizer.networking.gke.io
+  Generation:        1
+  Resource Version:  1782704429524383002
+  UID:               64b4ecf3-5760-4207-80a9-49ab907d8616
+Spec:
+  Gateway Class Name:  gke-l7-global-external-managed
+  Listeners:
+    Allowed Routes:
+      Namespaces:
+        From:  Same
+    Name:      http
+    Port:      80
+    Protocol:  HTTP
+Status:
+  Addresses:
+    Type:   IPAddress
+    Value:  136.68.202.37
+  Conditions:
+    Last Transition Time:  2026-06-27T05:41:28Z
+    Message:               The OSS Gateway API has deprecated this condition, do not depend on it.
+    Observed Generation:   1
+    Reason:                Scheduled
+    Status:                True
+    Type:                  Scheduled
+    Last Transition Time:  2026-06-27T05:41:28Z
+    Message:               
+    Observed Generation:   1
+    Reason:                Accepted
+    Status:                True
+    Type:                  Accepted
+    Last Transition Time:  2026-06-29T03:40:29Z
+    Message:               
+    Observed Generation:   1
+    Reason:                Programmed
+    Status:                True
+    Type:                  Programmed
+    Last Transition Time:  2026-06-29T03:40:29Z
+    Message:               The OSS Gateway API has altered the "Ready" condition semantics and reserved it for future use.  GKE Gateway will stop emitting it in a future update, use "Programmed" instead.
+    Observed Generation:   1
+    Reason:                Ready
+    Status:                True
+    Type:                  Ready
+    Last Transition Time:  2026-06-29T03:40:29Z
+    Message:               
+    Observed Generation:   1
+    Reason:                Healthy
+    Status:                True
+    Type:                  networking.gke.io/GatewayHealthy
+  Listeners:
+    Attached Routes:  1
+    Conditions:
+      Last Transition Time:  2026-06-27T05:41:28Z
+      Message:               
+      Observed Generation:   1
+      Reason:                ResolvedRefs
+      Status:                True
+      Type:                  ResolvedRefs
+      Last Transition Time:  2026-06-27T05:41:28Z
+      Message:               
+      Observed Generation:   1
+      Reason:                Accepted
+      Status:                True
+      Type:                  Accepted
+      Last Transition Time:  2026-06-29T03:40:29Z
+      Message:               
+      Observed Generation:   1
+      Reason:                Programmed
+      Status:                True
+      Type:                  Programmed
+      Last Transition Time:  2026-06-29T03:40:29Z
+      Message:               The OSS Gateway API has altered the "Ready" condition semantics and reserved it for future use.  GKE Gateway will stop emitting it in a future update, use "Programmed" instead.
+      Observed Generation:   1
+      Reason:                Ready
+      Status:                True
+      Type:                  Ready
+    Name:                    http
+    Supported Kinds:
+      Group:  gateway.networking.k8s.io
+      Kind:   HTTPRoute
+Events:
+  Type    Reason  Age                  From                   Message
+  ----    ------  ----                 ----                   -------
+  Normal  SYNC    40s (x613 over 29h)  sc-gateway-controller  SYNC on sopes1-p2/rust-api-gateway was a success
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl describe httproute rust-api-route -n sopes1-p2
+Name:         rust-api-route
+Namespace:    sopes1-p2
+Labels:       <none>
+Annotations:  <none>
+API Version:  gateway.networking.k8s.io/v1
+Kind:         HTTPRoute
+Metadata:
+  Creation Timestamp:  2026-06-27T05:39:04Z
+  Generation:          1
+  Resource Version:    1782704429601071014
+  UID:                 c7366cf7-fa92-4574-ac49-3a8f45d8fb0d
+Spec:
+  Parent Refs:
+    Group:  gateway.networking.k8s.io
+    Kind:   Gateway
+    Name:   rust-api-gateway
+  Rules:
+    Backend Refs:
+      Group:   
+      Kind:    Service
+      Name:    rust-api-service
+      Port:    80
+      Weight:  1
+    Matches:
+      Path:
+        Type:   PathPrefix
+        Value:  /health
+    Backend Refs:
+      Group:   
+      Kind:    Service
+      Name:    rust-api-service
+      Port:    80
+      Weight:  1
+    Filters:
+      Type:  URLRewrite
+      URL Rewrite:
+        Path:
+          Replace Prefix Match:  /
+          Type:                  ReplacePrefixMatch
+    Matches:
+      Path:
+        Type:   PathPrefix
+        Value:  /grpc-202308204
+Status:
+  Parents:
+    Conditions:
+      Last Transition Time:  2026-06-27T05:41:28Z
+      Message:               
+      Observed Generation:   1
+      Reason:                ResolvedRefs
+      Status:                True
+      Type:                  ResolvedRefs
+      Last Transition Time:  2026-06-27T05:41:28Z
+      Message:               
+      Observed Generation:   1
+      Reason:                Accepted
+      Status:                True
+      Type:                  Accepted
+      Last Transition Time:  2026-06-29T03:40:27Z
+      Message:               
+      Observed Generation:   1
+      Reason:                ReconciliationSucceeded
+      Status:                True
+      Type:                  Reconciled
+    Controller Name:         networking.gke.io/gateway
+    Parent Ref:
+      Group:  gateway.networking.k8s.io
+      Kind:   Gateway
+      Name:   rust-api-gateway
+Events:
+  Type    Reason  Age                    From                   Message
+  ----    ------  ----                   ----                   -------
+  Normal  SYNC    4m3s (x1223 over 29h)  sc-gateway-controller  All the object references were able to be resolved for HTTPRoute "sopes1-p2/rust-api-route" bound to ParentRef {Group:       "gateway.networking.k8s.io",
+ Kind:        "Gateway",
+ Namespace:   nil,
+ Name:        "rust-api-gateway",
+ SectionName: nil,
+ Port:        nil}
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ 
+# Rust API
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl logs -n sopes1-p2 -l app=rust-api -f --prefix
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.563270Z  INFO rust_api: Predicción recibida: ESP vs ARG (2 - 0)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.566360Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.703512Z  INFO rust_api: Predicción recibida: ARG vs MEX (4 - 5)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.707766Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.712120Z  INFO rust_api: Predicción recibida: ESP vs MEX (1 - 4)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.715748Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.846109Z  INFO rust_api: Predicción recibida: ESP vs MEX (5 - 1)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.849568Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.879216Z  INFO rust_api: Predicción recibida: MEX vs GTM (1 - 1)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.883047Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.894718Z  INFO rust_api: Predicción recibida: BRA vs GTM (3 - 2)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.895069Z  INFO rust_api: Predicción recibida: GTM vs MEX (0 - 4)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.899040Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.899838Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.982775Z  INFO rust_api: Predicción recibida: GTM vs ARG (4 - 4)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:45.986572Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.070893Z  INFO rust_api: Predicción recibida: ESP vs ARG (5 - 2)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.074610Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.098646Z  INFO rust_api: Predicción recibida: ESP vs ARG (4 - 0)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.102764Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.129193Z  INFO rust_api: Predicción recibida: BRA vs ARG (5 - 3)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.133059Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.239406Z  INFO rust_api: Predicción recibida: GTM vs ARG (5 - 5)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.242941Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.320793Z  INFO rust_api: Predicción recibida: ARG vs ESP (2 - 4)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.324607Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.366449Z  INFO rust_api: Predicción recibida: MEX vs GTM (0 - 5)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.370167Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.423546Z  INFO rust_api: Predicción recibida: BRA vs ESP (3 - 1)
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.427370Z  INFO rust_api: GoD1 respondió con status: 200 OK
+[pod/rust-api-6bffd8b84-nvjvr/rust-api] 2026-06-29T03:42:46.434845Z  INFO rust_api: Predicción recibida: ARG vs BRA (1 - 3)
+# Go D1
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl logs -n sopes1-p2 -l app=go-d1 \
+  -c rest-server -f --prefix
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: BRA vs ARG (5-4) por user_78
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: BRA vs MEX (0-3) por user_981
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: GTM vs ESP (3-5) por user_761
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: MEX vs ESP (5-5) por user_178
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: ESP vs ARG (2-2) por user_611
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: ESP vs ARG (4-4) por user_940
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: ESP vs MEX (1-0) por user_530
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: GTM vs MEX (3-3) por user_143
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: BRA vs ARG (1-5) por user_352
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: GTM vs BRA (5-2) por user_248
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] Predicción recibida: MEX vs ARG (0-5) por user_320
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:08 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: ARG vs MEX (2-2) por user_816
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: MEX vs GTM (1-2) por user_592
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: GTM vs BRA (2-3) por user_599
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: ARG vs ESP (3-2) por user_127
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: GTM vs BRA (3-0) por user_720
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: ESP vs GTM (5-1) por user_97
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: BRA vs MEX (3-3) por user_94
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: ARG vs ESP (0-2) por user_480
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: BRA vs ARG (3-2) por user_447
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: MEX vs BRA (0-2) por user_898
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: ESP vs MEX (2-5) por user_688
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] Predicción recibida: GTM vs BRA (5-4) por user_930
+[pod/go-d1-6c68879776-j6fcn/rest-server] 2026/06/29 03:44:09 [REST-SERVER] gRPC clientrespondió: 200
+
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl logs -n sopes1-p2 -l app=go-d1 \
+  -c grpc-client -f --prefix
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] BRA vs MEX por user_395 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] GTM vs MEX por user_796 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] ARG vs BRA por user_847 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] ARG vs BRA por user_931 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] BRA vs MEX por user_175 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] GTM vs MEX por user_420 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] BRA vs GTM por user_836 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] MEX vs BRA por user_871 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] BRA vs ARG por user_18 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] MEX vs BRA por user_251 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] BRA vs MEX por user_331 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:26 [GRPC-CLIENT] ESP vs ARG por user_512 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:27 [GRPC-CLIENT] ESP vs GTM por user_154 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:27 [GRPC-CLIENT] MEX vs ARG por user_392 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:27 [GRPC-CLIENT] GTM vs ESP por user_697 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:27 [GRPC-CLIENT] GTM vs MEX por user_862 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:27 [GRPC-CLIENT] GTM vs ESP por user_946 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:27 [GRPC-CLIENT] ARG vs GTM por user_299 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:27 [GRPC-CLIENT] GTM vs ARG por user_557 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:27 [GRPC-CLIENT] ARG vs GTM por user_39 -> published
+[pod/go-d1-6c68879776-j6fcn/grpc-client] 2026/06/29 03:44:27 [GRPC-CLIENT] ARG vs ESP por user_494 -> published
+
+# Go D2
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl logs -n sopes1-p2 -l app=go-d2 \
+  -c grpc-server -f --prefix
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada BRA vs ESP por user_196
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada GTM vs MEX por user_94
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada ESP vs MEX por user_658
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada ARG vs MEX por user_197
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada MEX vs GTM por user_904
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada MEX vs BRA por user_904
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada ESP vs ARG por user_922
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada GTM vs ARG por user_803
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada BRA vs MEX por user_632
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada ESP vs MEX por user_437
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada BRA vs ESP por user_971
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada ESP vs MEX por user_25
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:18 [GRPC-SERVER] Publicada GTM vs ESP por user_548
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:19 [GRPC-SERVER] Publicada ARG vs BRA por user_338
+[pod/go-d2-769659b4c5-qr5mv/grpc-server] 2026/06/29 03:45:19 [GRPC-SERVER] Publicada BRA vs ARG por user_94
+
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl logs -n sopes1-p2 -l app=go-d2 \
+  -c rabbit-writer -f --prefix
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:30 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"ESP","away_team":"ARG","home_goals":4,"away_goals":4,"username":"user_562","timestamp":"2026-06-29T03:45:30Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"MEX","away_team":"BRA","home_goals":0,"away_goals":3,"username":"user_549","timestamp":"2026-06-29T03:45:31Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"BRA","away_team":"ARG","home_goals":3,"away_goals":2,"username":"user_258","timestamp":"2026-06-29T03:45:31Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"GTM","away_team":"ESP","home_goals":2,"away_goals":0,"username":"user_316","timestamp":"2026-06-29T03:45:31Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"BRA","away_team":"GTM","home_goals":2,"away_goals":3,"username":"user_15","timestamp":"2026-06-29T03:45:31Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"BRA","away_team":"MEX","home_goals":1,"away_goals":0,"username":"user_657","timestamp":"2026-06-29T03:45:31Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"GTM","away_team":"MEX","home_goals":4,"away_goals":2,"username":"user_249","timestamp":"2026-06-29T03:45:31Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"ARG","away_team":"BRA","home_goals":5,"away_goals":1,"username":"user_200","timestamp":"2026-06-29T03:45:31Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"ARG","away_team":"BRA","home_goals":5,"away_goals":5,"username":"user_340","timestamp":"2026-06-29T03:45:31Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"GTM","away_team":"MEX","home_goals":4,"away_goals":2,"username":"user_288","timestamp":"2026-06-29T03:45:31Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"MEX","away_team":"ESP","home_goals":4,"away_goals":3,"username":"user_300","timestamp":"2026-06-29T03:45:31Z"}
+[pod/go-d2-769659b4c5-qr5mv/rabbit-writer] 2026/06/29 03:45:31 [RABBIT-WRITER] Mensajepersistente publicado: {"home_team":"BRA","away_team":"MEX","home_goals":1,"away_goals":1,"username":"user_553","timestamp":"2026-06-29T03:45:31Z"}
+
+# RabbitMQ
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl logs -n rabbitmq-system \
+  -l app.kubernetes.io/name=rabbitmq-cluster \
+  -c rabbitmq -f --prefix
+[pod/rabbitmq-cluster-server-0/rabbitmq] 2026-06-29 03:33:38.705461+00:00 [warning] <0.397.0> 
+[pod/rabbitmq-cluster-server-0/rabbitmq] 2026-06-29 03:33:54.722206+00:00 [info] <0.399.0> vm_memory_high_watermark clear. Memory used:170323968 allowed:171798692
+[pod/rabbitmq-cluster-server-0/rabbitmq] 2026-06-29 03:33:54.722386+00:00 [warning] <0.397.0> memory resource limit alarm cleared on node 'rabbit@rabbitmq-cluster-server-0.rabbitmq-cluster-nodes.rabbitmq-system'
+[pod/rabbitmq-cluster-server-0/rabbitmq] 2026-06-29 03:33:54.722438+00:00 [warning] <0.397.0> memory resource limit alarm cleared across the cluster
+[pod/rabbitmq-cluster-server-0/rabbitmq] 2026-06-29 03:34:07.616155+00:00 [info] <0.945.0> Waiting for Mnesia tables for 30000 ms, 9 retries left
+[pod/rabbitmq-cluster-server-0/rabbitmq] 2026-06-29 03:34:07.616409+00:00 [info] <0.945.0> Successfully synced tables from a peer
+[pod/rabbitmq-cluster-server-0/rabbitmq] 2026-06-29 03:39:07.648851+00:00 [info] <0.1116.0> Waiting for Mnesia tables for 30000 ms, 9 retries left
+[pod/rabbitmq-cluster-server-0/rabbitmq] 2026-06-29 03:39:07.649052+00:00 [info] <0.1116.0> Successfully synced tables from a peer
+[pod/rabbitmq-cluster-server-0/rabbitmq] 2026-06-29 03:44:07.707705+00:00 [info] <0.1283.0> Waiting for Mnesia tables for 30000 ms, 9 retries left
+[pod/rabbitmq-cluster-server-0/rabbitmq] 2026-06-29 03:44:07.707900+00:00 [info] <0.1283.0> Successfully synced tables from a peer
+
+# Consumer
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl logs -n sopes1-p2 \
+  -l app=go-consumer -f --prefix
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:43 [CONSUMER] Persistida GTM-ARG de user_734
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:43 [CONSUMER] Persistida BRA-GTM de user_134
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:43 [CONSUMER] Persistida MEX-ARG de user_756
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:43 [CONSUMER] Persistida ESP-BRA de user_527
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:43 [CONSUMER] Persistida ARG-ESP de user_731
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:43 [CONSUMER] Persistida MEX-GTM de user_625
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:43 [CONSUMER] Persistida ESP-ARG de user_608
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:43 [CONSUMER] Persistida ESP-BRA de user_415
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:43 [CONSUMER] Persistida MEX-GTM de user_124
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:43 [CONSUMER] Persistida ESP-MEX de user_973
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida BRA-MEX de user_361
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida ESP-BRA de user_340
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida GTM-ESP de user_19
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida MEX-ARG de user_836
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida ARG-GTM de user_166
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida BRA-ESP de user_586
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida BRA-ARG de user_624
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida MEX-BRA de user_955
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida BRA-GTM de user_618
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida ARG-BRA de user_50
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida BRA-GTM de user_34
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida MEX-BRA de user_205
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida ESP-GTM de user_623
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida GTM-ESP de user_844
+[pod/go-consumer-65857f6664-hhpmp/consumer] 2026/06/29 03:46:44 [CONSUMER] Persistida GTM-ARG de user_476
+
+# KubeVirt
+
+isai@IsaiPatzan-deskop:~/Documentos/Github/202308204_LAB_SO1_VacJun2026$ kubectl get vm,vmi -A
+NAMESPACE   NAME                                    AGE   STATUS    READY
+sopes1-p2   virtualmachine.kubevirt.io/grafana-vm   13h   Running   True
+sopes1-p2   virtualmachine.kubevirt.io/valkey-vm    32h   Running   True
+
+NAMESPACE   NAME                                            AGE   PHASE     IP NODENAME                                            READY
+sopes1-p2   virtualmachineinstance.kubevirt.io/grafana-vm   16m   Running   10.56.2.8 gke-sopes1-p2-cluster-kubevirt-pool-df2e6345-xrq2   True
+sopes1-p2   virtualmachineinstance.kubevirt.io/valkey-vm    16m   Running   10.56.2.9 gke-sopes1-p2-cluster-kubevirt-pool-df2e6345-xrq2   True

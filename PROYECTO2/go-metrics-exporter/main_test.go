@@ -1,6 +1,17 @@
 package main
 
-import "testing"
+import (
+	"net/http/httptest"
+	"testing"
+)
+
+func TestLiveDoesNotDependOnValkey(t *testing.T) {
+	recorder := httptest.NewRecorder()
+	live(recorder, httptest.NewRequest("GET", "/live", nil))
+	if recorder.Code != 200 || recorder.Body.String() != "ok" {
+		t.Fatalf("live = status %d body %q", recorder.Code, recorder.Body.String())
+	}
+}
 
 func TestEscapeLabel(t *testing.T) {
 	got := escapeLabel("user\\\"one\n")

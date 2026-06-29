@@ -24,11 +24,20 @@ trap cleanup EXIT
   exit 1
 }
 
-"$VIRTCTL" port-forward -n "$NAMESPACE" vmi/grafana-vm \
-  "$GRAFANA_LOCAL_PORT:3000" "$PROMETHEUS_LOCAL_PORT:9090" >"$log_file" 2>&1 &
-pf_pid=$!
+start_port_forward() {
+  : >"$log_file"
+  "$VIRTCTL" port-forward -n "$NAMESPACE" vmi/grafana-vm \
+    "$GRAFANA_LOCAL_PORT:3000" "$PROMETHEUS_LOCAL_PORT:9090" >>"$log_file" 2>&1 &
+  pf_pid=$!
+  sleep 1
+}
 
 for _ in $(seq 1 180); do
+  if [[ -z "$pf_pid" ]] || ! kill -0 "$pf_pid" >/dev/null 2>&1; then
+    wait "$pf_pid" >/dev/null 2>&1 || true
+    pf_pid=""
+    start_port_forward
+  fi
   if curl --fail --silent --show-error --connect-timeout 2 \
       "http://127.0.0.1:$GRAFANA_LOCAL_PORT/api/health" >"$health_file" 2>/dev/null \
     && curl --fail --silent --show-error --connect-timeout 2 \
@@ -39,7 +48,7 @@ for _ in $(seq 1 180); do
       exit 1
     }
     final_url="$(curl --location --silent --output /dev/null --write-out '%{url_effective}' \
-      "http://127.0.0.1:$GRAFANA_LOCAL_PORT/d/quiniela-bra/quiniela-mundial-2026-brasil-bra")"
+      "http://127.0.0.1:$GRAFANA_LOCAL_PORT/d/quiniela-bra-202308204/quiniela-mundial-2026-brasil-bra")"
     [[ "$final_url" != *'/login'* ]] || {
       echo "Grafana redirige al login; acceso anónimo no está activo." >&2
       exit 1
@@ -47,10 +56,6 @@ for _ in $(seq 1 180); do
     echo "Grafana $version y Prometheus listos; dashboard accesible sin login."
     exit 0
   fi
-  kill -0 "$pf_pid" >/dev/null 2>&1 || {
-    cat "$log_file" >&2
-    exit 1
-  }
   sleep 2
 done
 

@@ -14,7 +14,7 @@ Auditoría realizada contra `SKILL/SKILL.md` el 28 de junio de 2026.
 | Consumer Go y ACK posterior al guardado | Cumple | `go-consumer/main.go` |
 | Valkey bajo containerd en VM KubeVirt | Cumple | `valkey/vm.yaml`; Service y persistencia funcional |
 | Grafana bajo containerd en VM independiente | Cumple | `grafana/vm.yaml`, cloud-init y evidencia runtime |
-| Dashboard del equipo BRA con paneles requeridos | Cumple técnicamente | Dashboard JSON y exporter; falta renovar captura final |
+| Dashboard del equipo BRA con paneles requeridos | Cumple | Dashboard JSON, exporter y captura final |
 | Zot en VM externa, HTTPS e imágenes consumidas desde Zot | Cumple | Catálogo Zot y referencias de imágenes |
 | Comparación de 1 vs. 2 réplicas | Cumple | Go D2: `evidence/locust/20260628T225747Z/` |
 | Manual técnico Markdown, ejecución, metodología y conclusiones | Cumple | Carpeta `docs/` |
@@ -25,10 +25,9 @@ Auditoría realizada contra `SKILL/SKILL.md` el 28 de junio de 2026.
 ## Controles manuales restantes antes de presentar
 
 1. Encender los node pools y ejecutar `make validate`.
-2. Abrir Grafana y guardar una captura final del dashboard con datos.
-3. Confirmar en GitHub que el repositorio sea privado y que `CamiloSincal` sea colaborador.
-4. Confirmar que todos los cambios de entrega estén versionados y enviados al remoto.
+2. Confirmar en GitHub que el repositorio sea privado y que `CamiloSincal` sea colaborador.
+3. Confirmar que todos los cambios de entrega estén versionados y enviados al remoto.
 
-No se reactivaron los node pools durante el cierre de esta auditoría para evitar generar costo
-sin autorización. La última validación activa previa al apagado mostró Pods `Running`, ambas
-VMI `Ready=True`, Gateway programado, cola vacía y flujo público HTTP 200.
+La validación activa del 29 de junio de 2026 mostró tres nodos `Ready`, Pods del proyecto
+`Running` sin reinicios en Go D2 ni el exporter, ambas VMI `Ready=True`, Gateway programado,
+cola vacía, Grafana 11.5.2 y flujo público HTTP 200.

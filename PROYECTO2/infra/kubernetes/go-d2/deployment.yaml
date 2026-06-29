@@ -62,6 +62,12 @@ spec:
             port: writer-http
           initialDelaySeconds: 5
           periodSeconds: 5
+        startupProbe:
+          httpGet:
+            path: /live
+            port: writer-http
+          periodSeconds: 5
+          failureThreshold: 60
         livenessProbe:
           httpGet:
             path: /live

@@ -292,6 +292,10 @@ func (e *exporter) health(w http.ResponseWriter, _ *http.Request) {
 	_, _ = w.Write([]byte("ok"))
 }
 
+func live(w http.ResponseWriter, _ *http.Request) {
+	_, _ = w.Write([]byte("ok"))
+}
+
 func getenv(key, fallback string) string {
 	if value := os.Getenv(key); value != "" {
 		return value
@@ -305,6 +309,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/metrics", exp.metrics)
 	mux.HandleFunc("/health", exp.health)
+	mux.HandleFunc("/live", live)
 	addr := getenv("LISTEN_ADDR", ":9100")
 	log.Printf("[EXPORTER] Escuchando en %s, equipo=%s", addr, assignedTeam)
 	log.Fatal(http.ListenAndServe(addr, mux))
