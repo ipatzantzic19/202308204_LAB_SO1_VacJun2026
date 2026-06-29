@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: consumer
-        image: zot.35-226-224-23.sslip.io/sopes1/go-consumer:v1
+        image: zot.35-226-224-23.sslip.io/sopes1/go-consumer:v2
         ports:
         - name: health
           containerPort: 8080

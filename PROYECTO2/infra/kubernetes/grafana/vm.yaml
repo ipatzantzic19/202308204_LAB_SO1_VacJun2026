@@ -3,15 +3,13 @@ kind: VirtualMachine
 metadata:
   name: grafana-vm
   namespace: sopes1-p2
-  labels:
-    app: grafana-vm
 spec:
-  runStrategy: Always
+  running: true
   template:
     metadata:
       labels:
-        app: grafana-vm
         kubevirt.io/domain: grafana-vm
+        app: grafana-vm
     spec:
       nodeSelector:
         nested-virtualization: enabled
@@ -20,7 +18,6 @@ spec:
           operator: Equal
           value: virtualization
           effect: NoSchedule
-      terminationGracePeriodSeconds: 60
       domain:
         cpu:
           cores: 1
@@ -28,25 +25,25 @@ spec:
           requests:
             memory: 2Gi
         devices:
-          autoattachGraphicsDevice: false
           disks:
             - name: rootdisk
+              disk:
+                bus: virtio
+            - name: containerddisk
+              disk:
+                bus: virtio
+            - name: grafanadata
+              disk:
+                bus: virtio
+            - name: prometheusdata
               disk:
                 bus: virtio
             - name: cloudinit
               disk:
                 bus: virtio
-          filesystems:
-            - name: grafanadata
-              virtiofs: {}
           interfaces:
             - name: default
               masquerade: {}
-              ports:
-                - name: grafana
-                  port: 3000
-                - name: prometheus
-                  port: 9090
       networks:
         - name: default
           pod: {}
@@ -55,9 +52,15 @@ spec:
           containerDisk:
             image: zot.35-226-224-23.sslip.io/library/ubuntu-container-disk:24.04
             imagePullPolicy: IfNotPresent
+        - name: containerddisk
+          emptyDisk:
+            capacity: 8Gi
         - name: grafanadata
           persistentVolumeClaim:
             claimName: grafana-data
+        - name: prometheusdata
+          persistentVolumeClaim:
+            claimName: prometheus-data
         - name: cloudinit
           cloudInitNoCloud:
             secretRef:

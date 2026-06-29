@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-metrics-exporter
+  namespace: sopes1-p2
+  labels:
+    app: go-metrics-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-metrics-exporter
+  template:
+    metadata:
+      labels:
+        app: go-metrics-exporter
+    spec:
+      containers:
+        - name: exporter
+          image: zot.35-226-224-23.sslip.io/sopes1/go-metrics-exporter:v5
+          ports:
+            - name: metrics
+              containerPort: 9100
+          env:
+            - name: VALKEY_ADDR
+              value: valkey-service.sopes1-p2.svc.cluster.local:6379
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: metrics
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: metrics
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi

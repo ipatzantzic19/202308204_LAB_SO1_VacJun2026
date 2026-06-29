@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-metrics-exporter-service
+  namespace: sopes1-p2
+spec:
+  selector:
+    app: go-metrics-exporter
+  ports:
+    - name: metrics
+      port: 9100
+      targetPort: metrics

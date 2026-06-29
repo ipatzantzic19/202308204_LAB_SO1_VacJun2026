@@ -1,22 +1,39 @@
 #cloud-config
 users:
-  - name: ubuntu
-    groups: sudo
-    shell: /bin/bash
-    lock_passwd: false
+  - default
+  - name: grader
+    groups: [sudo]
     sudo: ALL=(ALL) NOPASSWD:ALL
-
-chpasswd:
-  expire: false
-  users:
-    - name: ubuntu
-      password: ubuntu202308204
-
-ssh_pwauth: true
-
+    shell: /bin/bash
+    lock_passwd: true
+    ssh_authorized_keys:
+      - __GRAFANA_SSH_PUBLIC_KEY__
+disable_root: true
+ssh_pwauth: false
 package_update: true
 packages:
   - containerd
+  - openssh-server
+  - qemu-guest-agent
+
+fs_setup:
+  - label: CONTAINERD
+    filesystem: ext4
+    device: /dev/vdb
+    overwrite: false
+  - label: GRAFANA
+    filesystem: ext4
+    device: /dev/vdc
+    overwrite: false
+  - label: PROMETHEUS
+    filesystem: ext4
+    device: /dev/vdd
+    overwrite: false
+
+mounts:
+  - [LABEL=CONTAINERD, /mnt/containerd-data, ext4, "defaults,nofail", "0", "2"]
+  - [LABEL=GRAFANA, /mnt/grafana-data, ext4, "defaults,nofail", "0", "2"]
+  - [LABEL=PROMETHEUS, /mnt/prometheus-data, ext4, "defaults,nofail", "0", "2"]
 
 write_files:
   - path: /etc/prometheus/prometheus.yml
@@ -24,12 +41,54 @@ write_files:
     content: |
       global:
         scrape_interval: 5s
+        evaluation_interval: 5s
 
       scrape_configs:
         - job_name: "go-metrics-exporter"
           static_configs:
             - targets:
                 - "go-metrics-exporter-service.sopes1-p2.svc.cluster.local:9100"
+
+  - path: /etc/grafana/provisioning/datasources/prometheus.yml
+    permissions: '0644'
+    content: |
+      apiVersion: 1
+      deleteDatasources:
+        - name: Prometheus
+          orgId: 1
+        - name: prometheus
+          orgId: 1
+      datasources:
+        - name: Prometheus
+          uid: prometheus
+          type: prometheus
+          access: proxy
+          url: http://127.0.0.1:9090
+          isDefault: true
+          editable: false
+          jsonData:
+            httpMethod: POST
+            timeInterval: 5s
+
+  - path: /etc/grafana/provisioning/dashboards/quiniela.yml
+    permissions: '0644'
+    content: |
+      apiVersion: 1
+      providers:
+        - name: Quiniela Mundial 2026
+          orgId: 1
+          folder: SOPES1
+          type: file
+          disableDeletion: true
+          updateIntervalSeconds: 10
+          allowUiUpdates: false
+          options:
+            path: /etc/grafana/dashboards
+
+  - path: /etc/grafana/dashboards/quiniela-bra.json
+    permissions: '0644'
+    encoding: b64
+    content: __GRAFANA_DASHBOARD_BASE64__
 
   - path: /etc/systemd/system/prometheus-container.service
     permissions: '0644'
@@ -49,10 +108,12 @@ write_files:
       ExecStartPre=-/usr/bin/ctr containers delete prometheus
       ExecStart=/usr/bin/ctr run --rm --net-host \
         --mount type=bind,src=/etc/prometheus,dst=/etc/prometheus,options=rbind:ro \
+        --mount type=bind,src=/mnt/prometheus-data/prometheus,dst=/prometheus,options=rbind:rw \
         zot.35-226-224-23.sslip.io/library/prometheus:v2.55.1 \
         prometheus \
         /bin/prometheus \
         --config.file=/etc/prometheus/prometheus.yml \
+        --storage.tsdb.path=/prometheus \
         --web.listen-address=0.0.0.0:9090
       ExecStop=-/usr/bin/ctr tasks kill --signal SIGTERM prometheus
 
@@ -70,30 +131,51 @@ write_files:
 
       [Service]
       Type=simple
+      EnvironmentFile=/etc/grafana/admin.env
       Restart=always
       RestartSec=5
       ExecStartPre=/usr/bin/ctr images pull zot.35-226-224-23.sslip.io/library/grafana-oss:11.5.2
       ExecStartPre=-/usr/bin/ctr tasks kill --signal SIGKILL grafana
       ExecStartPre=-/usr/bin/ctr containers delete grafana
       ExecStart=/usr/bin/ctr run --rm --net-host \
-        --mount type=bind,src=/var/lib/grafana,dst=/var/lib/grafana,options=rbind:rw \
+        --mount type=bind,src=/mnt/grafana-data/grafana,dst=/var/lib/grafana,options=rbind:rw \
+        --mount type=bind,src=/etc/grafana/provisioning,dst=/etc/grafana/provisioning,options=rbind:ro \
+        --mount type=bind,src=/etc/grafana/dashboards,dst=/etc/grafana/dashboards,options=rbind:ro \
         --env GF_SECURITY_ADMIN_USER=admin \
-        --env GF_SECURITY_ADMIN_PASSWORD=admin202308204 \
+        --env GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD} \
         --env GF_USERS_ALLOW_SIGN_UP=false \
+        --env GF_AUTH_ANONYMOUS_ENABLED=true \
+        --env GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer \
+        --env GF_AUTH_DISABLE_LOGIN_FORM=true \
         zot.35-226-224-23.sslip.io/library/grafana-oss:11.5.2 \
-        grafana
+        grafana \
+        /run.sh
       ExecStop=-/usr/bin/ctr tasks kill --signal SIGTERM grafana
 
       [Install]
       WantedBy=multi-user.target
 
-mounts:
-  - [grafanadata, /var/lib/grafana, virtiofs, "defaults,nofail", "0", "0"]
-
 runcmd:
+  - [mkdir, -p, /mnt/containerd-data/containerd]
+  - [mkdir, -p, /mnt/grafana-data/grafana]
+  - [mkdir, -p, /mnt/prometheus-data/prometheus]
   - [mkdir, -p, /etc/prometheus]
-  - [mkdir, -p, /var/lib/grafana]
-  - [chmod, "0777", /var/lib/grafana]
+  - [mkdir, -p, /etc/grafana/provisioning/datasources]
+  - [mkdir, -p, /etc/grafana/provisioning/dashboards]
+  - [mkdir, -p, /etc/grafana/dashboards]
+  - [chown, -R, "472:472", /mnt/grafana-data/grafana]
+  - [chmod, "0750", /mnt/grafana-data/grafana]
+  - [chown, -R, "65534:65534", /mnt/prometheus-data/prometheus]
+  - [chmod, "0750", /mnt/prometheus-data/prometheus]
+  - [bash, -c, 'umask 077; printf "GF_SECURITY_ADMIN_PASSWORD=%s\n" "$(tr -dc A-Za-z0-9 </dev/urandom | head -c 48)" > /etc/grafana/admin.env']
+  - [apt-get, clean]
+  - [systemctl, enable, --now, ssh]
+  - [systemctl, enable, --now, qemu-guest-agent]
+  - [systemctl, stop, containerd]
+  - [rm, -rf, /var/lib/containerd]
+  - [ln, -s, /mnt/containerd-data/containerd, /var/lib/containerd]
+  - [systemctl, start, containerd]
   - [systemctl, daemon-reload]
   - [systemctl, enable, --now, prometheus-container.service]
   - [systemctl, enable, --now, grafana-container.service]
+  - [bash, -c, 'source /etc/grafana/admin.env; for i in $(seq 1 30); do /usr/bin/ctr task exec --exec-id "reset-admin-$i" grafana grafana cli --homepath /usr/share/grafana admin reset-admin-password "$GF_SECURITY_ADMIN_PASSWORD" && exit 0; sleep 2; done; exit 1']

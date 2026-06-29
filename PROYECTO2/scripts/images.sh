@@ -18,6 +18,7 @@ build_images() {
     -f "$PROJECT_ROOT/go-d2/grpc-server/Dockerfile" "$PROJECT_ROOT"
   docker build -t "$GO_D2_WRITER_IMAGE" "$PROJECT_ROOT/go-d2/rabbit-writer"
   docker build -t "$GO_CONSUMER_IMAGE" -f "$PROJECT_ROOT/go-consumer/Dockerfile" "$PROJECT_ROOT"
+  docker build -t "$GO_METRICS_EXPORTER_IMAGE" "$PROJECT_ROOT/go-metrics-exporter"
   docker build -t "$LOCUST_IMAGE" "$PROJECT_ROOT/locust"
   docker pull "$RABBITMQ_SOURCE_IMAGE"
   docker tag "$RABBITMQ_SOURCE_IMAGE" "$RABBITMQ_IMAGE"
@@ -35,6 +36,7 @@ push_images() {
     "$GO_D2_GRPC_IMAGE" \
     "$GO_D2_WRITER_IMAGE" \
     "$GO_CONSUMER_IMAGE" \
+    "$GO_METRICS_EXPORTER_IMAGE" \
     "$LOCUST_IMAGE" \
     "$RABBITMQ_IMAGE" \
     "$VALKEY_IMAGE" \

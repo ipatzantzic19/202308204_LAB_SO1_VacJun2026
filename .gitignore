@@ -7,3 +7,4 @@ kernel_module/*.symvers
 kernel_module/.*.cmd
 kernel_module/..*.cmd
 PROYECTO2/rust-api/target/
+PROYECTO2/.bin/

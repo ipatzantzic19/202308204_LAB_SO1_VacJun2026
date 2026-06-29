@@ -86,6 +86,16 @@ end
 if home_team == assigned or away_team == assigned then
   local prefix = 'prediction:' .. string.lower(assigned)
   redis.call('INCR', prefix .. ':count')
+
+  -- Ventana reproducible con la predicción completa. El consecutivo evita
+  -- colisiones cuando varios usuarios envían en el mismo segundo.
+  local sequence = redis.call('INCR', 'stats:event:sequence')
+  redis.call('ZADD', prefix .. ':recent', score, tostring(sequence) .. '|' .. ARGV[11])
+  local recent_size = redis.call('ZCARD', prefix .. ':recent')
+  if recent_size > max_points then
+    redis.call('ZREMRANGEBYRANK', prefix .. ':recent', 0, recent_size - max_points - 1)
+  end
+
   local side, goals
   if home_team == assigned then side, goals = 'local', home_goals else side, goals = 'away', away_goals end
   local key = prefix .. ':timeseries:' .. side
@@ -103,9 +113,13 @@ func (s *valkeyStore) Save(ctx context.Context, p prediction) error {
 		return fmt.Errorf("timestamp inválido: %w", err)
 	}
 	eventID := fmt.Sprintf("%d-%s-%s-%s", t.UnixNano(), p.HomeTeam, p.AwayTeam, p.Username)
+	rawPrediction, err := json.Marshal(p)
+	if err != nil {
+		return fmt.Errorf("serializando predicción: %w", err)
+	}
 	_, err = savePrediction.Run(ctx, s.client, nil,
 		p.HomeTeam, p.AwayTeam, p.HomeGoals, p.AwayGoals, p.Username, p.Timestamp,
-		t.UnixMilli(), eventID, assignedTeam, s.maxPoints,
+		t.UnixMilli(), eventID, assignedTeam, s.maxPoints, string(rawPrediction),
 	).Result()
 	if err != nil {
 		return fmt.Errorf("guardando métricas en Valkey: %w", err)

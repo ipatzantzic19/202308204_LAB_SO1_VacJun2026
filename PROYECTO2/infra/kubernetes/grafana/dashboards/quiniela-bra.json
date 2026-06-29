@@ -1,0 +1,179 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Máximo de goles locales en las últimas 5 predicciones del enfrentamiento actual (el mismo par local/visitante de la predicción más reciente).",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#002776", "mode": "fixed" }, "decimals": 0, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#002776", "value": null }] } }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 0 },
+      "id": 1,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value", "wideLayout": true },
+      "targets": [{ "editorMode": "code", "expr": "quiniela_local_goals_max", "instant": true, "legendFormat": "Máximo local", "range": false, "refId": "A" }],
+      "title": "Máx. local — partido actual",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Mínimo de goles locales en las últimas 5 predicciones del enfrentamiento actual.",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#FFDF00", "mode": "fixed" }, "decimals": 0, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#FFDF00", "value": null }] } }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 0 },
+      "id": 2,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value", "wideLayout": true },
+      "targets": [{ "editorMode": "code", "expr": "quiniela_local_goals_min", "instant": true, "legendFormat": "Mínimo local", "range": false, "refId": "A" }],
+      "title": "Mín. local — partido actual",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Máximo de goles visitantes en las últimas 5 predicciones del enfrentamiento actual.",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#009C3B", "mode": "fixed" }, "decimals": 0, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#009C3B", "value": null }] } }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 0 },
+      "id": 3,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value", "wideLayout": true },
+      "targets": [{ "editorMode": "code", "expr": "quiniela_away_goals_max", "instant": true, "legendFormat": "Máximo visitante", "range": false, "refId": "A" }],
+      "title": "Máx. visitante — partido actual",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Mínimo de goles visitantes en las últimas 5 predicciones del enfrentamiento actual.",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#FFDF00", "mode": "fixed" }, "decimals": 0, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#FFDF00", "value": null }] } }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 0 },
+      "id": 4,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value", "wideLayout": true },
+      "targets": [{ "editorMode": "code", "expr": "quiniela_away_goals_min", "instant": true, "legendFormat": "Mínimo visitante", "range": false, "refId": "A" }],
+      "title": "Mín. visitante — partido actual",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Valor más frecuente de goles locales en las últimas 5 predicciones del enfrentamiento actual.",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#002776", "mode": "fixed" }, "decimals": 0, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#002776", "value": null }] } }, "overrides": [] },
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 5 },
+      "id": 5,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value", "wideLayout": true },
+      "targets": [{ "editorMode": "code", "expr": "quiniela_local_goals_mode", "instant": true, "legendFormat": "Moda local", "range": false, "refId": "A" }],
+      "title": "Moda local — partido actual",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Valor más frecuente de goles visitantes en las últimas 5 predicciones del enfrentamiento actual.",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#009C3B", "mode": "fixed" }, "decimals": 0, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#009C3B", "value": null }] } }, "overrides": [] },
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 5 },
+      "id": 6,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value", "wideLayout": true },
+      "targets": [{ "editorMode": "code", "expr": "quiniela_away_goals_mode", "instant": true, "legendFormat": "Moda visitante", "range": false, "refId": "A" }],
+      "title": "Moda visitante — partido actual",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Equipos con más victorias predichas según el acumulado histórico de todas las predicciones procesadas.",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#009C3B", "mode": "fixed" }, "decimals": 0, "min": 0, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#009C3B", "value": null }] } }, "overrides": [] },
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 5 },
+      "id": 7,
+      "options": { "displayMode": "gradient", "maxVizHeight": 300, "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "left", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [{ "editorMode": "code", "expr": "topk(5, quiniela_team_wins)", "instant": true, "legendFormat": "{{team}}", "range": false, "refId": "A" }],
+      "title": "Top equipos por victorias — histórico",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Usuarios más activos según el acumulado histórico de todas las predicciones procesadas.",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#002776", "mode": "fixed" }, "decimals": 0, "min": 0, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#002776", "value": null }] } }, "overrides": [] },
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 5 },
+      "id": 8,
+      "options": { "displayMode": "gradient", "maxVizHeight": 300, "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "left", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [{ "editorMode": "code", "expr": "topk(5, quiniela_user_predictions)", "instant": true, "legendFormat": "{{username}}", "range": false, "refId": "A" }],
+      "title": "Top usuarios — histórico",
+      "type": "bargauge"
+    },
+    {
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 11 },
+      "id": 9,
+      "options": { "code": { "language": "plaintext", "showLineNumbers": false, "showMiniMap": false }, "content": "<div style=\"height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#009C3B 0%,#009C3B 50%,#FFDF00 50%,#FFDF00 100%);border-radius:6px\"><b style=\"font-size:17px;color:#ffffff;text-shadow:0 1px 2px #000\">EQUIPO ASIGNADO</b><strong style=\"font-size:50px;color:#002776;text-shadow:0 1px 1px #ffffff\">BRA</strong></div>", "mode": "html" },
+      "pluginVersion": "11.5.2",
+      "title": "Brasil — Dashboard asignado",
+      "type": "text"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Conteo acumulado exacto de todas las predicciones donde BRA aparece como equipo local o visitante.",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#FFDF00", "mode": "fixed" }, "decimals": 0, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#FFDF00", "value": null }] }, "unit": "none" }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 11 },
+      "id": 10,
+      "options": { "colorMode": "value", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "value", "wideLayout": true },
+      "targets": [{ "editorMode": "code", "expr": "quiniela_bra_predictions_total", "instant": true, "legendFormat": "Predicciones recibidas", "range": false, "refId": "A" }],
+      "title": "Predicciones relacionadas con BRA — total exacto",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Equipo que figura como local en la predicción más reciente relacionada con BRA.",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#002776", "mode": "fixed" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#002776", "value": null }] } }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 11 },
+      "id": 13,
+      "options": { "colorMode": "value", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "name", "wideLayout": true },
+      "targets": [{ "editorMode": "code", "expr": "quiniela_latest_match_info", "instant": true, "legendFormat": "{{home_team}}", "range": false, "refId": "A" }],
+      "title": "Última predicción — Equipo local",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Equipo que figura como visitante en la predicción más reciente relacionada con BRA.",
+      "fieldConfig": { "defaults": { "color": { "fixedColor": "#009C3B", "mode": "fixed" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "#009C3B", "value": null }] } }, "overrides": [] },
+      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 11 },
+      "id": 14,
+      "options": { "colorMode": "value", "graphMode": "none", "justifyMode": "center", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "name", "wideLayout": true },
+      "targets": [{ "editorMode": "code", "expr": "quiniela_latest_match_info", "instant": true, "legendFormat": "{{away_team}}", "range": false, "refId": "A" }],
+      "title": "Última predicción — Equipo visitante",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Evolución reciente de goles predichos para el equipo local y visitante. El eje vertical está limitado al rango válido de 0 a 5 goles.",
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "palette-classic" }, "custom": { "axisBorderShow": false, "axisCenteredZero": false, "axisColorMode": "text", "axisLabel": "​", "axisPlacement": "auto", "fillOpacity": 85, "gradientMode": "opacity", "hideFrom": { "legend": false, "tooltip": false, "viz": false }, "lineWidth": 1, "scaleDistribution": { "type": "linear" }, "thresholdsStyle": { "mode": "off" } }, "decimals": 0, "max": 5, "min": 0, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }, "unit": "none" },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Equipo local" }, "properties": [{ "id": "color", "value": { "fixedColor": "#002776", "mode": "fixed" } }] },
+          { "matcher": { "id": "byName", "options": "Equipo visitante" }, "properties": [{ "id": "color", "value": { "fixedColor": "#FFDF00", "mode": "fixed" } }] }
+        ]
+      },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 16 },
+      "id": 11,
+      "options": { "barRadius": 0.15, "barWidth": 0.8, "fullHighlight": false, "groupWidth": 0.75, "legend": { "calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true }, "orientation": "auto", "showValue": "never", "stacking": "none", "tooltip": { "hideZeros": false, "mode": "multi", "sort": "none" }, "xTickLabelRotation": 0, "xTickLabelSpacing": 0 },
+      "targets": [
+        { "editorMode": "code", "expr": "quiniela_bra_local_goals", "legendFormat": "Equipo local", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "quiniela_bra_away_goals", "legendFormat": "Equipo visitante", "range": true, "refId": "B" }
+      ],
+      "title": "Goles predichos por lado — evolución reciente",
+      "type": "barchart"
+    },
+    {
+      "gridPos": { "h": 2, "w": 24, "x": 0, "y": 24 },
+      "id": 12,
+      "options": { "code": { "language": "plaintext", "showLineNumbers": false, "showMiniMap": false }, "content": "<div style=\"height:100%;display:flex;align-items:center;justify-content:center;border:2px solid #009C3B;color:#FFDF00;background:#002776;font-size:16px;font-weight:600\">BRASIL · # 202308204 · QUINIELA MUNDIAL 2026</div>", "mode": "html" },
+      "pluginVersion": "11.5.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 40,
+  "tags": ["SOPES1", "quiniela", "BRA", "Brasil"],
+  "templating": { "list": [] },
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "🇧🇷 Quiniela Mundial 2026 — Brasil (BRA)",
+  "uid": "quiniela-bra-202308204",
+  "version": 6,
+  "weekStart": ""
+}

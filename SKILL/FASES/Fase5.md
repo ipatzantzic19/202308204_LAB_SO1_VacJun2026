@@ -1,5 +1,8 @@
 # Fase 5 — Documentación, reproducibilidad y entrega
 
+> **Estado:** implementada técnicamente el 28 de junio de 2026. Quedan los controles manuales
+> de GitHub y la captura final del dashboard al reactivar los node pools.
+
 ## Objetivo
 
 Entregar un repositorio reproducible y evidencia verificable exclusivamente en Markdown.

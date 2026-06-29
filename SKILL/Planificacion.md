@@ -9,9 +9,9 @@
 |---|---|---|---|
 | **Fase 1** | Infraestructura Base | ✅ Corregida y verificada | Clases 6-9 y 12 |
 | **Fase 2** | Comunicación Interna y Mensajería | ✅ Corregida y verificada | Clases 8, 11 y 12 |
-| **Fase 3** | Consumo y Persistencia en VM | ⬜ Planificada | Clases 11 y 13 |
-| **Fase 4** | Visualización y Pruebas de Carga | ⬜ Planificada | Clases 9, 11-13 |
-| **Fase 5** | Documentación y Entrega | ⬜ Planificada | Validación final |
+| **Fase 3** | Consumo y Persistencia en VM | ✅ Implementada y verificada | Clases 11 y 13 |
+| **Fase 4** | Visualización y Pruebas de Carga | ✅ Implementada y verificada | Clases 9, 11-13 |
+| **Fase 5** | Documentación y Entrega | 🔄 Lista técnicamente; faltan controles de GitHub | Validación final |
 
 > **Leyenda:** ✅ Completado · 🔄 En progreso · ⬜ Pendiente · 🔒 Bloqueado
 >
@@ -112,7 +112,7 @@ Internet
 ## Fase 3 — Consumo y Persistencia en VM
 
 > **Clase asociada:** Clase 10-11 del curso (KubeVirt + containerd)
-> **Estado:** 🔒 Actualizar cuando se vean estas clases
+> **Estado:** completada y revalidada el 28 de junio de 2026.
 
 ### 3.1 Consumer en Go
 
@@ -132,10 +132,10 @@ Internet
 ### 3.3 VM 1 — Valkey
 
 - [x] Crear `VirtualMachine` en K8s (YAML) para VM de Valkey
-- [ ] Dentro de la VM: instalar `containerd`
-- [ ] Crear contenedor con Valkey usando containerd (no Docker)
+- [x] Dentro de la VM: instalar `containerd`
+- [x] Crear contenedor con Valkey usando containerd (no Docker)
 - [x] Exponer Valkey vía Service de K8s para que Consumer pueda conectar
-- [ ] Configurar TTL en Valkey para evitar saturación
+- [x] Acotar series recientes a 10,000 elementos para evitar crecimiento ilimitado
 
 ### 3.4 Integrar Consumer con Valkey
 
@@ -175,53 +175,52 @@ stats:away:goals:min          → mínimo de goles visitante en un partido
 ## Fase 4 — Visualización y Pruebas de Carga
 
 > **Clase asociada:** Clase 12+ del curso
-> **Estado:** 🔒 Actualizar cuando se vean estas clases
+> **Estado:** completada y revalidada el 28 de junio de 2026.
 
 ### 4.1 VM 2 — Grafana
 
-- [ ] Crear segunda `VirtualMachine` en K8s para Grafana (independiente de VM 1)
-- [ ] Instalar containerd dentro de la VM
-- [ ] Crear contenedor con Grafana usando containerd
-- [ ] Configurar datasource: Valkey (plugin Redis o Infinity)
-  - [ ] URL apuntando al Service de la VM 1
-- [ ] Exponer Grafana vía Service (o via Gateway API)
+- [x] Crear segunda `VirtualMachine` en K8s para Grafana (independiente de VM 1)
+- [x] Instalar containerd dentro de la VM
+- [x] Crear contenedores con Grafana y Prometheus usando containerd
+- [x] Configurar Prometheus como datasource, alimentado por exporter propio desde Valkey
+- [x] Exponer Grafana vía Service
 
 ### 4.2 Dashboard BRA
 
 Crear paneles en Grafana:
 
-- [ ] Mayor goles local en un partido (Stat)
-- [ ] Menor goles local en un partido (Stat)
-- [ ] Mayor goles visitante en un partido (Stat)
-- [ ] Menor goles visitante en un partido (Stat)
-- [ ] Top equipos con más victorias predichas (Bar chart)
-- [ ] Top usuarios más activos (Bar chart)
-- [ ] Moda de goles predichos local (Stat)
-- [ ] Moda de goles predichos visitante (Stat)
-- [ ] Serie temporal BRA: goles local y visitante (Time Series)
-- [ ] Nombre del equipo: "BRA" (Text)
-- [ ] Total predicciones para BRA (Stat)
+- [x] Mayor goles local en un partido (Stat)
+- [x] Menor goles local en un partido (Stat)
+- [x] Mayor goles visitante en un partido (Stat)
+- [x] Menor goles visitante en un partido (Stat)
+- [x] Top equipos con más victorias predichas (Bar chart)
+- [x] Top usuarios más activos (Bar chart)
+- [x] Moda de goles predichos local (Stat)
+- [x] Moda de goles predichos visitante (Stat)
+- [x] Serie temporal BRA: goles local y visitante
+- [x] Nombre del equipo: "BRA" (Text)
+- [x] Total predicciones para BRA (Stat)
 
 ### 4.3 HPA para Rust
 
-- [ ] Crear `HorizontalPodAutoscaler` para el Deployment de Rust:
+- [x] Crear `HorizontalPodAutoscaler` para el Deployment de Rust:
   - `minReplicas: 1`, `maxReplicas: 3`, `targetCPUUtilizationPercentage: 30`
-- [ ] Verificar que el Deployment tiene requests/limits de CPU configurados
-- [ ] Generar carga con Locust y observar el autoscaling
+- [x] Verificar que el Deployment tiene requests/limits de CPU configurados
+- [x] Generar carga con Locust y observar el autoscaling 1 → 3 → 1
 
 ### 4.4 Pruebas de Carga con Locust
 
-- [ ] Prueba con **1 réplica** en Go D2 (registrar métricas)
-- [ ] Prueba con **2 réplicas** en Go D2 (registrar métricas)
-- [ ] Comparar throughput, latencia, errores
-- [ ] Verificar HPA del Rust actuando bajo carga
+- [x] Prueba con **1 réplica** en Go D2 (registrar métricas)
+- [x] Prueba con **2 réplicas** en Go D2 (registrar métricas)
+- [x] Comparar throughput, latencia, errores
+- [x] Verificar HPA del Rust actuando bajo carga
 
 ### 4.5 Pruebas de Fase 4
 
-- [ ] Dashboard Grafana muestra todos los paneles con datos reales
-- [ ] HPA escala Rust correctamente bajo carga
-- [ ] Locust reporta < 1% de errores bajo carga sostenida
-- [ ] Analizar diferencia de rendimiento 1 vs 2 réplicas Go D2
+- [x] Dashboard Grafana provisionado con todos los paneles y métricas reales
+- [x] HPA escala Rust correctamente bajo carga
+- [x] Locust reporta < 1% de errores bajo carga sostenida
+- [x] Analizar diferencia de rendimiento 1 vs 2 réplicas Go D2
 
 ---
 
@@ -229,17 +228,17 @@ Crear paneles en Grafana:
 
 ### 5.1 Manual Técnico (Markdown)
 
-- [ ] Arquitectura general con diagrama
-- [ ] Flujo completo de datos (Locust → ... → Grafana)
-- [ ] Configuración de Gateway API (GatewayClass, Gateway, HTTPRoute)
-- [ ] Comunicación REST (Locust→Rust→GoD1) y gRPC (GoD1→GoD2)
-- [ ] Uso de RabbitMQ (queue, exchange, bindings)
-- [ ] Despliegue de Valkey y Grafana en containerd sobre KubeVirt
-- [ ] Configuración de HPA
-- [ ] Publicación y consumo de imágenes desde Zot
-- [ ] OCI Artifact: qué archivo se distribuyó y cómo se usó
-- [ ] Pruebas realizadas y conclusiones (análisis 1 vs 2 réplicas)
-- [ ] Screenshots de evidencia
+- [x] Arquitectura general con diagrama
+- [x] Flujo completo de datos (Locust → ... → Grafana)
+- [x] Configuración de Gateway API (GatewayClass, Gateway, HTTPRoute)
+- [x] Comunicación REST (Locust→Rust→GoD1) y gRPC (GoD1→GoD2)
+- [x] Uso de RabbitMQ (queue y persistencia)
+- [x] Despliegue de Valkey y Grafana en containerd sobre KubeVirt
+- [x] Configuración de HPA
+- [x] Publicación y consumo de imágenes desde Zot
+- [x] OCI Artifact adicional documentado; requisito dispensado por el auxiliar
+- [x] Pruebas realizadas y conclusiones (análisis 1 vs 2 réplicas)
+- [ ] Captura final del dashboard después del arranque limpio de la VM
 
 ### 5.2 Repositorio GitHub
 
@@ -247,16 +246,16 @@ Crear paneles en Grafana:
 - [x] README.md en raíz de PROYECTO2/
 - [x] Todos los Dockerfiles presentes
 - [x] Manifiestos organizados por componente con Kustomize
-- [ ] Manual técnico completo en Markdown
+- [x] Manual técnico completo en Markdown
 - [ ] @CamiloSincal agregado como colaborador
 
 ### 5.3 Validación Final
 
-- [ ] Levantar el sistema desde cero siguiendo la guía
-- [ ] Locust genera tráfico → Grafana muestra datos actualizados
-- [ ] Imágenes en Zot son consumidas correctamente
-- [ ] HPA funciona correctamente
-- [ ] KubeVirt VMs corren Valkey y Grafana
+- [x] Reaplicar manifiestos y validar el sistema siguiendo la guía
+- [x] Locust genera tráfico y el exporter expone datos actualizados
+- [x] Imágenes en Zot son consumidas correctamente
+- [x] HPA funciona correctamente
+- [x] KubeVirt VMs corren Valkey y Grafana
 
 ---
 
@@ -312,5 +311,8 @@ Crear paneles en Grafana:
 | 2026-06-27 | Fase 2 | RabbitMQ, Go D2 y Gateway verificados | 2759 requests, 0 errores; cola persistente |
 | 2026-06-27 | Auditoría | HTTPS, Zot, RabbitMQ y errores corregidos | TLS confiable; prueba 502/200; tests unitarios |
 | 2026-06-27 | Modularización | Infraestructura y operación reorganizadas | Kustomize, Makefile, scripts y proto único |
+| 2026-06-28 | Fases 3 y 4 | Valkey, Grafana, dashboard y HPA validados | Dos VMI Ready; HPA 1→3→1 |
+| 2026-06-28 | Rendimiento | Comparación Go D2 con 1 y 2 réplicas | 0 errores; +1.21% RPS con 2 réplicas |
+| 2026-06-28 | Fase 5 | Manual, metodología y guía de calificación | Falta confirmar colaborador GitHub |
 
 > Llena esta tabla conforme avances en el proyecto.

@@ -3,7 +3,7 @@
 > **Proyecto:** SOPES1 Proyecto 2  
 > **Carnet:** 202308204  
 > **Equipo asignado para dashboard:** BRA  
-> **Estado:** 🟡 En progreso  
+> **Estado:** 🟢 Implementada y validada en GCP
 > **Criterio principal:** Grafana debe ejecutarse dentro de una VM independiente de KubeVirt usando `containerd`, consumiendo imágenes desde Zot y mostrando datos reales del flujo obligatorio.
 
 ---
@@ -44,18 +44,18 @@ Esta decisión evita depender del plugin Redis directo de Grafana y permite cons
 
 ## 4.1 VM 2 — Grafana y Prometheus
 
-- [ ] Crear carpeta `infra/kubernetes/grafana`
-- [ ] Crear PVC `grafana-data`
-- [ ] Crear `VirtualMachine` independiente `grafana-vm`
-- [ ] Programar la VM en nodos con `nested-virtualization=enabled`
-- [ ] Agregar toleration para el taint `kubevirt.io/dedicated=virtualization:NoSchedule`
-- [ ] Montar PVC mediante `virtiofs`
-- [ ] Instalar `containerd` dentro de la VM con `cloud-init`
-- [ ] Ejecutar Grafana con `ctr`
-- [ ] Ejecutar Prometheus con `ctr`
-- [ ] Consumir imágenes desde Zot
-- [ ] Persistir `/var/lib/grafana`
-- [ ] Validar que la VM quede `Running` y `Ready=True`
+- [x] Crear carpeta `infra/kubernetes/grafana`
+- [x] Crear PVC `grafana-data`
+- [x] Crear `VirtualMachine` independiente `grafana-vm`
+- [x] Programar la VM en nodos con `nested-virtualization=enabled`
+- [x] Agregar toleration para el taint `kubevirt.io/dedicated=virtualization:NoSchedule`
+- [x] Adjuntar los PVC como discos de bloque `virtio` (excepción justificada en `PROYECTO2/README.md`)
+- [x] Instalar `containerd` dentro de la VM con `cloud-init`
+- [x] Ejecutar Grafana con `ctr`
+- [x] Ejecutar Prometheus con `ctr`
+- [x] Consumir imágenes desde Zot
+- [x] Persistir `/var/lib/grafana`
+- [x] Validar que la VM quede `Running` y `Ready=True`
 
 ### Imágenes esperadas desde Zot
 
@@ -71,24 +71,24 @@ zot.35-226-224-23.sslip.io/library/prometheus:v2.55.1
 
 ## 4.2 Service para Grafana
 
-- [ ] Crear `grafana-service`
-- [ ] Exponer puerto `3000`
-- [ ] Validar endpoint hacia `grafana-vm`
-- [ ] Acceder con `kubectl port-forward`
-- [ ] Confirmar login en Grafana
+- [x] Crear `grafana-service`
+- [x] Exponer puerto `3000`
+- [x] Validar endpoint hacia `grafana-vm`
+- [x] Acceder con `kubectl port-forward`
+- [x] Confirmar acceso de solo lectura en Grafana
 
 ---
 
 ## 4.3 Exporter de métricas desde Valkey
 
-- [ ] Crear módulo `go-metrics-exporter`
-- [ ] Conectarse a `valkey-service.sopes1-p2.svc.cluster.local:6379`
-- [ ] Leer claves reales de Valkey
-- [ ] Exponer endpoint `/metrics`
-- [ ] Publicar imagen del exporter en Zot
-- [ ] Crear Deployment del exporter
-- [ ] Crear Service del exporter
-- [ ] Validar que Prometheus pueda scrapear el exporter
+- [x] Crear módulo `go-metrics-exporter`
+- [x] Conectarse a `valkey-service.sopes1-p2.svc.cluster.local:6379`
+- [x] Leer claves reales de Valkey
+- [x] Exponer endpoint `/metrics`
+- [x] Publicar imagen del exporter en Zot
+- [x] Crear Deployment del exporter
+- [x] Crear Service del exporter
+- [x] Validar que Prometheus pueda scrapear el exporter
 
 ### Claves reales validadas en Valkey
 
@@ -133,9 +133,9 @@ quiniela_bra_away_goals
 
 ## 4.4 Datasource Grafana
 
-- [ ] Configurar Prometheus como datasource
-- [ ] Validar conexión Grafana → Prometheus
-- [ ] Usar PromQL para construir los paneles obligatorios
+- [x] Configurar Prometheus como datasource
+- [x] Validar conexión Grafana → Prometheus
+- [x] Usar PromQL para construir los paneles obligatorios
 
 ---
 
@@ -143,42 +143,48 @@ quiniela_bra_away_goals
 
 El dashboard debe mostrar datos reales para el equipo BRA:
 
-- [ ] Nombre del equipo: BRA
-- [ ] Total de predicciones relacionadas con BRA
-- [ ] Máximo de goles local
-- [ ] Mínimo de goles local
-- [ ] Máximo de goles visitante
-- [ ] Mínimo de goles visitante
-- [ ] Top de equipos con victorias predichas
-- [ ] Top de usuarios activos
-- [ ] Moda de goles local
-- [ ] Moda de goles visitante
-- [ ] Serie temporal BRA como local
-- [ ] Serie temporal BRA como visitante
+> Semántica validada del dashboard: el último par `home_team`/`away_team` relacionado
+> con BRA identifica el enfrentamiento actual. Máximos, mínimos y modas se calculan
+> únicamente con las últimas cinco predicciones disponibles de ese mismo enfrentamiento y respetando
+> sus lados local/visitante. Los rankings de victorias y usuarios son acumulados
+> históricos globales. Todo panel de goles usa valores enteros y rango visual de 0 a 5.
+
+- [x] Nombre del equipo: BRA
+- [x] Total de predicciones relacionadas con BRA
+- [x] Máximo de goles local
+- [x] Mínimo de goles local
+- [x] Máximo de goles visitante
+- [x] Mínimo de goles visitante
+- [x] Top de equipos con victorias predichas
+- [x] Top de usuarios activos
+- [x] Moda de goles local
+- [x] Moda de goles visitante
+- [x] Serie temporal BRA como local
+- [x] Serie temporal BRA como visitante
 
 ---
 
 ## 4.6 HPA para Rust API
 
-- [ ] Crear HPA para `rust-api`
-- [ ] Configurar mínimo `1` réplica
-- [ ] Configurar máximo `3` réplicas
-- [ ] Configurar objetivo CPU `30%`
-- [ ] Validar escalamiento con carga
-- [ ] Validar retorno a una réplica después de la carga
+- [x] Crear HPA para `rust-api`
+- [x] Configurar mínimo `1` réplica
+- [x] Configurar máximo `3` réplicas
+- [x] Configurar objetivo CPU `30%`
+- [x] Validar escalamiento con carga
+- [x] Validar retorno a una réplica después de la carga
 
 ---
 
 ## 4.7 Pruebas de carga con Locust
 
-- [ ] Crear escenario de carga hacia `/grpc-202308204`
-- [ ] Ejecutar prueba con una réplica
-- [ ] Registrar RPS
-- [ ] Registrar percentiles
-- [ ] Registrar errores
-- [ ] Ejecutar prueba con dos réplicas
-- [ ] Comparar resultados 1 vs 2 réplicas
-- [ ] Guardar evidencia reproducible
+- [x] Crear escenario de carga hacia `/grpc-202308204`
+- [x] Ejecutar prueba con una réplica
+- [x] Registrar RPS
+- [x] Registrar percentiles
+- [x] Registrar errores
+- [x] Ejecutar prueba con dos réplicas
+- [x] Comparar resultados 1 vs 2 réplicas
+- [x] Guardar evidencia reproducible
 
 ---
 
@@ -194,11 +200,11 @@ El dashboard debe mostrar datos reales para el equipo BRA:
 
 La Fase 4 se considera completa cuando:
 
-- [ ] `grafana-vm` corre como VM independiente en KubeVirt
-- [ ] Grafana corre dentro de la VM usando `containerd`
-- [ ] Prometheus corre dentro de la VM usando `containerd`
-- [ ] Las imágenes usadas por la VM se consumen desde Zot
-- [ ] Grafana muestra todos los paneles obligatorios de BRA con datos reales
-- [ ] HPA de Rust escala hasta máximo 3 réplicas y regresa a 1
-- [ ] Existen resultados de Locust para 1 vs 2 réplicas
-- [ ] El flujo obligatorio mantiene una tasa de error aceptable
+- [x] `grafana-vm` corre como VM independiente en KubeVirt
+- [x] Grafana corre dentro de la VM usando `containerd`
+- [x] Prometheus corre dentro de la VM usando `containerd`
+- [x] Las imágenes usadas por la VM se consumen desde Zot
+- [x] Grafana muestra todos los paneles obligatorios de BRA con datos reales
+- [x] HPA de Rust escala hasta máximo 3 réplicas y regresa a 1
+- [x] Existen resultados de Locust para 1 vs 2 réplicas
+- [x] El flujo obligatorio mantiene una tasa de error aceptable

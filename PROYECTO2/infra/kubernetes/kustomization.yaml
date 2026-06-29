@@ -9,10 +9,15 @@ resources:
   - go-d1/service.yaml
   - rust-api/deployment.yaml
   - rust-api/service.yaml
+  - rust-api/hpa.yaml
   - gateway/gateway.yaml
+  - locust/deployment.yaml
   - valkey/pvc.yaml
   - valkey/vm.yaml
   - valkey/service.yaml
   - consumer/deployment.yaml
+  - metrics-exporter/deployment.yaml
+  - metrics-exporter/service.yaml
   - grafana/pvc.yaml
   - grafana/vm.yaml
+  - grafana/service.yaml

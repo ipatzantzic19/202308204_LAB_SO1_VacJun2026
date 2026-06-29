@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust
+  namespace: sopes1-p2
+  labels:
+    app: locust
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: locust
+  template:
+    metadata:
+      labels:
+        app: locust
+    spec:
+      containers:
+        - name: locust
+          image: zot.35-226-224-23.sslip.io/sopes1/locust:v2
+          args:
+            - --headless
+            - --users
+            - "5"
+            - --spawn-rate
+            - "1"
+            - --host
+            - http://136.68.202.37
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
