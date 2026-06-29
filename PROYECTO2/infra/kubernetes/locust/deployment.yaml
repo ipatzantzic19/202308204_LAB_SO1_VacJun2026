@@ -6,7 +6,8 @@ metadata:
   labels:
     app: locust
 spec:
-  replicas: 1
+  # Permanece detenido por defecto para conservar Valkey limpio entre demostraciones.
+  replicas: 0
   selector:
     matchLabels:
       app: locust

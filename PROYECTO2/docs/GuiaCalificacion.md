@@ -14,7 +14,8 @@ kubectl get hpa -A
 ```
 
 Resultado esperado: Pods del proyecto `Running`, Go D1 y Go D2 `2/2`, VMs `Ready=True` y HPA
-de Rust con rango 1–3 y objetivo CPU 30%.
+de Rust con rango 1–3 y objetivo CPU 30%. El Deployment de Locust aparece `0/0` hasta que se
+inicie deliberadamente para generar datos.
 
 ## 2. Gateway y ruta
 
@@ -37,6 +38,16 @@ curl -X POST http://136.68.202.37/grpc-202308204 \
 ```
 
 Ambas solicitudes deben responder exitosamente.
+
+Valkey se dejó vacío antes de la evaluación y Locust está detenido por defecto. Por ello, cada
+POST manual permite verificar con facilidad el incremento exacto del contador. Para demostrar
+Locust deliberadamente:
+
+```bash
+kubectl scale deployment/locust -n sopes1-p2 --replicas=1
+# Observar logs y dashboard; después detenerlo:
+kubectl scale deployment/locust -n sopes1-p2 --replicas=0
+```
 
 ## 4. Logs del flujo
 

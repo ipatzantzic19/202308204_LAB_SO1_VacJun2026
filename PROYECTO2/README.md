@@ -95,12 +95,12 @@ compara Go D2 con una y dos réplicas y restaura el HPA obligatorio 1–3. Los p
 `SPAWN_RATE`, `DURATION` y `RESULTS_DIR` permiten repetir el experimento. Los CSV, HTML y
 la comparación Markdown se guardan bajo `evidence/locust/`.
 
-El Deployment `locust` mantiene cinco usuarios simulados activos en GKE contra el Gateway
-público. Se puede detener o reanudar sin eliminarlo con:
+El Deployment `locust` queda en cero réplicas por defecto para no modificar los conteos antes
+de la evaluación. Se puede iniciar o detener sin eliminarlo con:
 
 ```bash
-kubectl scale deployment/locust -n sopes1-p2 --replicas=0
 kubectl scale deployment/locust -n sopes1-p2 --replicas=1
+kubectl scale deployment/locust -n sopes1-p2 --replicas=0
 ```
 
 `make validate-hpa` ejecuta una carga más intensa, registra cada cinco segundos las

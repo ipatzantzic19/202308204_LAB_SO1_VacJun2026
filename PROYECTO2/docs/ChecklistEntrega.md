@@ -30,6 +30,8 @@ dependencias. `validate` comprueba recursos, Grafana, Prometheus, Zot y el artef
 - [x] Cola `predictions` es durable y vuelve a cero.
 - [x] Grafana 11.5.2 y Prometheus responden dentro de la VM.
 - [x] Dashboard accesible sin login mediante puerto local 13000.
+- [x] Locust queda en `0/0` por defecto para conservar los contadores limpios.
+- [x] Valkey quedó con `DBSIZE=0` y Prometheus reporta ambos contadores totales en cero.
 
 ## 3. Validación de imágenes Zot
 
@@ -50,6 +52,10 @@ de consumo es que los Pods están `Running` con esas referencias y que cloud-ini
 Grafana, Prometheus y Valkey descargados desde el mismo dominio.
 
 ## 4. Prueba extremo a extremo
+
+La evaluación inicia con Valkey vacío. Enviar primero predicciones conocidas permite comprobar
+que el total aumenta exactamente en la cantidad esperada. Locust permanece detenido hasta que
+se quiera demostrar generación automática de carga.
 
 ```bash
 curl -X POST http://136.68.202.37/grpc-202308204 \

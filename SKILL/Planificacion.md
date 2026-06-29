@@ -316,5 +316,6 @@ Crear paneles en Grafana:
 | 2026-06-28 | Fases 3 y 4 | Valkey, Grafana, dashboard y HPA validados | Dos VMI Ready; HPA 1→3→1 |
 | 2026-06-28 | Rendimiento | Comparación Go D2 con 1 y 2 réplicas | 0 errores; +1.21% RPS con 2 réplicas |
 | 2026-06-28 | Fase 5 | Manual, metodología y guía de calificación | Falta confirmar colaborador GitHub |
+| 2026-06-29 | Preparación | Valkey y RabbitMQ vacíos; Locust detenido por defecto | Dashboard inicia con contadores en cero |
 
 > Llena esta tabla conforme avances en el proyecto.
